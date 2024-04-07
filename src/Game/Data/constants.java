@@ -1,5 +1,7 @@
 package Game.Data;
 
+import java.awt.*;
+
 public class constants {
     public static final String PROJECT_NAME = "Window Kill";
     public static final int LOGIN_WIDTH = 900;
@@ -22,5 +24,6 @@ public class constants {
     public static final int LOGIN_EXIT_HEIGHT = 41;
     public static final String LOGIN_PHOTO_PATH = "photo\\login.png";
     public static final String PROJECT_ICON_PATH = "photo\\imageICon.png";
+    public static final Dimension FIRST_GAME_FRAME_DIMENSION = new Dimension(700,700);
 
 }
