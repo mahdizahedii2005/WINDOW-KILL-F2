@@ -1,6 +1,7 @@
 package Game.login;
 
 import Game.Data.constants;
+import Game.game.gameApplication;
 import Game.game.view.characterView.enemyView;
 import Game.game.view.characterView.epsilonView;
 import Game.game.view.frameInGame;
@@ -47,9 +48,7 @@ public class loginFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                frameInGame frame = new frameInGame(constants.FIRST_GAME_FRAME_DIMENSION);
-                JPanel panel= new panelInGame(frame);
-                new epsilonView(new Point2D.Double(400,400),"15",10,panel);
+               new gameApplication().run();
             }
         });
         skillTree = new buttonLogin(constants.LOGIN_SKILL_TREE_X, constants.LOGIN_SKILL_TREE_Y, new AbstractAction() {

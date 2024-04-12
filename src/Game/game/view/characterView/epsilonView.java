@@ -1,21 +1,19 @@
 package Game.game.view.characterView;
 
 import Game.game.view.DrawAble;
+import Game.game.view.panelInGame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class epsilonView implements DrawAble {
-    double radius;
-    Point2D center;
-    String id;
-    JPanel drawPanel;
+    double radius = 0;
+    Point2D center = new Point(0, 0);
+    private String id;
+    JPanel drawPanel = panelInGame.getPanel();
 
-    public epsilonView(Point2D.Double center, String id, double radius, JPanel drawPanel) {
-        this.radius = radius;
-        this.drawPanel = drawPanel;
-        this.center = center;
+    public epsilonView(String id) {
         this.id = id;
         DRAW_ABLES.add(this);
     }
@@ -24,11 +22,56 @@ public class epsilonView implements DrawAble {
     public void Draw(Graphics g, JPanel jPanel) {
         if (jPanel == drawPanel) {
             g.setColor(Color.WHITE);
-            g.fillOval((int) (center.getY() - radius), (int) (center.getY() - radius), (int) (2 * radius), (int) (2 * radius));
+            g.fillOval((int) (center.getX() - radius), (int) (center.getY() - radius), (int) (2 * radius), (int) (2 * radius));
             g.setColor(Color.black);
-            int lowerRadius =(int) (radius*0.85);
-            g.fillOval((int) (center.getY() - lowerRadius), (int) (center.getY() - lowerRadius), (int) (2 * lowerRadius), (int) (2 * lowerRadius));
+            int lowerRadius = (int) (radius * 0.8);
+            g.fillOval((int) (center.getX() - lowerRadius), (int) (center.getY() - lowerRadius), (int) (2 * lowerRadius), (int) (2 * lowerRadius));
 
         }
+    }
+
+    @Override
+    public void fixDetail(Point2D.Double center, double radius, JPanel drawPanel) {
+        this.radius = radius;
+        this.drawPanel = drawPanel;
+        this.center = center;
+        panelInGame.getPanel().repaint();
+    }
+
+    @Override
+    public void fixDetail(JPanel drawPanel, double[] xPoint, double[] yPoint, int nPoint, Color color) {
+        return;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    public Point2D getCenter() {
+        return center;
+    }
+
+    public void setCenter(Point2D center) {
+        this.center = center;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public JPanel getDrawPanel() {
+        return drawPanel;
+    }
+
+    public void setDrawPanel(JPanel drawPanel) {
+        this.drawPanel = drawPanel;
     }
 }
