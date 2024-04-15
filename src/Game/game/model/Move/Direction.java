@@ -42,8 +42,8 @@ public class Direction {
         else state = DirectionState.negative;
     }
 
-    public Point2D getDirectionVector() {
-        if (state == DirectionState.neutral) return new Point(0, 0);
+    public Point2D.Double getDirectionVector() {
+        if (state == DirectionState.neutral) return new Point2D.Double(0, 0);
         if (isUpward) {
             return new Point2D.Double(0, 1);
         }

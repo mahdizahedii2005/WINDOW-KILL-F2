@@ -9,82 +9,70 @@ import java.awt.geom.Point2D;
 
 import static Game.helper.changerD;
 
-public class enemyView implements DrawAble {
-    private JPanel drawPanel = panelInGame.getPanel();
+public class enemyView extends DrawAbleObject implements DrawAble {
+    private JPanel drawPanel = panelInGame.getPanel ();
     private double[] xPoint = new double[0];
     private double[] yPoint = new double[0];
     private int nPoint = 0;
     private Color color = Color.BLACK;
-    private String id;
-
-    public enemyView(String id) {
-        this.id = id;
-        DRAW_ABLES.add(this);
+    public enemyView (String id) {
+        super (id);
     }
 
     @Override
-    public void Draw(Graphics g, JPanel jPanel) {
+    public void Draw (Graphics g, JPanel jPanel) {
         if (jPanel == drawPanel) {
-            g.setColor(color);
-            g.fillPolygon(changerD(xPoint), changerD(yPoint), nPoint);
+            g.setColor (color);
+            g.fillPolygon (changerD (xPoint), changerD (yPoint), nPoint);
         }
     }
 
     @Override
-    public void fixDetail(Point2D.Double point2D, double radius, JPanel drawPanel) {
+    public void fixDetail (Point2D.Double point2D, double radius, JPanel drawPanel) {
         return;
     }
 
-    public JPanel getDrawPanel() {
+    public JPanel getDrawPanel () {
         return drawPanel;
     }
 
-    public void setDrawPanel(JPanel drawPanel) {
+    public void setDrawPanel (JPanel drawPanel) {
         this.drawPanel = drawPanel;
     }
 
-    public double[] getxPoint() {
+    public double[] getxPoint () {
         return xPoint;
     }
 
-    public void setxPoint(double[] xPoint) {
+    public void setxPoint (double[] xPoint) {
         this.xPoint = xPoint;
     }
 
-    public double[] getyPoint() {
+    public double[] getyPoint () {
         return yPoint;
     }
 
-    public void setyPoint(double[] yPoint) {
+    public void setyPoint (double[] yPoint) {
         this.yPoint = yPoint;
     }
 
-    public int getnPoint() {
+    public int getnPoint () {
         return nPoint;
     }
 
-    public void setnPoint(int nPoint) {
+    public void setnPoint (int nPoint) {
         this.nPoint = nPoint;
     }
 
-    public Color getColor() {
+    public Color getColor () {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor (Color color) {
         this.color = color;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public void fixDetail(JPanel drawPanel, double[] xPoint, double[] yPoint, int nPoint, Color color) {
+    public void fixDetail (JPanel drawPanel, double[] xPoint, double[] yPoint, int nPoint, Color color) {
         this.drawPanel = drawPanel;
         this.xPoint = xPoint;
         this.yPoint = yPoint;

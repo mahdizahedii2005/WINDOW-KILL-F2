@@ -1,11 +1,37 @@
 package Game.game.model.characterModel;
 
+import Game.game.model.Move.Direction;
+import Game.game.model.Move.NormalFollower;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Random;
 
-public class SquarantineModel extends Enemy {
+import static Game.Data.constants.SPEED;
+import static Game.Data.constants.SQUAER_COLOR;
 
-    public SquarantineModel(Point2D.Double center, Color color, double[] xPoint, double[] yPoint) {
-        super(center, color, 4, xPoint, yPoint);
+public class SquarantineModel extends Enemy implements NormalFollower {
+    private int cycle = 0;
+    private boolean isPower = false;
+
+    public SquarantineModel (Point2D.Double center, double[] xPoint, double[] yPoint) {
+        super (center, SQUAER_COLOR, 4, xPoint, yPoint, 10);
+    }
+
+    @Override
+    public void follow () {
+        if (new Random ().nextInt (20) == 1 && !isPower) {
+            isPower = true;
+            cycle = 15;
+            speed = SPEED * 2;
+        }
+        if (isPower) {
+            cycle--;
+            if (cycle == 0) {
+                isPower = false;
+                speed = SPEED * 3d / 10d;
+            }
+        }
+        setDirection (new Direction (new Point2D.Double ((Epsilon.getEpsilon ().getCenter ().getX () - getCenter ().getX ()), (Epsilon.getEpsilon ().getCenter ().getY () - getCenter ().getY ()))));
     }
 }

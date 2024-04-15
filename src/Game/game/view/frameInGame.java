@@ -1,5 +1,7 @@
 package Game.game.view;
 
+import Game.Data.constants;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,9 +18,11 @@ public final class frameInGame extends JFrame {
     }
 
     private frameInGame() {
+        setIconImage(new ImageIcon(constants.PROJECT_ICON_PATH).getImage());
         setUndecorated(true);
         setFocusable(true);
-        setFocusableWindowState(true);
+        requestFocus();
+        requestFocusInWindow();
         setBackground(new Color(0, 0, 0, 0));
         setSize(GLASS_FRAME_DIMENSION);
         setLocationRelativeTo(null);

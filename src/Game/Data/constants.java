@@ -26,7 +26,7 @@ public class constants {
     public static final int LOGIN_EXIT_HEIGHT = 41;
     public static final String LOGIN_PHOTO_PATH = "photo\\login.png";
     public static final String PROJECT_ICON_PATH = "photo\\imageICon.png";
-    public static final Dimension FIRST_GAME_FRAME_DIMENSION = new Dimension(700, 700);
+    //  public static final Dimension FIRST_GAME_FRAME_DIMENSION = new Dimension(700, 700);
     public static final int FPS = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate();
     public static final double FRAME_UPDATE_TIME = (double) TimeUnit.SECONDS.toMillis(1) / FPS;
     public static final int UPS = 100;
@@ -35,7 +35,7 @@ public class constants {
     public static final Dimension GLASS_FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
     public static final Dimension FIRST_PANEL_DIMENSION = new Dimension(700, 700);
     public static final Rectangle FIRST_PANEL_RECTANGLE = new Rectangle(new Point((GLASS_FRAME_DIMENSION.width - FIRST_PANEL_DIMENSION.width) / 2, (GLASS_FRAME_DIMENSION.height - FIRST_PANEL_DIMENSION.height) / 2), FIRST_PANEL_DIMENSION);
-    public static final Dimension SMALLEST_SIZE_OF_ORIGINAL_PANEL = new Dimension(300, 300);
+    public static final Dimension SMALLEST_SIZE_OF_ORIGINAL_PANEL = new Dimension(500, 500);
     public static int PANEL_CLOSE_DELAY = 5;
     public static final double RADIUS_OF_EPSILON = 12;
     public static final double HEIGHT_OF_TRIANGLE = 4 * RADIUS_OF_EPSILON;
@@ -43,4 +43,6 @@ public class constants {
     public static final Color TRIANGLE_COLOR = Color.YELLOW;
     public static final double SIDE_OF_SQUARE = HEIGHT_OF_TRIANGLE;
     public static final Color SQUAER_COLOR = Color.GREEN;
+    public static final double TRIANGLE_SAFE_DISTANCE = 60;
+    public static int SPEED_OF_ADDING_BOLT = 200;
 }

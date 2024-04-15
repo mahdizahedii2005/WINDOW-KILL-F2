@@ -10,7 +10,9 @@ public interface DrawAble {
 
     void Draw(Graphics g, JPanel jPanel);
 
-    void fixDetail(Point2D.Double point2D, double radius, JPanel drawPanel);
+    void fixDetail(Point2D.Double center, double radius, JPanel drawPanel);
 
-    void fixDetail(JPanel drawPanel, double[] xPoint, double[] yPoint,int nPoint,Color color);
+    void fixDetail(JPanel drawPanel, double[] xPoint, double[] yPoint, int nPoint, Color color);
+
+    void fixDetail(JPanel drawPanel,Color color, Point2D.Double center);
 }

@@ -7,15 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class epsilonView implements DrawAble {
+public class epsilonView extends DrawAbleObject {
     double radius = 0;
-    Point2D center = new Point(0, 0);
-    private String id;
     JPanel drawPanel = panelInGame.getPanel();
 
     public epsilonView(String id) {
-        this.id = id;
-        DRAW_ABLES.add(this);
+        super(id);
     }
 
     @Override
@@ -43,6 +40,8 @@ public class epsilonView implements DrawAble {
         return;
     }
 
+
+
     public double getRadius() {
         return radius;
     }
@@ -51,11 +50,11 @@ public class epsilonView implements DrawAble {
         this.radius = radius;
     }
 
-    public Point2D getCenter() {
+    public Point2D.Double getCenter() {
         return center;
     }
 
-    public void setCenter(Point2D center) {
+    public void setCenter(Point2D.Double center) {
         this.center = center;
     }
 

@@ -20,6 +20,9 @@ public class panelInGame extends JPanel {
 
     public panelInGame(Rectangle rectangle) {
         setBounds(rectangle);
+        setFocusable(true);
+        requestFocus();
+        requestFocusInWindow();
         setLayout(null);
         setBorder(BorderFactory.createLineBorder(Color.RED, 5));
         setBackground(Color.BLACK);
@@ -39,7 +42,6 @@ public class panelInGame extends JPanel {
             repaint();
         }
     }
-
 
     public boolean validSize() {
         return getSize().width > SMALLEST_SIZE_OF_ORIGINAL_PANEL.width && getSize().height > SMALLEST_SIZE_OF_ORIGINAL_PANEL.height;
