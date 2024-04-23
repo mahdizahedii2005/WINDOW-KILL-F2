@@ -1,7 +1,9 @@
 package Game.game.Contoroler;
 
+import Game.game.model.Move.Moveable;
 import Game.game.model.characterModel.Epsilon;
 import Game.game.model.characterModel.ObjectInGame;
+import Game.game.model.characterModel.originalPanel;
 import Game.game.view.DrawAble;
 import Game.game.view.characterView.*;
 import Game.game.view.panelInGame;
@@ -26,22 +28,6 @@ public abstract class Controller {
         new enemyView (id);
     }
 
-    public static Line2D.Double getLeftPanel () {
-        return new Line2D.Double (panelInGame.getPanel ().getX (), panelInGame.getPanel ().getY (), panelInGame.getPanel ().getX (), panelInGame.getPanel ().getY () + panelInGame.getPanel ().getHeight ());
-    }
-
-    public static Line2D.Double getUpPanel () {
-        return new Line2D.Double (panelInGame.getPanel ().getX (), panelInGame.getPanel ().getY (), panelInGame.getPanel ().getX () + panelInGame.getPanel ().getWidth (), panelInGame.getPanel ().getY ());
-    }
-
-    public static Line2D.Double getRightPanel () {
-        return new Line2D.Double (panelInGame.getPanel ().getX () + panelInGame.getPanel ().getWidth (), panelInGame.getPanel ().getY (), panelInGame.getPanel ().getX () + panelInGame.getPanel ().getWidth (), panelInGame.getPanel ().getY () + panelInGame.getPanel ().getHeight ());
-    }
-
-    public static Line2D.Double getDownPanel () {
-        return new Line2D.Double (panelInGame.getPanel ().getX (), panelInGame.getPanel ().getY () + panelInGame.getPanel ().getHeight (), panelInGame.getPanel ().getX () + panelInGame.getPanel ().getWidth (), panelInGame.getPanel ().getY () + panelInGame.getPanel ().getHeight ());
-    }
-
     public static ObjectInGame findObjectModel (String id) {
         for (ObjectInGame o : ObjectInGame.objectInGames) {
             if (o.getId ().equals (id)) {
@@ -53,15 +39,24 @@ public abstract class Controller {
 
     public static DrawAbleObject findObjectView (String id) {
         for (DrawAble o : DRAW_ABLES) {
-            DrawAbleObject l = (DrawAbleObject) o;
-            if (l.getId ().equals (id)) {
-                return l;
+            try {
+                DrawAbleObject l = (DrawAbleObject) o;
+                if (l.getId ().equals (id)) {
+                    return l;
+                }
+            } catch (Exception r) {
             }
         }
         return null;
     }
 
-    public static JPanel whatPanelForDraw (double[] xPoint, double[] yPoint) {
+
+    public static originalPanel whatPanelForDraw (double[] xPoint, double[] yPoint) {
+        // TODO: ۱۰/۰۴/۲۰۲۴ for the next faze
+        return originalPanel.getPanel ();
+    }
+
+    public static JPanel whatPanelForDraw (double[] xPoint, double[] yPoint, boolean tru) {
         // TODO: ۱۰/۰۴/۲۰۲۴ for the next faze
         return panelInGame.getPanel ();
     }
@@ -71,7 +66,7 @@ public abstract class Controller {
         return panelInGame.getPanel ();
     }
 
-    public static MokhtasatPoint fixThePoint (double[] xPoint, double[] yPoint, JPanel panel) {
+    public static MokhtasatPoint fixThePoint (double[] xPoint, double[] yPoint, originalPanel panel) {
         double[] resultX = new double[xPoint.length];
         double[] resultY = new double[xPoint.length];
         for (int i = 0 ; i < xPoint.length ; i++) {
@@ -110,6 +105,10 @@ public abstract class Controller {
     }
 
     public static void fire (Point2D.Double target) {
-        Epsilon.getEpsilon ().fire (helper.addVectors (target, helper.multiplyVector (Epsilon.getEpsilon ().getCenter (), -1)));
+        Epsilon.getEpsilon ().fire (helper.addVectors (target, helper.multiplyVector (Epsilon.getEpsilon ().getCenter (), -1)),target);
+    }
+
+    public static void CreatOriginalPanelView (String id) {
+        new panelInGame (id);
     }
 }

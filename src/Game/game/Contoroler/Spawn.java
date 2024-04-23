@@ -23,10 +23,10 @@ public class Spawn {
     private spawnState spawnstate = spawnState.first;
     private int TOTAL_NUMBER_OF_ENEMY_1 = 25;
     private int TOTAL_NUMBER_OF_ENEMY_2 = 35;
-    private int TOTAL_NUMBER_OF_ENEMY_3 = 50;
-    private final int NUMBER_OF_ENEMY_1 = 6;
-    private final int NUMBER_OF_ENEMY_2 = 9;
-    private final int NUMBER_OF_ENEMY_3 = 15;
+    private int TOTAL_NUMBER_OF_ENEMY_3 = 45;
+    private final int NUMBER_OF_ENEMY_1 = 3;
+    private final int NUMBER_OF_ENEMY_2 = 5;
+    private final int NUMBER_OF_ENEMY_3 = 8;
     private int CurrentEnemy = 0;
     private int SQNumEnemy = 0;
     private int TRNumEnemy = 0;
@@ -41,18 +41,12 @@ public class Spawn {
                 if (CurrentEnemy < NUMBER_OF_ENEMY_1) {
                     if (SQNumEnemy < NUMBER_OF_ENEMY_1 * sqPercent) {
                         findPlace findPlace = new findPlace ();
-                        if (findPlace.getP1 ().getX () == NaN || findPlace.getP1 ().getY () == NaN || findPlace.getP2 ().getX () == NaN || findPlace.getP2 ().getY () == NaN) {
-                            findPlace = new findPlace (new Point2D.Double (0, 0), new Point2D.Double (5, 15));
-                        }
                         BuilderHelper.squarantineBuilder (findPlace.getP1 (), findPlace.getP2 ());
                         IncreaseSQNumEnemy ();
                         return;
                     }
                     if (TRNumEnemy < TOTAL_NUMBER_OF_ENEMY_1 * trPercent) {
                         findPlace findPlace = new findPlace ();
-                        if (findPlace.getP1 ().getX () == NaN || findPlace.getP1 ().getY () == NaN || findPlace.getP2 ().getX () == NaN || findPlace.getP2 ().getY () == NaN) {
-                            findPlace = new findPlace (new Point2D.Double (0, 0), new Point2D.Double (5, 15));
-                        }
                         BuilderHelper.trigorathBuilder (findPlace.getP1 (), findPlace.getP2 ());
                         IncreaseTRNumEnemy ();
                     }

@@ -9,18 +9,22 @@ import java.util.Random;
 
 import static Game.Data.constants.SPEED;
 import static Game.Data.constants.SQUAER_COLOR;
+import static Game.game.model.characterModel.bolt.SQU_CHECK;
 
 public class SquarantineModel extends Enemy implements NormalFollower {
     private int cycle = 0;
     private boolean isPower = false;
 
     public SquarantineModel (Point2D.Double center, double[] xPoint, double[] yPoint) {
-        super (center, SQUAER_COLOR, 4, xPoint, yPoint, 10);
+        super (center, SQUAER_COLOR, 4, xPoint, yPoint, 10,SQU_CHECK);
     }
 
     @Override
     public void follow () {
-        if (new Random ().nextInt (20) == 1 && !isPower) {
+        if (impactNum > 0) {
+            return;
+        }
+        if (new Random ().nextInt (18) == 1 && !isPower) {
             isPower = true;
             cycle = 15;
             speed = SPEED * 2;

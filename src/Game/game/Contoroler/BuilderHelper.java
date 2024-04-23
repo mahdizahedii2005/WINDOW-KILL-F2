@@ -78,7 +78,7 @@ public class BuilderHelper {
             p2 = new Point2D.Double (X1, Y1);
         }
         if (shib == 0) {
-            shib = 0.000000001;
+            shib = 0.001;
         }
         double shibAmood = -1 / shib;
         double arzAzMabdaAmod = p1.y - (shibAmood * p1.x);

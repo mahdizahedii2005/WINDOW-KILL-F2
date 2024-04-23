@@ -6,6 +6,7 @@ import Game.game.Contoroler.Spawn;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.Moveable;
 import Game.game.model.Move.follower;
+import Game.game.model.Move.impactAble;
 import Game.game.model.collision.Collidable;
 import Game.game.model.shooting.shootGiver;
 
@@ -20,7 +21,9 @@ import static Game.game.Contoroler.Controller.fire;
 import static Game.helper.addVectors;
 import static Game.helper.checkNan;
 
-public class Enemy extends ObjectInGame implements Collidable, follower, shootGiver {
+public class Enemy extends ObjectInGame implements Collidable, follower, shootGiver, impactAble {
+
+    int impactNum = 0;
     double[] xPoint;
     double speed = 0;
     double[] yPoint;
@@ -52,8 +55,8 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
         this.nPoint = nPoint;
     }
 
-    public Enemy (Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp) {
-        super (center, color, UUID.randomUUID ().toString (), hp);
+    public Enemy (Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp ,double radius) {
+        super (center, color, UUID.randomUUID ().toString (), hp,radius);
         if (checkNan (xPoint, yPoint)) {
             addEnemy (getId ());
             this.nPoint = nPoint;
@@ -81,6 +84,7 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
 
     @Override
     public void move () {
+        impactNum = Math.max (impactNum - 1, 0);
         move (MoveDirection, speed);
     }
 
@@ -90,8 +94,23 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
     }
 
     @Override
+    public int getImpactNum () {
+        return impactNum;
+    }
+
+    public void setImpactNum (int impactNum) {
+        this.impactNum = impactNum;
+    }
+
+
+    @Override
     public void setSpeed (double speed) {
         this.speed = speed;
+    }
+
+    @Override
+    public double getSpeed () {
+        return speed;
     }
 
     @Override
@@ -118,5 +137,15 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
         if (HP == 0) {
             Die ();
         }
+    }
+
+    @Override
+    public Direction getMoveDirection () {
+        return MoveDirection;
+    }
+
+    @Override
+    public void setMoveDirection (Direction moveDirection) {
+        MoveDirection = moveDirection;
     }
 }

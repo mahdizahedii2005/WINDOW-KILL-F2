@@ -75,6 +75,11 @@ public class DrawAbleObject implements DrawAble {
 
     }
 
+    @Override
+    public void fixDetail (int x, int y, Dimension size, Color backGrandColor, Color BarColor) {
+
+    }
+
     public void clean () {
         DRAW_ABLES.remove (this);
     }

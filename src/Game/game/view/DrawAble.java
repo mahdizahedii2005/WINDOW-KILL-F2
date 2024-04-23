@@ -15,4 +15,5 @@ public interface DrawAble {
     void fixDetail(JPanel drawPanel, double[] xPoint, double[] yPoint, int nPoint, Color color);
 
     void fixDetail(JPanel drawPanel,Color color, Point2D.Double center);
+    void fixDetail(int x, int y , Dimension size , Color backGrandColor, Color BarColor);
 }

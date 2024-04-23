@@ -1,5 +1,7 @@
 package Game.game.model.characterModel;
 
+import Game.game.view.characterView.PrizeView;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ public class prize extends ObjectInGame {
     int increaseHP;
 
     public prize (Point2D.Double center, Color color, int IncreaseHp) {
-        super (center, color, UUID.randomUUID ().toString (), 1);
+        super (center, color, UUID.randomUUID ().toString (), 1, PrizeView.radius);
         this.increaseHP = IncreaseHp;
         addPrizeView (id);
         prizeArrayList.add (this);

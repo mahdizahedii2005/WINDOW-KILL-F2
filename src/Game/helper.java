@@ -4,7 +4,6 @@ import Game.game.Contoroler.MokhtasatPoint;
 
 import java.awt.geom.Point2D;
 
-import static java.lang.Double.NaN;
 
 public abstract class helper {
     public static int[] changerD (double[] arr) {
@@ -21,7 +20,7 @@ public abstract class helper {
         return new Point2D.Double (point.getX () * scalar, point.getY () * scalar);
     }
 
-    public static Point2D.Double addVectors (Point2D point1, Point2D point2) {
+    public static Point2D.Double addVectors (Point2D.Double point1, Point2D.Double point2) {
         return new Point2D.Double (point1.getX () + point2.getX (), point1.getY () + point2.getY ());
     }
 
@@ -42,5 +41,33 @@ public abstract class helper {
             }
         }
         return true;
+    }
+
+    public static Point2D weightedAddVectors (Point2D point1, Point2D point2, double weight1, double weight2) {
+        return multiplyVector (addVectors (multiplyVector (point1, weight1), multiplyVector (point2, weight2)), 1 / (weight1 + weight2));
+    }
+
+    public static Point2D.Double relativeLocation (Point2D.Double point, Point2D.Double anchor) {
+        return new Point2D.Double (point.getX () - anchor.getX (), point.getY () - anchor.getY ());
+    }
+
+    public static Point2D.Double findCollisionPlace (Point2D centerO, Point2D mabda, Point2D maghsad, double R) {
+        double a = ((double) mabda.getY () - maghsad.getY ()) / (mabda.getX () - maghsad.getX ());
+        double h = mabda.getY () - a * mabda.getX ();
+        double D = h - centerO.getY ();
+        double A = (a * a) + 1;
+        double B = (D * a) - centerO.getX ();
+        double C = (centerO.getX () * centerO.getX ()) + (D * D) - (R * R);
+        double X1 = (-B + Math.sqrt (B * B - A * C)) / A;
+        double X2 = (-B - Math.sqrt (B * B - A * C)) / A;
+        double Y1 = a * X1 + h;
+        double Y2 = a * X2 + h;
+        if (X1 != X1) {
+            return null;
+        }
+        if ((mabda.getX () - X1) * (maghsad.getX () - X1) < 0) {
+            return new Point2D.Double (X1, Y1);
+        }
+        return new Point2D.Double (X2, Y2);
     }
 }

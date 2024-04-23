@@ -13,6 +13,35 @@ import static Game.game.Contoroler.Controller.fire;
 import static Game.game.Contoroler.Controller.moveEpsilon;
 
 public class inputListener {
+    boolean a = false;
+    Timer up = new Timer (200, new AbstractAction () {
+        @Override
+        public void actionPerformed (ActionEvent e) {
+            moveEpsilon (0, -250);
+        }
+    });
+    boolean upp = false;
+    Timer down = new Timer (200, new AbstractAction () {
+        @Override
+        public void actionPerformed (ActionEvent e) {
+            moveEpsilon (0, 250);
+        }
+    });
+    boolean downn = false;
+    Timer left = new Timer (200, new AbstractAction () {
+        @Override
+        public void actionPerformed (ActionEvent e) {
+            moveEpsilon (-250, 0);
+        }
+    });
+    boolean leftt = false;
+    Timer right = new Timer (200, new AbstractAction () {
+        @Override
+        public void actionPerformed (ActionEvent e) {
+            moveEpsilon (250, 0);
+        }
+    });
+    boolean rightt = false;
     boolean start = false;
 
     private void startBolting (double x, double y) {
@@ -70,7 +99,6 @@ public class inputListener {
 
             @Override
             public void mouseMoved (MouseEvent e) {
-
             }
         });
         frameInGame.getFrame ().addMouseListener (new MouseAdapter () {
@@ -89,31 +117,38 @@ public class inputListener {
         actionMap.put ("moveUp", new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
-                moveEpsilon (0, -1);
-                // System.out.println("up");
-
+                if (!upp) {
+                    up.start ();
+                    upp = true;
+                }
             }
         });
 
         actionMap.put ("moveDown", new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
-                moveEpsilon (0, 1);
-                // System.out.println("down");
-
+                if (!downn) {
+                    down.start ();
+                    downn = true;
+                }
             }
         });
         actionMap.put ("moveLeft", new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
-                moveEpsilon (-1, 0);
+                if (!leftt) {
+                    left.start ();
+                    leftt = true;
+                }
             }
         });
-
         actionMap.put ("moveRight", new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
-                moveEpsilon (1, 0);
+                if (!rightt) {
+                    right.start ();
+                    rightt = true;
+                }
             }
         });
         actionMap.put ("shop", new AbstractAction () {
@@ -137,8 +172,8 @@ public class inputListener {
                     @Override
                     public void actionPerformed (ActionEvent e) {
                         moveEpsilon (false);
-                        //  System.out.println("upR");
-
+                        up.stop ();
+                        upp = false;
                     }
                 });
 
@@ -148,8 +183,8 @@ public class inputListener {
                     @Override
                     public void actionPerformed (ActionEvent e) {
                         moveEpsilon (false);
-                        //   System.out.println("DownR");
-
+                        down.stop ();
+                        downn = false;
                     }
                 });
 
@@ -159,7 +194,8 @@ public class inputListener {
                     @Override
                     public void actionPerformed (ActionEvent e) {
                         moveEpsilon (true);
-                        //  System.out.println("leftR");
+                        left.stop ();
+                        leftt = false;
                     }
                 });
 
@@ -167,6 +203,8 @@ public class inputListener {
             @Override
             public void actionPerformed (ActionEvent e) {
                 moveEpsilon (true);
+                right.stop ();
+                rightt = false;
             }
         });
         actionMap.put ("shopReleased", new AbstractAction () {
@@ -175,12 +213,7 @@ public class inputListener {
 
             }
         });
-        actionMap.put ("shootReleased", new AbstractAction () {
-            @Override
-            public void actionPerformed (ActionEvent e) {
-                addbolt.stop ();
-            }
-        });
+
     }
 
 }

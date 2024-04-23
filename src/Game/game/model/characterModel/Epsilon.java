@@ -2,6 +2,7 @@ package Game.game.model.characterModel;
 
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.Moveable;
+import Game.game.model.Move.impactAble;
 import Game.game.model.collision.Collidable;
 import Game.game.model.collision.PrizeCollide;
 import Game.game.model.shooting.shooter;
@@ -18,33 +19,32 @@ import java.util.UUID;
 import static Game.Data.constants.SPEED;
 import static Game.game.Contoroler.Controller.*;
 import static Game.game.model.characterModel.bolt.boltList;
+import static Game.game.model.characterModel.originalPanel.*;
 import static Game.helper.addVectors;
 import static Game.helper.multiplyVector;
 
-public class Epsilon extends ObjectInGame implements Collidable, Moveable, shooter, PrizeCollide {
+public class Epsilon extends ObjectInGame implements Collidable, Moveable, shooter, PrizeCollide, impactAble {
+    int impactNum = 0;
+    boolean sefrShode = false;
     private static Epsilon epsilon = null;
-    double radius;
+
     double speed = SPEED;
     Direction MoveDirection = new Direction (new Point2D.Double (0, 0));
 
-    public double getRadius () {
-        return radius;
-    }
-
-    public void setRadius (double radius) {
-        this.radius = radius;
-    }
-
-    public Epsilon (Point2D.Double center, int radius) {
-        super (center, Color.WHITE, UUID.randomUUID ().toString (), 100);
+    public Epsilon (Point2D.Double center, double radius) {
+        super (center, Color.WHITE, UUID.randomUUID ().toString (), 100,radius);
         addEpsilon (getId ());
-        this.radius = radius;
         epsilon = this;
         Moveable.moveAble.add (this);
     }
 
     public void changDirection (double x, double y) {
-        setDirection (new Direction (new Point2D.Double (x, y)));
+        if (impactNum > 0) {
+            setDirection (new Direction (addVectors (new Point2D.Double (x, y), getMoveDirection ().getPoint ())));
+        } else {
+            speed = SPEED;
+            setDirection (new Direction (new Point2D.Double (x, y)));
+        }
         move ();
     }
 
@@ -59,56 +59,64 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     public static Epsilon getEpsilon () {
         return epsilon;
     }
-
-    private javax.swing.Timer reduseHp = new Timer (1000, new AbstractAction () {
-        @Override
-        public void actionPerformed (ActionEvent e) {
-            HP -= 5;
-        }
-    });
-    private boolean isReduse = false;
-
     @Override
     public void move (Direction direction, double speed) {
         Point2D.Double movement = multiplyVector (direction.getDirectionVector (), speed);
-        if (dontGoRight (movement) || dontGoDown (movement) || dontGoLeft (movement) || dontGoUp (movement)) {
-            // TODO: ۱۵/۰۴/۲۰۲۴ immpact
-            if (!isReduse) {
-                HP -= 5;
-                reduseHp.start ();
-                isReduse = true;
-            }
+        boolean L, R, U, D;
+        L = dontGoLeft (movement);
+        R = dontGoRight (movement);
+        U = dontGoUp (movement);
+        D = dontGoDown (movement);
+        if (L || R || D | U) {
+            impactNum = Math.max (0, impactNum - 1);
             return;
         }
-        if (isReduse) {
-            isReduse = false;
-            reduseHp.stop ();
-        }
         this.center = addVectors (center, movement);
+        if (impactNum == 0 && sefrShode) {
+            MoveDirection = new Direction (new Point2D.Double (0, 0));
+            sefrShode = false;
+        }
     }
 
-    private boolean dontGoRight (Point2D.Double movement) {
-        return (getRightPanel ().ptSegDist (addVectors (center, movement)) < getRadius () + 1) ||
-                (addVectors (center, movement).getX () + getRadius () >= panelInGame.getPanel ().getX () + panelInGame.getPanel ().getWidth ());
+    public boolean dontGoRight (Point2D.Double movement) {
+        Point2D.Double centerr = addVectors (center, movement);
+        if (centerr.getX () + radius > originalPanel.getPanel ().getX () + originalPanel.getPanel ().getWidth ()) {
+            setCenter (new Point2D.Double (originalPanel.getPanel ().getX () + originalPanel.getPanel ().getWidth () - radius, getCenter ().getY ()));
+            return true;
+        }
+        return false;
     }
 
-    private boolean dontGoLeft (Point2D.Double movement) {
-        return (getLeftPanel ().ptSegDist (addVectors (center, movement)) < getRadius () + 1) ||
-                (addVectors (center, movement).getX () - getRadius () <= panelInGame.getPanel ().getX ());
+    public boolean dontGoLeft (Point2D.Double movement) {
+        Point2D.Double centerr = addVectors (center, movement);
+        if (centerr.getX () - radius < originalPanel.getPanel ().getX ()) {
+            setCenter (new Point2D.Double (originalPanel.getPanel ().getX () + radius, centerr.getY ()));
+            return true;
+        }
+        return false;
     }
 
-    private boolean dontGoUp (Point2D.Double movement) {
-        return (getUpPanel ().ptSegDist (addVectors (center, movement)) < getRadius () + 1) ||
-                (addVectors (center, movement).getY () - getRadius () <= panelInGame.getPanel ().getY ());
+    public boolean dontGoUp (Point2D.Double movement) {
+        Point2D.Double centerr = addVectors (center, movement);
+        if (centerr.getY () - radius < originalPanel.getPanel ().getY ()) {
+            setCenter (new Point2D.Double (centerr.getX (), originalPanel.getPanel ().getY () + radius));
+            return true;
+        }
+        return false;
     }
 
-    private boolean dontGoDown (Point2D.Double movement) {
-        return (getDownPanel ().ptSegDist (addVectors (center, movement)) < getRadius () + 1) ||
-                (addVectors (center, movement).getY () + getRadius () >= panelInGame.getPanel ().getY () + panelInGame.getPanel ().getHeight ());
+    public boolean dontGoDown (Point2D.Double movement) {
+        Point2D.Double centerr = addVectors (center, movement);
+        if (centerr.getY () + radius > originalPanel.getPanel ().getY () + originalPanel.getPanel ().getHeight ()) {
+            setCenter (new Point2D.Double (centerr.getX (), originalPanel.getPanel ().getY () + originalPanel.getPanel ().getHeight () - radius));
+            return true;
+        }
+        return false;
     }
 
 
     public void move () {
+        impactNum = Math.max (impactNum - 1, 0);
         move (MoveDirection, speed);
     }
 
@@ -122,13 +130,14 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
         this.speed = speed;
     }
 
+    @Override
     public Direction getMoveDirection () {
         return MoveDirection;
     }
 
     @Override
-    public void fire (Point2D.Double target) {
-        boltList.add (new bolt (target));
+    public void fire (Point2D.Double target, Point2D.Double realTarget) {
+        boltList.add (new bolt (target, realTarget));
     }
 
     @Override
@@ -138,4 +147,27 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
         }
         return false;
     }
+
+    @Override
+    public void setMoveDirection (Direction moveDirection) {
+        MoveDirection = moveDirection;
+    }
+
+    @Override
+    public int getImpactNum () {
+        return impactNum;
+    }
+
+    @Override
+    public double getSpeed () {
+        return speed;
+    }
+
+    public void setImpactNum (int impactNum) {
+        this.impactNum = impactNum;
+        if (impactNum > 0) {
+            sefrShode = true;
+        }
+    }
+
 }

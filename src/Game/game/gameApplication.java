@@ -6,6 +6,7 @@ import Game.game.Contoroler.Update;
 import Game.game.model.characterModel.Epsilon;
 import Game.game.model.characterModel.SquarantineModel;
 import Game.game.model.characterModel.TrigorathModel;
+import Game.game.model.characterModel.originalPanel;
 import Game.game.view.frameInGame;
 import Game.game.view.inputListener;
 import Game.game.view.panelInGame;
@@ -35,9 +36,8 @@ public class gameApplication implements Runnable {
             robot.keyRelease (KeyEvent.VK_WINDOWS);
         }
         Frame f = frameInGame.getFrame ();
-        panelInGame p = panelInGame.getPanel ();
+        new originalPanel ();
         new Epsilon (new Point2D.Double (f.getWidth () / 2d, f.getHeight () / 2d), (int) RADIUS_OF_EPSILON);
-
         new inputListener ();
         Spawn.getSpawn ();
         new Update ();
