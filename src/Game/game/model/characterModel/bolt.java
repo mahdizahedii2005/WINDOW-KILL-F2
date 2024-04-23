@@ -2,6 +2,7 @@ package Game.game.model.characterModel;
 
 import Game.game.Contoroler.Controller;
 import Game.game.Contoroler.impact;
+import Game.game.Contoroler.soundPlayer;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.Moveable;
 import Game.game.model.collision.Collidable;
@@ -26,11 +27,12 @@ public class bolt extends ObjectInGame implements Moveable, Collidable, boltColl
     Direction moveDirection;
 
     public bolt (Point2D.Double target, Point2D.Double realTarget) {
-        super (new Point2D.Double (Epsilon.getEpsilon ().getCenter ().getX () + 1, Epsilon.getEpsilon ().getCenter ().getY () + 1), Color.white, UUID.randomUUID ().toString (), 1,R1);
+        super (new Point2D.Double (Epsilon.getEpsilon ().getCenter ().getX () + 1, Epsilon.getEpsilon ().getCenter ().getY () + 1), Color.white, UUID.randomUUID ().toString (), 1, R1);
         this.moveDirection = new Direction (target, realTarget);
         Controller.addBolt (getId ());
         Moveable.moveAble.add (this);
         this.mabda = Epsilon.getEpsilon ().getCenter ();
+        soundPlayer.play (FIRE_BOLT_PATH);
     }
 
     public void move (Direction direction, double speed) {
@@ -126,7 +128,7 @@ public class bolt extends ObjectInGame implements Moveable, Collidable, boltColl
 
 
     private boolean HitSqure (SquarantineModel s) {
-        if (s.getCenter ().distance (getCenter ()) < SQU_CHECK-2) {
+        if (s.getCenter ().distance (getCenter ()) < SQU_CHECK - 2) {
             return true;
         }
         return false;
@@ -135,7 +137,7 @@ public class bolt extends ObjectInGame implements Moveable, Collidable, boltColl
     public static final double TRIANGLE_CHECK = R1 + (HEIGHT_OF_TRIANGLE / 2d) + 3;
 
     private boolean HitTrigo (TrigorathModel t) {
-        if (t.getCenter ().distance (this.getCenter ()) < TRIANGLE_CHECK-2) {
+        if (t.getCenter ().distance (this.getCenter ()) < TRIANGLE_CHECK - 2) {
             return true;
         }
         return false;

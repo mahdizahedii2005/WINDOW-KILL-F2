@@ -25,14 +25,15 @@ import static Game.helper.multiplyVector;
 
 public class Epsilon extends ObjectInGame implements Collidable, Moveable, shooter, PrizeCollide, impactAble {
     int impactNum = 0;
+    double exp = 0;
     boolean sefrShode = false;
     private static Epsilon epsilon = null;
 
-    double speed = SPEED;
+    double speed = SPEED*4;
     Direction MoveDirection = new Direction (new Point2D.Double (0, 0));
 
     public Epsilon (Point2D.Double center, double radius) {
-        super (center, Color.WHITE, UUID.randomUUID ().toString (), 100,radius);
+        super (center, Color.WHITE, UUID.randomUUID ().toString (), 100, radius);
         addEpsilon (getId ());
         epsilon = this;
         Moveable.moveAble.add (this);
@@ -59,6 +60,7 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     public static Epsilon getEpsilon () {
         return epsilon;
     }
+
     @Override
     public void move (Direction direction, double speed) {
         Point2D.Double movement = multiplyVector (direction.getDirectionVector (), speed);
@@ -170,4 +172,11 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
         }
     }
 
+    public double getExp () {
+        return exp;
+    }
+
+    public void increaseExp (double exp) {
+        this.exp += exp;
+    }
 }

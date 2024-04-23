@@ -1,5 +1,6 @@
 package Game.game.model.characterModel;
 
+import Game.game.Contoroler.Spawn;
 import Game.game.view.characterView.PrizeView;
 
 import java.awt.*;
@@ -17,6 +18,11 @@ public class prize extends ObjectInGame {
         super (center, color, UUID.randomUUID ().toString (), 1, PrizeView.radius);
         this.increaseHP = IncreaseHp;
         addPrizeView (id);
+        switch (Spawn.spawnstate) {
+            case first -> Epsilon.getEpsilon ().increaseExp (increaseHP * 1.2);
+            case second -> Epsilon.getEpsilon ().increaseExp (increaseHP * 1.5);
+            case third -> Epsilon.getEpsilon ().increaseExp (increaseHP * 1.8);
+        }
         prizeArrayList.add (this);
     }
 

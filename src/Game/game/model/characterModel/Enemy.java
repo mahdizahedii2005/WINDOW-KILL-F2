@@ -3,6 +3,7 @@ package Game.game.model.characterModel;
 import Game.game.Contoroler.BuilderHelper;
 import Game.game.Contoroler.MokhtasatPoint;
 import Game.game.Contoroler.Spawn;
+import Game.game.Contoroler.soundPlayer;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.Moveable;
 import Game.game.model.Move.follower;
@@ -15,7 +16,7 @@ import java.awt.geom.Point2D;
 import java.io.BufferedOutputStream;
 import java.util.UUID;
 
-import static Game.Data.constants.SQUAER_COLOR;
+import static Game.Data.constants.*;
 import static Game.game.Contoroler.Controller.addEnemy;
 import static Game.game.Contoroler.Controller.fire;
 import static Game.helper.addVectors;
@@ -55,8 +56,8 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
         this.nPoint = nPoint;
     }
 
-    public Enemy (Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp ,double radius) {
-        super (center, color, UUID.randomUUID ().toString (), hp,radius);
+    public Enemy (Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp, double radius) {
+        super (center, color, UUID.randomUUID ().toString (), hp, radius);
         if (checkNan (xPoint, yPoint)) {
             addEnemy (getId ());
             this.nPoint = nPoint;
@@ -118,6 +119,8 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
 
     }
 
+    public static int i = 0;
+
     @Override
     public void Die () {
         new prize (new Point2D.Double (center.getX (), center.getY ()), color, this instanceof TrigorathModel ? 5 : 10);
@@ -127,7 +130,8 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
         } else {
             Spawn.getSpawn ().DecreaseTRNumEnemy ();
         }
-
+        soundPlayer.play (i % 2 == 0 ? ENEMY_DESTROID_SOUND_PATH1 : ENEMY_DESTROID_SOUND_PATH2 );
+        i++;
         // TODO: ۱۴/۰۴/۲۰۲۴ play music
     }
 

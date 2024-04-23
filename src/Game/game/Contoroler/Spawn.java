@@ -15,18 +15,18 @@ public class Spawn {
         firstWave.start ();
     }
 
-    enum spawnState {
+    public enum spawnState {
         first, second, third, finish
     }
 
     private static Spawn spawn;
-    private spawnState spawnstate = spawnState.first;
-    private int TOTAL_NUMBER_OF_ENEMY_1 = 25;
-    private int TOTAL_NUMBER_OF_ENEMY_2 = 35;
-    private int TOTAL_NUMBER_OF_ENEMY_3 = 45;
-    private final int NUMBER_OF_ENEMY_1 = 3;
-    private final int NUMBER_OF_ENEMY_2 = 5;
-    private final int NUMBER_OF_ENEMY_3 = 8;
+    public static spawnState spawnstate = spawnState.first;
+    private int TOTAL_NUMBER_OF_ENEMY_1 = 30;
+    private int TOTAL_NUMBER_OF_ENEMY_2 = 40;
+    private int TOTAL_NUMBER_OF_ENEMY_3 = 50;
+    private final int NUMBER_OF_ENEMY_1 = 4;
+    private final int NUMBER_OF_ENEMY_2 = 6;
+    private final int NUMBER_OF_ENEMY_3 = 9;
     private int CurrentEnemy = 0;
     private int SQNumEnemy = 0;
     private int TRNumEnemy = 0;
@@ -59,17 +59,53 @@ public class Spawn {
     private javax.swing.Timer secondWave = new javax.swing.Timer (800, new AbstractAction () {
         @Override
         public void actionPerformed (ActionEvent e) {
-
+            System.out.println ("hi");
+            if (TOTAL_NUMBER_OF_ENEMY_2 > 0) {
+                if (CurrentEnemy < NUMBER_OF_ENEMY_2) {
+                    if (SQNumEnemy < NUMBER_OF_ENEMY_2 * sqPercent) {
+                        findPlace findPlace = new findPlace ();
+                        BuilderHelper.squarantineBuilder (findPlace.getP1 (), findPlace.getP2 ());
+                        IncreaseSQNumEnemy ();
+                        return;
+                    }
+                    if (TRNumEnemy < TOTAL_NUMBER_OF_ENEMY_2 * trPercent) {
+                        findPlace findPlace = new findPlace ();
+                        BuilderHelper.trigorathBuilder (findPlace.getP1 (), findPlace.getP2 ());
+                        IncreaseTRNumEnemy ();
+                    }
+                }
+            } else if (CurrentEnemy==0){
+                StopWave2 ();
+            }
         }
     });
     private javax.swing.Timer thirdWave = new javax.swing.Timer (600, new AbstractAction () {
         @Override
         public void actionPerformed (ActionEvent e) {
-
+            System.out.println ("hi");
+            if (TOTAL_NUMBER_OF_ENEMY_3 > 0) {
+                if (CurrentEnemy < NUMBER_OF_ENEMY_3) {
+                    if (SQNumEnemy < NUMBER_OF_ENEMY_3 * sqPercent) {
+                        findPlace findPlace = new findPlace ();
+                        BuilderHelper.squarantineBuilder (findPlace.getP1 (), findPlace.getP2 ());
+                        IncreaseSQNumEnemy ();
+                        return;
+                    }
+                    if (TRNumEnemy < TOTAL_NUMBER_OF_ENEMY_3 * trPercent) {
+                        findPlace findPlace = new findPlace ();
+                        BuilderHelper.trigorathBuilder (findPlace.getP1 (), findPlace.getP2 ());
+                        IncreaseTRNumEnemy ();
+                    }
+                }
+            } else if (CurrentEnemy==0){
+                StopWave3 ();
+            }
         }
     });
 
     private void StopWave1 () {
+        System.out.println ("stop wave 1");
+
         firstWave.stop ();
         // TODO: ۱۴/۰۴/۲۰۲۴ efect of end wave and start the another wave
         spawnstate = spawnState.second;
@@ -77,6 +113,7 @@ public class Spawn {
     }
 
     private void StopWave2 () {
+        System.out.println ("stop wave 2");
         secondWave.stop ();
         // TODO: ۱۴/۰۴/۲۰۲۴ efect of end wave and start the another wave
         spawnstate = spawnState.third;
@@ -84,6 +121,8 @@ public class Spawn {
     }
 
     private void StopWave3 () {
+        System.out.println ("stop wave 3");
+
         thirdWave.stop ();
         spawnstate = spawnState.finish;
 

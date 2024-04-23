@@ -157,14 +157,6 @@ public class inputListener {
 
             }
         });
-        actionMap.put ("shoot", new AbstractAction () {
-            @Override
-            public void actionPerformed (ActionEvent e) {
-                System.out.println (7777);
-                MouseEvent mouseEvent = (MouseEvent) (e.getSource ());
-                startBolting (mouseEvent.getX (), mouseEvent.getY ());
-            }
-        });
         // Key Release Action:
         actionMap.put ("moveUpReleased", new
 

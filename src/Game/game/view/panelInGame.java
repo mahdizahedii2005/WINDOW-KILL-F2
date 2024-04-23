@@ -15,6 +15,7 @@ public class panelInGame extends JPanel implements DrawAble {
     private static panelInGame panel;
     private String id;
     private JLabel EpsilonHp;
+    private JLabel Exp;
 
     public static panelInGame getPanel () {
         if (panel == null) {
@@ -38,22 +39,31 @@ public class panelInGame extends JPanel implements DrawAble {
         panel = this;
         DRAW_ABLES.add (this);
         EpsilonHp = new JLabel ();
-        EpsilonHp.setSize (new Dimension (40, 30));
+        EpsilonHp.setSize (new Dimension (60, 35));
         EpsilonHp.setVisible (true);
         EpsilonHp.setLocation (new Point (this.getWidth () - 2 - EpsilonHp.getWidth (), 2));
         EpsilonHp.setText ("HP: " + 100);
-        EpsilonHp.setFont (new Font ("Arial", Font.ITALIC, 10));
-        EpsilonHp.setOpaque (true);
-        EpsilonHp.show ();
+        EpsilonHp.setFont (new Font ("Arial", Font.ITALIC, 13));
+        EpsilonHp.setForeground (Color.WHITE);
+        EpsilonHp.setOpaque (false);
         EpsilonHp.setBackground (Color.black);
         panel.add (EpsilonHp);
+        Exp = new JLabel ();
+        Exp.setSize (new Dimension (70, 35));
+        Exp.setVisible (true);
+        Exp.setLocation (new Point (3, 2));
+        Exp.setText ("exp :" + 0);
+        Exp.setFont (new Font ("Arial", Font.ITALIC, 13));
+        Exp.getFont().deriveFont(Font.BOLD);
+        Exp.setForeground (new Color (100,0,250));
+        Exp.setOpaque (false);
+        Exp.setBackground (Color.black);
+        panel.add (Exp);
     }
 
     @Override
     protected void paintComponent (Graphics g) {
         super.paintComponent (g);
-//        g.setColor (Color.WHITE);
-//        g.drawString ("HP: " + Epsilon.getEpsilon ().getHP (), this.getWidth () - 2 - EpsilonHp.getWidth (), 2);
         for (int i = 0 ; i < DRAW_ABLES.size () ; i++) {
             DRAW_ABLES.get (i).Draw (g, this);
         }
@@ -85,8 +95,9 @@ public class panelInGame extends JPanel implements DrawAble {
         setSize (size);
         setBackground (backGrandColor);
         setBorder (BorderFactory.createLineBorder (BarColor, 3));
-        EpsilonHp.setLocation (new Point (this.getWidth () - 2 - EpsilonHp.getWidth (),  2));
+        EpsilonHp.setLocation (new Point (this.getWidth () - 2 - EpsilonHp.getWidth (), 2));
         EpsilonHp.setText ("HP: " + Epsilon.getEpsilon ().getHP ());
+        Exp.setText ("exp :" +(int) Epsilon.getEpsilon ().getExp());
         revalidate ();
         frameInGame.getFrame ().revalidate ();
     }
