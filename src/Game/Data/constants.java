@@ -31,7 +31,7 @@ public class constants {
     public static final double FRAME_UPDATE_TIME = (double) TimeUnit.SECONDS.toMillis (1) / FPS;
     public static final int UPS = 100;
     public static final double MODEL_UPDATE_TIME = (double) TimeUnit.SECONDS.toMillis (1) / UPS;
-    public static final double SPEED = 3 * 60D / UPS;
+    public static  double SPEED = 3 * 60D / UPS;
     public static final Dimension GLASS_FRAME_DIMENSION = Toolkit.getDefaultToolkit ().getScreenSize ();
     public static final Dimension FIRST_PANEL_DIMENSION = new Dimension (780, 780);
     public static final Rectangle FIRST_PANEL_RECTANGLE = new Rectangle (new Point ((GLASS_FRAME_DIMENSION.width - FIRST_PANEL_DIMENSION.width) / 2, (GLASS_FRAME_DIMENSION.height - FIRST_PANEL_DIMENSION.height) / 2), FIRST_PANEL_DIMENSION);

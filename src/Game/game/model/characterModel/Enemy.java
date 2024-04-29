@@ -29,7 +29,12 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
     double speed = 0;
     double[] yPoint;
     int nPoint;
-    protected int damageTaker = 5;
+    protected int damageTaker = 20;
+
+    public int getDamageTaker () {
+        return damageTaker;
+    }
+
     Direction MoveDirection = new Direction (new Point2D.Double (0, 0));
 
     public double[] getxPoint () {

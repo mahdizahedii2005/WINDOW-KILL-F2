@@ -1,5 +1,6 @@
 package Game.game.model.characterModel;
 
+import Game.game.Contoroler.Update;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.Moveable;
 import Game.game.model.Move.impactAble;
@@ -8,6 +9,7 @@ import Game.game.model.collision.PrizeCollide;
 import Game.game.model.shooting.shooter;
 import Game.game.view.characterView.PrizeView;
 import Game.game.view.panelInGame;
+import Game.game.view.waveAnimation.lost;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +30,8 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     double exp = 0;
     boolean sefrShode = false;
     private static Epsilon epsilon = null;
-
-    double speed = SPEED*4;
+    private int MaxHp = 100;
+    double speed = SPEED * 4;
     Direction MoveDirection = new Direction (new Point2D.Double (0, 0));
 
     public Epsilon (Point2D.Double center, double radius) {
@@ -40,13 +42,15 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     }
 
     public void changDirection (double x, double y) {
-        if (impactNum > 0) {
-            setDirection (new Direction (addVectors (new Point2D.Double (x, y), getMoveDirection ().getPoint ())));
-        } else {
-            speed = SPEED;
-            setDirection (new Direction (new Point2D.Double (x, y)));
+        if (Update.finish) {
+            if (impactNum > 0) {
+                setDirection (new Direction (addVectors (new Point2D.Double (x, y), getMoveDirection ().getPoint ())));
+            } else {
+                speed = SPEED * 1.5;
+                setDirection (new Direction (new Point2D.Double (x, y)));
+            }
+            move ();
         }
-        move ();
     }
 
     public void changDirection (double x, boolean XorY) {
@@ -61,22 +65,28 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
         return epsilon;
     }
 
+    public int getMaxHp () {
+        return MaxHp;
+    }
+
     @Override
     public void move (Direction direction, double speed) {
-        Point2D.Double movement = multiplyVector (direction.getDirectionVector (), speed);
-        boolean L, R, U, D;
-        L = dontGoLeft (movement);
-        R = dontGoRight (movement);
-        U = dontGoUp (movement);
-        D = dontGoDown (movement);
-        if (L || R || D | U) {
-            impactNum = Math.max (0, impactNum - 1);
-            return;
-        }
-        this.center = addVectors (center, movement);
-        if (impactNum == 0 && sefrShode) {
-            MoveDirection = new Direction (new Point2D.Double (0, 0));
-            sefrShode = false;
+        if (Update.finish) {
+            Point2D.Double movement = multiplyVector (direction.getDirectionVector (), speed);
+            boolean L, R, U, D;
+            L = dontGoLeft (movement);
+            R = dontGoRight (movement);
+            U = dontGoUp (movement);
+            D = dontGoDown (movement);
+            if (L || R || D | U) {
+                impactNum = Math.max (0, impactNum - 1);
+                return;
+            }
+            this.center = addVectors (center, movement);
+            if (impactNum == 0 && sefrShode) {
+                MoveDirection = new Direction (new Point2D.Double (0, 0));
+                sefrShode = false;
+            }
         }
     }
 
@@ -139,13 +149,26 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
 
     @Override
     public void fire (Point2D.Double target, Point2D.Double realTarget) {
-        boltList.add (new bolt (target, realTarget));
+        if (Update.finish) {
+            if (AthenaPower) {
+                boltList.add (new bolt (target, realTarget));
+                boltList.add (new bolt (target, realTarget, SPEED * 7));
+                boltList.add (new bolt (target, realTarget, SPEED * 6));
+
+            } else {
+                boltList.add (new bolt (target, realTarget));
+            }
+        }
     }
+
+    public static boolean AthenaPower = false;
 
     @Override
     public boolean prizeCollide (prize prize) {
-        if (prize.getCenter ().distance (getCenter ()) <= getRadius () + PrizeView.radius + 2) {
-            return true;
+        if (Update.finish) {
+            if (prize.getCenter ().distance (getCenter ()) <= getRadius () + PrizeView.radius + 2) {
+                return true;
+            }
         }
         return false;
     }
@@ -166,9 +189,11 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     }
 
     public void setImpactNum (int impactNum) {
-        this.impactNum = impactNum;
-        if (impactNum > 0) {
-            sefrShode = true;
+        if (Update.finish) {
+            this.impactNum = impactNum;
+            if (impactNum > 0) {
+                sefrShode = true;
+            }
         }
     }
 
@@ -177,6 +202,30 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     }
 
     public void increaseExp (double exp) {
-        this.exp += exp;
+        if (Update.finish) {
+            this.exp += exp;
+        }
+    }
+
+    public void increaseHp (int a) {
+        if (Update.finish) {
+            setHP (Math.min (100, getHP () + a));
+        }
+    }
+
+    public boolean decreaseEXP (int a) {
+        if (exp - a >= 0) {
+            exp = exp - a;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void setHP (int HP) {
+        super.setHP (HP);
+        if (HP == 0 && Update.finish) {
+            new lost ();
+        }
     }
 }

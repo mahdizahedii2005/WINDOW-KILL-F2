@@ -1,6 +1,8 @@
 package Game.game.Contoroler;
 
 
+import Game.login.setting;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +22,9 @@ public class soundPlayer {
         return SoundPlayerInstance;
     }
     public static void play(String path){
-        play (path,-30);
+        play (path, setting.getVolumeSound ());
     }
-    public static void play(String path, int value) {
+    public static void play(String path, float value) {
         try {
             audioInputStream = AudioSystem.getAudioInputStream(new File(path));
             clip = AudioSystem.getClip();

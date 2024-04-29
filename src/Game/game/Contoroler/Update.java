@@ -1,7 +1,5 @@
 package Game.game.Contoroler;
 
-import Game.game.gameApplication;
-import Game.game.model.Move.Direction;
 import Game.game.model.Move.Moveable;
 import Game.game.model.Move.follower;
 import Game.game.model.characterModel.*;
@@ -13,12 +11,10 @@ import Game.game.view.characterView.boltView;
 import Game.game.view.characterView.enemyView;
 import Game.game.view.characterView.epsilonView;
 import Game.game.view.frameInGame;
-import Game.game.view.panelInGame;
 
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import static Game.Data.constants.*;
@@ -27,33 +23,41 @@ import static Game.game.model.characterModel.ObjectInGame.objectInGames;
 import static Game.game.model.characterModel.bolt.boltList;
 import static Game.game.view.DrawAble.DRAW_ABLES;
 import static Game.helper.addVectors;
-import static Game.helper.relativeLocation;
 
 public class Update {
-    public static Timer t;
+    public static Timer CLOSE_FRAME;
+    public static Timer FRAME_UPDATE;
+    public static Timer MODEL_UPDATE;
 
     public Update () {
-        t = new Timer ((int) DELAY_OF_CLOSE_FRAME, e -> closeThePanel ()) {{
+        CLOSE_FRAME = new Timer ((int) DELAY_OF_CLOSE_FRAME, e -> closeThePanel ()) {{
             setCoalesce (true);
         }};
-        t.start ();
-        new Timer ((int) FRAME_UPDATE_TIME, e -> updateView ()) {{
+        CLOSE_FRAME.start ();
+        FRAME_UPDATE = new Timer ((int) FRAME_UPDATE_TIME, e -> updateView ()) {{
             setCoalesce (true);
-        }}.start ();
-        new Timer ((int) MODEL_UPDATE_TIME, e -> {
+        }};
+        FRAME_UPDATE.start ();
+        MODEL_UPDATE = new Timer ((int) MODEL_UPDATE_TIME, e -> {
             updateModel ();
         }) {{
             setCoalesce (true);
-        }}.start ();
+        }};
+        MODEL_UPDATE.start ();
     }
 
+    public static boolean finish = true;
+
     private void updateModel () {
-        // closeThePanel ();
         for (Moveable a : Moveable.moveAble) {
             if (a instanceof follower) {
                 ((follower) a).follow ();
             }
-            a.move ();
+            if (a instanceof Epsilon && finish) {
+                a.move ();
+            } else if (!(a instanceof Epsilon)) {
+                a.move ();
+            }
         }
         for (int i = 0 ; i < boltList.size () ; i++) {
             bolt b = boltList.get (i);
@@ -86,7 +90,14 @@ public class Update {
 //                        ((Moveable) collidables.get(j)).setDirection(new Direction(relativeLocation(collidables.get(j).getCenter (),colPoint)));
 //                    }
                     if (collidables.get (i) instanceof Epsilon || collidables.get (j) instanceof Epsilon) {
-                        Epsilon.getEpsilon ().setHP (Math.max (0, Epsilon.getEpsilon ().getHP () - 5));
+                        try {
+                            Epsilon.getEpsilon ().setHP (Math.max (0, Epsilon.getEpsilon ().getHP () - ((Enemy) collidables.get (i)).getDamageTaker ()));
+                        } catch (ClassCastException e) {
+                            try {
+                                Epsilon.getEpsilon ().setHP (Math.max (0, Epsilon.getEpsilon ().getHP () - ((Enemy) collidables.get (j)).getDamageTaker ()));
+                            } catch (ClassCastException r) {
+                            }
+                        }
                     }
                     new impact (collidables.get (i).findCollisionPoint (collidables.get (j)));
                 }
@@ -126,5 +137,4 @@ public class Update {
         }
         frameInGame.getFrame ().repaint ();
     }
-
 }

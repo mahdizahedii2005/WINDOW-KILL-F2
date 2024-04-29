@@ -1,6 +1,7 @@
 package Game.game.view;
 
 import Game.game.Contoroler.Controller;
+import Game.game.Contoroler.Update;
 import Game.game.model.characterModel.Epsilon;
 
 import javax.swing.*;
@@ -13,13 +14,15 @@ import static Game.game.Contoroler.Controller.fire;
 import static Game.game.Contoroler.Controller.moveEpsilon;
 
 public class inputListener {
-    boolean a = false;
+    public static boolean aaa = true;
     Timer up = new Timer (200, new AbstractAction () {
         @Override
         public void actionPerformed (ActionEvent e) {
             moveEpsilon (0, -250);
         }
     });
+    public static boolean stop = false;
+
     boolean upp = false;
     Timer down = new Timer (200, new AbstractAction () {
         @Override
@@ -77,7 +80,7 @@ public class inputListener {
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_S, 0), "moveDown");
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_A, 0), "moveLeft");
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_D, 0), "moveRight");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_SPACE, 0), "shop");
+        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_Q, 0), "shop");
         inputMap.put (KeyStroke.getKeyStroke (MouseEvent.MOUSE_CLICKED, 0), "shoot");
 
         // Key Release:
@@ -86,7 +89,7 @@ public class inputListener {
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_S, 0, true), "moveDownReleased");
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_A, 0, true), "moveLeftReleased");
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_D, 0, true), "moveRightReleased");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_SPACE, 0, true), "shopReleased");
+        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_Q, 0, true), "shopReleased");
         inputMap.put (KeyStroke.getKeyStroke (MouseEvent.MOUSE_CLICKED, 0, true), "shootReleased");
     }
 
@@ -105,6 +108,12 @@ public class inputListener {
             @Override
             public void mouseClicked (MouseEvent e) {
                 startBolting (e.getX (), e.getY ());
+                if (stop) {
+                    Update.MODEL_UPDATE.start ();
+                    Update.CLOSE_FRAME.start ();
+                    frameInGame.getFrame ().repaint ();
+                    stop = false;
+                }
             }
 
             @Override
@@ -154,7 +163,12 @@ public class inputListener {
         actionMap.put ("shop", new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
-
+                if (aaa) {
+                    new Shop ().run ();
+                }
+                aaa = false;
+                Update.FRAME_UPDATE.stop ();
+                Update.MODEL_UPDATE.stop ();
             }
         });
         // Key Release Action:

@@ -5,7 +5,6 @@ import Game.game.Contoroler.Update;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.util.UUID;
 
 import static Game.Data.constants.*;
 
@@ -123,7 +122,7 @@ public class originalPanel extends ObjectInGame {
 
     int upI = 0, downI = 0, rightI = 0, leftI = 0;
 
-    public void ReduceSizeOfFrame () {
+    public boolean ReduceSizeOfFrame () {
         if (upI > 0 || downI > 0 || leftI > 0 || rightI > 0) {
             if (upI > 0) {
                 setSize (new Dimension ((int) (getWidth ()), (int) (getHeight () + RANGE_OF_INCREASE_PLACE)));
@@ -149,7 +148,7 @@ public class originalPanel extends ObjectInGame {
                 setY (getY ());
                 leftI--;
             }
-            return;
+            return true;
         }
         if (validSizeHeght () || validSizeWidth ()) {
             if (validSizeWidth ()) {
@@ -172,16 +171,17 @@ public class originalPanel extends ObjectInGame {
                     setY (getY ());
                 }
             }
+            return true;
         } else {
             if (dothat) {
                 DECREASE_OF_PANEL = 0.8;
                 DELAY_OF_CLOSE_FRAME = 20;
-
-                Update.t.stop ();
-                Update.t.start ();
+                Update.CLOSE_FRAME.stop ();
+                Update.CLOSE_FRAME.start ();
                 dothat = false;
             }
             setSize (SMALLEST_SIZE_OF_ORIGINAL_PANEL);
+            return false;
         }
     }
 

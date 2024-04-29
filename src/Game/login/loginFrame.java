@@ -29,7 +29,8 @@ public class loginFrame extends JFrame {
         setting = new buttonLogin(constants.LOGIN_SETTING_X, constants.LOGIN_SETTING_Y, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose ();
+                new setting ();
             }
         });
         exit = new buttonLogin(constants.LOGIN_EXIT_X, constants.LOGIN_EXIT_Y, constants.LOGIN_EXIT_WIDTH, constants.LOGIN_EXIT_HEIGHT, new AbstractAction() {

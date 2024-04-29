@@ -21,6 +21,7 @@ public class TrigorathModel extends Enemy implements NormalFollower {
         if (impactNum > 0) {
             return;
         }
+        speed = SPEED;
         if (center.distance (Epsilon.getEpsilon ().getCenter ()) > TRIANGLE_SAFE_DISTANCE) {
             setSpeed (SPEED * 4d / 4d);
         } else {

@@ -10,18 +10,19 @@ import Game.helper;
 import java.awt.geom.Point2D;
 import java.util.AbstractList;
 
-import static Game.Data.constants.IMPACT_CYCLE;
-import static Game.Data.constants.IMPACT_POWER;
+import static Game.Data.constants.*;
 import static Game.helper.*;
 
 public class impact {
+    int distance;
     Point2D.Double mabda;
     double impactPower;
 
-    public impact (Point2D.Double mabda, double impactPower) {
+    public impact (Point2D.Double mabda, double impactPower, int distance) {
         if (mabda == null) {
             return;
         } else {
+            this.distance = distance;
             this.mabda = mabda;
             this.impactPower = impactPower;
             startImpact ();
@@ -29,7 +30,7 @@ public class impact {
     }
 
     public impact (Point2D.Double mabda) {
-        this (mabda, IMPACT_POWER);
+        this (mabda, IMPACT_POWER, 200);
     }
 
     public void startImpact () {
@@ -45,14 +46,16 @@ public class impact {
     public void makeAnImpact (impactAble able, double distance) {
         double power = (impactPower / IMPACT_CYCLE);
         if (power > 0) {
-            able.setSpeed (Math.sqrt (power * power + able.getSpeed () * able.getSpeed () - (able.getSpeed () * power)));
+//            if (impactPower == IMPACT_POWER) {
+                able.setSpeed (Math.sqrt (power * power + able.getSpeed () * able.getSpeed () - (able.getSpeed () * power)));
+//            }
             if (able instanceof Enemy) {
                 able.setMoveDirection (new Direction (new Direction (relativeLocation (able.getCenter (), mabda))));
             } else {
                 able.setMoveDirection (new Direction (addVectors (new Direction (relativeLocation
                         (able.getCenter (), mabda)).getPoint (), able.getMoveDirection ().getPoint ())));
             }
-            able.setImpactNum (Math.max (0, (int) ((IMPACT_CYCLE - (distance / (200 / IMPACT_CYCLE))))));
+            able.setImpactNum (Math.max (0, (int) ((IMPACT_CYCLE - (distance / (this.distance / IMPACT_CYCLE))))));
         }
     }
 }

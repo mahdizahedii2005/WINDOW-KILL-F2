@@ -1,6 +1,7 @@
 package Game.game.view;
 
 import Game.game.model.characterModel.Epsilon;
+import Game.game.view.waveAnimation.Animation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ import static Game.game.view.DrawAble.DRAW_ABLES;
 public class panelInGame extends JPanel implements DrawAble {
     // TODO: ۰۸/۰۴/۲۰۲۴ fix the final class
     private static panelInGame panel;
+    public Animation animation;
     private String id;
     private JLabel EpsilonHp;
     private JLabel Exp;
@@ -23,6 +25,8 @@ public class panelInGame extends JPanel implements DrawAble {
         }
         return panel;
     }
+
+    public static boolean DO_I_HAVE_ANIMATION = false;
 
     public panelInGame (String id) {
         this.id = id;
@@ -54,8 +58,8 @@ public class panelInGame extends JPanel implements DrawAble {
         Exp.setLocation (new Point (3, 2));
         Exp.setText ("exp :" + 0);
         Exp.setFont (new Font ("Arial", Font.ITALIC, 13));
-        Exp.getFont().deriveFont(Font.BOLD);
-        Exp.setForeground (new Color (100,0,250));
+        Exp.getFont ().deriveFont (Font.BOLD);
+        Exp.setForeground (new Color (100, 0, 250));
         Exp.setOpaque (false);
         Exp.setBackground (Color.black);
         panel.add (Exp);
@@ -93,11 +97,14 @@ public class panelInGame extends JPanel implements DrawAble {
     public void fixDetail (int x, int y, Dimension size, Color backGrandColor, Color BarColor) {
         setLocation (x, y);
         setSize (size);
+        if (DO_I_HAVE_ANIMATION) {
+            animation.update ();
+        }
         setBackground (backGrandColor);
         setBorder (BorderFactory.createLineBorder (BarColor, 3));
         EpsilonHp.setLocation (new Point (this.getWidth () - 2 - EpsilonHp.getWidth (), 2));
-        EpsilonHp.setText ("HP: " + Epsilon.getEpsilon ().getHP ());
-        Exp.setText ("exp :" +(int) Epsilon.getEpsilon ().getExp());
+        EpsilonHp.setText (Epsilon.getEpsilon ().getHP () + " / " + Epsilon.getEpsilon ().getMaxHp ());
+        Exp.setText ("exp :" + (int) Epsilon.getEpsilon ().getExp ());
         revalidate ();
         frameInGame.getFrame ().revalidate ();
     }

@@ -26,6 +26,11 @@ public class bolt extends ObjectInGame implements Moveable, Collidable, boltColl
     double speed = SPEED * 8;
     Direction moveDirection;
 
+    public bolt (Point2D.Double target, Point2D.Double realTarget, double speed) {
+        this (target, realTarget);
+        this.speed = speed;
+    }
+
     public bolt (Point2D.Double target, Point2D.Double realTarget) {
         super (new Point2D.Double (Epsilon.getEpsilon ().getCenter ().getX () + 1, Epsilon.getEpsilon ().getCenter ().getY () + 1), Color.white, UUID.randomUUID ().toString (), 1, R1);
         this.moveDirection = new Direction (target, realTarget);

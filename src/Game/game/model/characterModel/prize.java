@@ -33,7 +33,7 @@ public class prize extends ObjectInGame {
     }
 
     public void Action () {
-        Epsilon.getEpsilon ().HP += increaseHP;
+        Epsilon.getEpsilon ().increaseHp (increaseHP);
         Die ();
     }
 }

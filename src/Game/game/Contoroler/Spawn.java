@@ -1,6 +1,9 @@
 package Game.game.Contoroler;
 
 import Game.game.model.characterModel.SquarantineModel;
+import Game.game.view.waveAnimation.StartWave2;
+import Game.game.view.waveAnimation.startWave3;
+import Game.game.view.waveAnimation.win;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +14,8 @@ import static java.lang.Double.NaN;
 
 
 public class Spawn {
+    public static boolean Start = false;
+
     public Spawn () {
         firstWave.start ();
     }
@@ -19,14 +24,17 @@ public class Spawn {
         first, second, third, finish
     }
 
+    public static int zarib = 10;
+    public static int zaribSpawn = 2;
+
     private static Spawn spawn;
     public static spawnState spawnstate = spawnState.first;
-    private int TOTAL_NUMBER_OF_ENEMY_1 = 30;
-    private int TOTAL_NUMBER_OF_ENEMY_2 = 40;
-    private int TOTAL_NUMBER_OF_ENEMY_3 = 50;
-    private final int NUMBER_OF_ENEMY_1 = 4;
-    private final int NUMBER_OF_ENEMY_2 = 6;
-    private final int NUMBER_OF_ENEMY_3 = 9;
+    private int TOTAL_NUMBER_OF_ENEMY_1 = zarib * 3;
+    private int TOTAL_NUMBER_OF_ENEMY_2 = zarib * 4;
+    private int TOTAL_NUMBER_OF_ENEMY_3 = zarib * 5;
+    private final int NUMBER_OF_ENEMY_1 = zaribSpawn * 2;
+    private final int NUMBER_OF_ENEMY_2 = (zaribSpawn + 1) * 2;
+    private final int NUMBER_OF_ENEMY_3 = (zaribSpawn + 2) * 2;
     private int CurrentEnemy = 0;
     private int SQNumEnemy = 0;
     private int TRNumEnemy = 0;
@@ -52,14 +60,15 @@ public class Spawn {
                     }
                 }
             } else {
-                StopWave1 ();
+                if (CurrentEnemy == 0) {
+                    StopWave1 ();
+                }
             }
         }
     });
     private javax.swing.Timer secondWave = new javax.swing.Timer (800, new AbstractAction () {
         @Override
         public void actionPerformed (ActionEvent e) {
-            System.out.println ("hi");
             if (TOTAL_NUMBER_OF_ENEMY_2 > 0) {
                 if (CurrentEnemy < NUMBER_OF_ENEMY_2) {
                     if (SQNumEnemy < NUMBER_OF_ENEMY_2 * sqPercent) {
@@ -74,7 +83,7 @@ public class Spawn {
                         IncreaseTRNumEnemy ();
                     }
                 }
-            } else if (CurrentEnemy==0){
+            } else if (CurrentEnemy == 0) {
                 StopWave2 ();
             }
         }
@@ -82,7 +91,6 @@ public class Spawn {
     private javax.swing.Timer thirdWave = new javax.swing.Timer (600, new AbstractAction () {
         @Override
         public void actionPerformed (ActionEvent e) {
-            System.out.println ("hi");
             if (TOTAL_NUMBER_OF_ENEMY_3 > 0) {
                 if (CurrentEnemy < NUMBER_OF_ENEMY_3) {
                     if (SQNumEnemy < NUMBER_OF_ENEMY_3 * sqPercent) {
@@ -97,7 +105,7 @@ public class Spawn {
                         IncreaseTRNumEnemy ();
                     }
                 }
-            } else if (CurrentEnemy==0){
+            } else if (CurrentEnemy == 0) {
                 StopWave3 ();
             }
         }
@@ -105,24 +113,34 @@ public class Spawn {
 
     private void StopWave1 () {
         System.out.println ("stop wave 1");
-
         firstWave.stop ();
-        // TODO: ۱۴/۰۴/۲۰۲۴ efect of end wave and start the another wave
-        spawnstate = spawnState.second;
-        secondWave.start ();
+        new StartWave2 ();
+        while (true) {
+            if (Start) {
+                spawnstate = spawnState.second;
+                secondWave.start ();
+                Start = false;
+                break;
+            }
+        }
     }
 
     private void StopWave2 () {
         System.out.println ("stop wave 2");
         secondWave.stop ();
-        // TODO: ۱۴/۰۴/۲۰۲۴ efect of end wave and start the another wave
-        spawnstate = spawnState.third;
-        thirdWave.stop ();
+        new startWave3 ();
+        while (true) {
+            if (Start) {
+                spawnstate = spawnState.third;
+                thirdWave.start ();
+                Start = false;
+                break;
+            }
+        }
     }
 
     private void StopWave3 () {
-        System.out.println ("stop wave 3");
-
+        new win ();
         thirdWave.stop ();
         spawnstate = spawnState.finish;
 

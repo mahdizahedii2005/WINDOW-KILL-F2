@@ -16,7 +16,7 @@ public class SquarantineModel extends Enemy implements NormalFollower {
     private boolean isPower = false;
 
     public SquarantineModel (Point2D.Double center, double[] xPoint, double[] yPoint) {
-        super (center, SQUAER_COLOR, 4, xPoint, yPoint, 10,SQU_CHECK);
+        super (center, SQUAER_COLOR, 4, xPoint, yPoint, 10, SQU_CHECK);
     }
 
     @Override
@@ -24,16 +24,17 @@ public class SquarantineModel extends Enemy implements NormalFollower {
         if (impactNum > 0) {
             return;
         }
+        speed = SPEED;
         if (new Random ().nextInt (18) == 1 && !isPower) {
             isPower = true;
             cycle = 15;
-            speed = SPEED * 2;
+            setSpeed (SPEED * 2);
         }
         if (isPower) {
             cycle--;
             if (cycle == 0) {
                 isPower = false;
-                speed = SPEED * 3d / 10d;
+                setSpeed (SPEED * 3d / 10d);
             }
         }
         setDirection (new Direction (new Point2D.Double ((Epsilon.getEpsilon ().getCenter ().getX () - getCenter ().getX ()), (Epsilon.getEpsilon ().getCenter ().getY () - getCenter ().getY ()))));
