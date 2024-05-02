@@ -55,5 +55,5 @@ public class constants {
     public static final String  FIRE_BOLT_PATH = "src\\sources\\song\\water drop.wav";
     public static final String ENEMY_DESTROID_SOUND_PATH1 = "src\\sources\\song\\Big-Glass-Breaking-Combo-www.fesliyanstudios.com.wav";
     public static final String ENEMY_DESTROID_SOUND_PATH2 = "src\\sources\\song\\glass-breaking-93803.wav";
-
+    public static int PRIZE_TIME = 8000;
 }

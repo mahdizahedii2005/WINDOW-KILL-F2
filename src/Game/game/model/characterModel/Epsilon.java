@@ -33,7 +33,7 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     private int MaxHp = 100;
     double speed = SPEED * 4;
     Direction MoveDirection = new Direction (new Point2D.Double (0, 0));
-
+    private double totalExp = 0;
     public Epsilon (Point2D.Double center, double radius) {
         super (center, Color.WHITE, UUID.randomUUID ().toString (), 100, radius);
         addEpsilon (getId ());
@@ -204,6 +204,7 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     public void increaseExp (double exp) {
         if (Update.finish) {
             this.exp += exp;
+            this.totalExp+=exp;
         }
     }
 
@@ -227,5 +228,9 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
         if (HP == 0 && Update.finish) {
             new lost ();
         }
+    }
+
+    public double getTotalExp () {
+        return totalExp;
     }
 }

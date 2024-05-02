@@ -48,10 +48,12 @@ public class gameApplication implements Runnable {
             case easy -> {
                 Spawn.zaribSpawn = 1;
                 Spawn.zarib = 8;
+                PRIZE_TIME = 10000;
             }
             case hard -> {
                 Spawn.zaribSpawn = 3;
                 Spawn.zarib = 12;
+                PRIZE_TIME = 5000;
             }
         }
         Frame f = frameInGame.getFrame ();
