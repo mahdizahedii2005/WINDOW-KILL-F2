@@ -26,7 +26,6 @@ public class enemyView extends DrawAbleObject implements DrawAble {
             g.fillPolygon (changerD (xPoint), changerD (yPoint), nPoint);
         }
     }
-
     @Override
     public void fixDetail (Point2D.Double point2D, double radius, JPanel drawPanel) {
         return;

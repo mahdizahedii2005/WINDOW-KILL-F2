@@ -208,9 +208,9 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
         }
     }
 
-    public void increaseHp (int a) {
+    public void increaseHp (double a) {
         if (Update.finish) {
-            setHP (Math.min (100, getHP () + a));
+            setHP (Math.min (getMaxHp (), getHP () + a));
         }
     }
 
@@ -223,7 +223,7 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     }
 
     @Override
-    public void setHP (int HP) {
+    public void setHP (double HP) {
         super.setHP (HP);
         if (HP == 0 && Update.finish) {
             new lost ();

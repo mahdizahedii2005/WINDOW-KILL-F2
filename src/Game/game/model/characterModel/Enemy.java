@@ -29,7 +29,7 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
     double speed = 0;
     double[] yPoint;
     int nPoint;
-    protected int damageTaker = 20;
+    protected int damageTaker = 5;
 
     public int getDamageTaker () {
         return damageTaker;
@@ -61,14 +61,20 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
         this.nPoint = nPoint;
     }
 
-    public Enemy (Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp, double radius) {
+    private static int numberofenemy = 0;
+
+    public Enemy (Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp, double radius, int damageTaker) {
         super (center, color, UUID.randomUUID ().toString (), hp, radius);
         if (checkNan (xPoint, yPoint)) {
+            numberofenemy++;
+            if (numberofenemy % 4 == 0) {
+                soundPlayer.play ("src\\sources\\song\\boom-1 (1).wav");
+            }
             addEnemy (getId ());
             this.nPoint = nPoint;
             this.xPoint = xPoint;
             this.yPoint = yPoint;
-            this.damageTaker = 5;
+            this.damageTaker = damageTaker;
             Moveable.moveAble.add (this);
         } else {
             ObjectInGame.objectInGames.remove (this);
@@ -108,7 +114,6 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
         this.impactNum = impactNum;
     }
 
-
     @Override
     public void setSpeed (double speed) {
         this.speed = speed;
@@ -135,14 +140,14 @@ public class Enemy extends ObjectInGame implements Collidable, follower, shootGi
         } else {
             Spawn.getSpawn ().DecreaseTRNumEnemy ();
         }
-        soundPlayer.play (i % 2 == 0 ? ENEMY_DESTROID_SOUND_PATH1 : ENEMY_DESTROID_SOUND_PATH2 );
+        soundPlayer.play (i % 2 == 0 ? ENEMY_DESTROID_SOUND_PATH1 : ENEMY_DESTROID_SOUND_PATH2);
         i++;
         // TODO: ۱۴/۰۴/۲۰۲۴ play music
     }
 
     @Override
     public void takingShot () {
-        HP = Math.max (0, HP - damageTaker);
+        HP = Math.max (0, HP - (ZaribOfEpsilonDamage * 5));
         if (HP == 0) {
             Die ();
         }

@@ -29,6 +29,7 @@ public class panelInGame extends JPanel implements DrawAble {
     public static boolean DO_I_HAVE_ANIMATION = false;
 
     public panelInGame (String id) {
+        DO_I_HAVE_ANIMATION = false;
         this.id = id;
         setFocusable (true);
         requestFocus ();
@@ -103,7 +104,7 @@ public class panelInGame extends JPanel implements DrawAble {
         setBackground (backGrandColor);
         setBorder (BorderFactory.createLineBorder (BarColor, 3));
         EpsilonHp.setLocation (new Point (this.getWidth () - 2 - EpsilonHp.getWidth (), 2));
-        EpsilonHp.setText (Epsilon.getEpsilon ().getHP () + " / " + Epsilon.getEpsilon ().getMaxHp ());
+        EpsilonHp.setText ((int)Epsilon.getEpsilon ().getHP () + " / " + Epsilon.getEpsilon ().getMaxHp ());
         Exp.setText ("exp :" + (int) Epsilon.getEpsilon ().getExp ());
         revalidate ();
         frameInGame.getFrame ().revalidate ();

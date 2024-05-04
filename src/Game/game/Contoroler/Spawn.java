@@ -17,11 +17,20 @@ public class Spawn {
     public static boolean Start = false;
 
     public Spawn () {
+        spawn = this;
+        spawnstate = spawnState.first;
         firstWave.start ();
     }
 
     public enum spawnState {
         first, second, third, finish
+    }
+
+    public static void setSpawnNull () {
+        getSpawn ().firstWave.stop ();
+        getSpawn ().secondWave.stop ();
+        getSpawn ().thirdWave.stop ();
+        Spawn.spawn = null;
     }
 
     public static int zarib = 10;

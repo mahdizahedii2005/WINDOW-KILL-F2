@@ -2,7 +2,6 @@ package Game.login;
 
 import Game.Data.constants;
 import Game.game.gameApplication;
-import Game.login.SkillTree.SkillTree;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import static Game.game.Contoroler.Controller.findObjectView;
 
 public class ObjectInGame {
-    protected int HP;
+    protected double HP;
     public static ArrayList<ObjectInGame> objectInGames = new ArrayList<> ();
     Point2D.Double center;
     Color color;
@@ -68,12 +68,12 @@ public class ObjectInGame {
         if (this instanceof Moveable) {
             Moveable.moveAble.remove (this);
         }
-        if (this instanceof Collidable){
+        if (this instanceof Collidable) {
             Collidable.collidables.remove ((Collidable) this);
         }
     }
 
-    public int getHP () {
+    public double getHP () {
         return HP;
     }
 
@@ -85,7 +85,7 @@ public class ObjectInGame {
         this.radius = radius;
     }
 
-    public void setHP (int HP) {
-        this.HP = HP;
+    public void setHP (double HP) {
+        this.HP = Math.max (HP, 0);
     }
 }

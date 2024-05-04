@@ -28,6 +28,10 @@ public abstract class Controller {
         new enemyView (id);
     }
 
+    public static void addEpsilonRas (String id) {
+        new epsilonRas (id);
+    }
+
     public static ObjectInGame findObjectModel (String id) {
         for (ObjectInGame o : ObjectInGame.objectInGames) {
             if (o.getId ().equals (id)) {
@@ -105,7 +109,7 @@ public abstract class Controller {
     }
 
     public static void fire (Point2D.Double target) {
-        Epsilon.getEpsilon ().fire (helper.addVectors (target, helper.multiplyVector (Epsilon.getEpsilon ().getCenter (), -1)),target);
+        Epsilon.getEpsilon ().fire (helper.addVectors (target, helper.multiplyVector (Epsilon.getEpsilon ().getCenter (), -1)), target);
     }
 
     public static void CreatOriginalPanelView (String id) {

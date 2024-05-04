@@ -1,31 +1,57 @@
 package Game.game;
 
-import Game.game.Contoroler.BuilderHelper;
 import Game.game.Contoroler.Spawn;
 import Game.game.Contoroler.Update;
 import Game.game.Contoroler.soundPlayer;
-import Game.game.Contoroler.state.firstState;
-import Game.game.model.characterModel.Epsilon;
-import Game.game.model.characterModel.SquarantineModel;
-import Game.game.model.characterModel.TrigorathModel;
-import Game.game.model.characterModel.originalPanel;
+import Game.game.model.characterModel.*;
+import Game.game.model.collision.Collidable;
 import Game.game.view.frameInGame;
 import Game.game.view.inputListener;
-import Game.game.view.panelInGame;
 import Game.login.setting;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import static Game.Data.constants.*;
+import static Game.game.model.Move.Moveable.moveAble;
+import static Game.game.model.Move.impactAble.impactAblesList;
+import static Game.game.model.collision.Collidable.collidables;
+import static Game.game.view.DrawAble.DRAW_ABLES;
 
 public class gameApplication implements Runnable {
+    public gameApplication () {
+        gameApplication = this;
+    }
+
+    private static gameApplication gameApplication;
+
+    public static Game.game.gameApplication getGameApplication () {
+        return gameApplication;
+    }
+
     @Override
     public void run () {
+        DELAY_OF_CLOSE_FRAME = 1;
+        ObjectInGame.objectInGames = new ArrayList<> ();
+        prize.prizeArrayList = new ArrayList<> ();
+        rasEpsilon.rasArrayList = new ArrayList<> ();
+        bolt.boltList = new ArrayList<> ();
+        for (int i = 0 ; i < collidables.size () ; ) {
+            collidables.remove (collidables.get (i));
+        }
+        for (int i = 0 ; i < impactAblesList.size () ; ) {
+            impactAblesList.remove (impactAblesList.get (i));
+        }
+        for (int i = 0 ; i < moveAble.size () ; ) {
+            moveAble.remove (moveAble.get (i));
+        }
+        for (int i = 0 ; i < DRAW_ABLES.size () ; ) {
+            DRAW_ABLES.remove (DRAW_ABLES.get (i));
+        }
         {
             Robot robot = null;
             try {
@@ -56,7 +82,7 @@ public class gameApplication implements Runnable {
                 PRIZE_TIME = 5000;
             }
         }
-        Frame f = frameInGame.getFrame ();
+        Frame f = new frameInGame ();
         new originalPanel ();
         new Timer (50000, new AbstractAction () {
             @Override
@@ -66,6 +92,7 @@ public class gameApplication implements Runnable {
         });
         new Epsilon (new Point2D.Double (f.getWidth () / 2d, f.getHeight () / 2d), (int) RADIUS_OF_EPSILON);
         new Update ();
+
 //        Thread close = new Thread (new firstState (this));
 //        close.run ();
 //        try {
@@ -76,6 +103,7 @@ public class gameApplication implements Runnable {
 //            throw new RuntimeException (e);
 //        }
         new inputListener ();
-        Spawn.getSpawn ();
+        new Spawn ();
+        //  new rasEpsilon (4);
     }
 }

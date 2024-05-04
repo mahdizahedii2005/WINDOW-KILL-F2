@@ -13,7 +13,7 @@ import static java.lang.Double.NaN;
 
 public class TrigorathModel extends Enemy implements NormalFollower {
     public TrigorathModel (Point2D.Double center, Color color, double[] xPoint, double[] yPoint) {
-        super (center, color, 3, xPoint, yPoint, 15, TRIANGLE_CHECK);
+        super (center, color, 3, xPoint, yPoint, 15, TRIANGLE_CHECK,6);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package Game.game.view;
 
 import Game.game.Contoroler.Controller;
+import Game.game.Contoroler.SpecialSkill;
 import Game.game.Contoroler.Update;
 import Game.game.model.characterModel.Epsilon;
+import Game.login.SkillTree;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,6 +72,8 @@ public class inputListener {
     public inputListener () {
         createKeyBindings ();
         createKeyActions ();
+        stop = false;
+        aaa = true;
     }
 
     private void createKeyBindings () {
@@ -82,6 +86,8 @@ public class inputListener {
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_D, 0), "moveRight");
         inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_Q, 0), "shop");
         inputMap.put (KeyStroke.getKeyStroke (MouseEvent.MOUSE_CLICKED, 0), "shoot");
+        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_E, 0), "skill");
+        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_ESCAPE, 0), "pus");
 
         // Key Release:
 
@@ -169,6 +175,26 @@ public class inputListener {
                 aaa = false;
                 Update.FRAME_UPDATE.stop ();
                 Update.MODEL_UPDATE.stop ();
+            }
+        });
+        actionMap.put ("skill", new AbstractAction () {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                if (SpecialSkill.getCurrentSpecialSkill () != null) {
+                    SpecialSkill.getCurrentSpecialSkill ().run ();
+                }
+            }
+        });
+        actionMap.put ("pus", new AbstractAction () {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                if (aaa) {
+                    new pusPanel ().run ();
+                }
+                aaa = false;
+                Update.FRAME_UPDATE.stop ();
+                Update.MODEL_UPDATE.stop ();
+
             }
         });
         // Key Release Action:

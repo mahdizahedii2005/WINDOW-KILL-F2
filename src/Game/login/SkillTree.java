@@ -1,20 +1,23 @@
-package Game.login.SkillTree;
+package Game.login;
 
 import Game.Data.constants;
+import Game.game.Contoroler.SpecialSkill;
 import Game.login.loginFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 import static Game.Data.constants.*;
 import static Game.Data.constants.PANEL_BACK_GRAND;
 
 public class SkillTree extends JFrame {
-    File data = new File ("src\\Game\\Data\\data.txt");
+    private static File data = new File ("src\\Game\\Data\\data.txt");
     boolean lock11, lock22, lock33;
     JPanel mainPanel;
     JButton EXIT;
@@ -29,6 +32,14 @@ public class SkillTree extends JFrame {
     private JLabel flag1;
     private JLabel flag2;
     private JLabel flag3;
+
+    private boolean decreaseEXP (int a) {
+        if (totalEXP - a >= 0) {
+            totalEXP -= a;
+            return true;
+        }
+        return false;
+    }
 
     public SkillTree () {
         getData ();
@@ -61,6 +72,7 @@ public class SkillTree extends JFrame {
         EXIT.addActionListener (new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
+                WriteData ();
                 dispose ();
                 new loginFrame ();
             }
@@ -74,10 +86,34 @@ public class SkillTree extends JFrame {
         shop1.addActionListener (new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
-                if(!lock11){
-
+                if (!lock11) {
+                    if (decreaseEXP (750)) {
+                        level1 = 1;
+                        lock11 = true;
+                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill1 ());
+                        peekNum = 1;
+                        if (!lock11) {
+                            lock1 = new JLabel (new ImageIcon ("src\\sources\\photo\\lock.png"));
+                        } else {
+                            lock1 = new JLabel (new ImageIcon ("src\\sources\\photo\\openlock.png"));
+                        }
+                    }
                 }
                 if (lock11) {
+                    if (level1 == 1 && decreaseEXP (1500)) {
+                        level1 = 2;
+                    }
+                    if (level1 == 2 && decreaseEXP (2000)) {
+                        level1 = 3;
+                    }
+                    if (level1 == 1) {
+                        TIME_OF_INCREASE_DAMAGE = 15000;
+                    } else if (level1 == 2) {
+                        TIME_OF_INCREASE_DAMAGE = 30000;
+                    } else if (level1 == 3) {
+                        TIME_OF_INCREASE_DAMAGE = 45000;
+                    }
+                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill1 ());
                     peekNum = 1;
                     switch (peekNum) {
                         case 1 -> {
@@ -97,6 +133,7 @@ public class SkillTree extends JFrame {
                         }
                     }
                 }
+                repaint ();
             }
         });
         this.add (shop1);
@@ -108,26 +145,53 @@ public class SkillTree extends JFrame {
         shop3.addActionListener (new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
-                if (lock33) {
-                    peekNum = 3;
-                    switch (peekNum) {
-                        case 1 -> {
-                            flag1.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));
-                            flag3.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
-                            flag2.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
-                        }
-                        case 2 -> {
-                            flag3.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
-                            flag1.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
-                            flag2.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));
-                        }
-                        case 3 -> {
-                            flag1.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
-                            flag2.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
-                            flag3.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));
+                if (!lock33) {
+                    if (decreaseEXP (1000)) {
+                        level3 = 1;
+                        lock33 = true;
+                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill3 ());
+                        peekNum = 3;
+                        if (!lock33) {
+                            lock3 = new JLabel (new ImageIcon ("src\\sources\\photo\\lock.png"));
+                        } else {
+                            lock3 = new JLabel (new ImageIcon ("src\\sources\\photo\\openlock.png"));
                         }
                     }
                 }
+                if (lock33) {
+                    if (level3 == 1 && decreaseEXP (1500)) {
+                        level3 = 2;
+                    }
+                    if (level3 == 2 && decreaseEXP (2000)) {
+                        level3 = 3;
+                    }
+                    if (level3 == 2) {
+                        NUMBER_OF_RAS = 2;
+                    } else if (level3 == 3) {
+                        NUMBER_OF_RAS = 4;
+                    }
+                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill3 ());
+                    peekNum = 3;
+                }
+                switch (peekNum) {
+                    case 1 -> {
+                        flag1.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));
+                        flag3.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
+                        flag2.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
+                    }
+                    case 2 -> {
+                        flag3.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
+                        flag1.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
+                        flag2.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));
+                    }
+                    case 3 -> {
+                        flag1.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
+                        flag2.setIcon (new ImageIcon ("src\\sources\\photo\\notBuyRed.png"));
+                        flag3.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));
+                    }
+                }
+                repaint ();
+
             }
         });
         this.add (shop3);
@@ -139,8 +203,29 @@ public class SkillTree extends JFrame {
         shop2.addActionListener (new AbstractAction () {
             @Override
             public void actionPerformed (ActionEvent e) {
+                if (!lock22) {
+                    if (decreaseEXP (750)) {
+                        lock22 = true;
+                        level2 = 1;
+                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill2 ());
+                        peekNum = 2;
+                        if (!lock22) {
+                            lock2 = new JLabel (new ImageIcon ("src\\sources\\photo\\lock.png"));
+                        } else {
+                            lock2 = new JLabel (new ImageIcon ("src\\sources\\photo\\openlock.png"));
+                        }
+                    }
+                }
                 if (lock22) {
+                    if (level2 == 1) {
+                        HeelRange = 1;
+                    } else if (level2 == 2) {
+                        HeelRange = 1.5;
+                    } else if (level2 == 3) {
+                        HeelRange = 2;
+                    }
                     peekNum = 2;
+                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill2 ());
                     switch (peekNum) {
                         case 1 -> {
                             flag1.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));
@@ -159,6 +244,7 @@ public class SkillTree extends JFrame {
                         }
                     }
                 }
+                repaint ();
             }
         });
         this.add (shop2);
@@ -228,7 +314,7 @@ public class SkillTree extends JFrame {
     private int level2 = 1;
     private int peekNum = 0;
 
-    public void getData () {
+    private void getData () {
         try {
             Scanner sc = new Scanner (data);
             totalEXP = sc.nextInt ();
@@ -241,5 +327,45 @@ public class SkillTree extends JFrame {
             peekNum = sc.nextInt ();
         } catch (IOException t) {
         }
+    }
+
+    private void WriteData () {
+        try {
+            FileWriter fileWriter = new FileWriter (data);
+            PrintWriter printWriter = new PrintWriter (fileWriter);
+            printWriter.println (totalEXP);
+            printWriter.println (lock11);
+            printWriter.println (lock22);
+            printWriter.println (lock33);
+            printWriter.println (level1);
+            printWriter.println (level2);
+            printWriter.println (level3);
+            printWriter.println (peekNum);
+            printWriter.flush ();
+        } catch (IOException e) {
+        }
+    }
+
+    public static void increaseTotalExp (int totalEXP) {
+        try {
+            Scanner sc = new Scanner (data);
+            int total = Integer.parseInt (sc.nextLine ());
+            String a = "";
+            while (sc.hasNextLine ()) {
+                a += sc.nextLine () + "\n";
+            }
+            FileWriter fileWriter = new FileWriter (data);
+            PrintWriter print = new PrintWriter (fileWriter);
+            print.println (totalEXP + total);
+            print.println (a);
+            print.flush ();
+        } catch (IOException e) {
+        }
+    }
+
+    @Override
+    public void paintComponents (Graphics g) {
+        Exp.setText ("TOTAL  EXP :" + totalEXP);
+        super.paintComponents (g);
     }
 }

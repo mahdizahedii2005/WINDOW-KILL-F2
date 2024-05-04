@@ -1,7 +1,5 @@
 package Game.game.view.characterView;
 
-import Game.game.view.DrawAble;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;

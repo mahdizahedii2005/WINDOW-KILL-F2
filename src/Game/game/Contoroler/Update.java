@@ -6,10 +6,7 @@ import Game.game.model.characterModel.*;
 import Game.game.model.collision.Collidable;
 import Game.game.model.shooting.shootGiver;
 import Game.game.view.DrawAble;
-import Game.game.view.characterView.PrizeView;
-import Game.game.view.characterView.boltView;
-import Game.game.view.characterView.enemyView;
-import Game.game.view.characterView.epsilonView;
+import Game.game.view.characterView.*;
 import Game.game.view.frameInGame;
 
 import javax.swing.*;
@@ -22,8 +19,6 @@ import static Game.game.Contoroler.Controller.*;
 import static Game.game.model.characterModel.ObjectInGame.objectInGames;
 import static Game.game.model.characterModel.bolt.boltList;
 import static Game.game.view.DrawAble.DRAW_ABLES;
-import static Game.helper.addVectors;
-
 public class Update {
     public static Timer CLOSE_FRAME;
     public static Timer FRAME_UPDATE;
@@ -38,12 +33,11 @@ public class Update {
             setCoalesce (true);
         }};
         FRAME_UPDATE.start ();
-        MODEL_UPDATE = new Timer ((int) MODEL_UPDATE_TIME, e -> {
-            updateModel ();
-        }) {{
+        MODEL_UPDATE = new Timer ((int) MODEL_UPDATE_TIME, e -> updateModel ()) {{
             setCoalesce (true);
         }};
         MODEL_UPDATE.start ();
+        finish = true;
     }
 
     public static boolean finish = true;
@@ -77,29 +71,33 @@ public class Update {
                 prize.prizeArrayList.get (i).Action ();
             }
         }
+        rasEpsilon.UpdateRAS ();
         ArrayList<Collidable> collidables = Collidable.collidables;
         for (int i = 0 ; i < collidables.size () ; i++) {
-            // TODO: ۲۳/۰۴/۲۰۲۴ prize part 
             for (int j = i + 1 ; j < collidables.size () ; j++) {
-                if (collidables.get (i).collision (collidables.get (j))) {
-//                    Point2D.Double colPoint = addVectors (collidables.get(i).getCenter (),collidables.get(j).getCenter ());
-//                    if (collidables.get(i) instanceof Moveable){
-//                        ((Moveable) collidables.get(i)).setDirection(new Direction (relativeLocation(collidables.get(i).getCenter (),colPoint)));
-//                    }
-//                    if (collidables.get(j) instanceof Moveable){
-//                        ((Moveable) collidables.get(j)).setDirection(new Direction(relativeLocation(collidables.get(j).getCenter (),colPoint)));
-//                    }
-                    if (collidables.get (i) instanceof Epsilon || collidables.get (j) instanceof Epsilon) {
-                        try {
-                            Epsilon.getEpsilon ().setHP (Math.max (0, Epsilon.getEpsilon ().getHP () - ((Enemy) collidables.get (i)).getDamageTaker ()));
-                        } catch (ClassCastException e) {
+                if (collidables.get (i).getCenter ().distance (collidables.get (j).getCenter ()) < 50) {// TODO: ۲۳/۰۴/۲۰۲۴ prize part <----
+                    if (collidables.get (i).collision (collidables.get (j))) {
+                        if (collidables.get (i) instanceof rasEpsilon.ras || collidables.get (j) instanceof rasEpsilon.ras) {
+                            if (collidables.get (i) instanceof Enemy) {
+                                Epsilon.getEpsilon ().setHP (Epsilon.getEpsilon ().getHP () + ((Enemy) collidables.get (i)).getDamageTaker ());
+                                ((Enemy) collidables.get (i)).setHP (((Enemy) collidables.get (i)).getHP () - 5);
+                            } else if (collidables.get (j) instanceof Enemy) {
+                                ((Enemy) collidables.get (j)).setHP (((Enemy) collidables.get (j)).getHP () - 5);
+                            }
+                            return;
+                        }
+                        if (collidables.get (i) instanceof Epsilon || collidables.get (j) instanceof Epsilon) {
                             try {
-                                Epsilon.getEpsilon ().setHP (Math.max (0, Epsilon.getEpsilon ().getHP () - ((Enemy) collidables.get (j)).getDamageTaker ()));
-                            } catch (ClassCastException r) {
+                                Epsilon.getEpsilon ().setHP (Math.max (0, Epsilon.getEpsilon ().getHP () - ((Enemy) collidables.get (i)).getDamageTaker ()));
+                            } catch (ClassCastException e) {
+                                try {
+                                    Epsilon.getEpsilon ().setHP (Math.max (0, Epsilon.getEpsilon ().getHP () - ((Enemy) collidables.get (j)).getDamageTaker ()));
+                                } catch (ClassCastException r) {
+                                }
                             }
                         }
+                        new impact (collidables.get (i).findCollisionPoint (collidables.get (j)));
                     }
-                    new impact (collidables.get (i).findCollisionPoint (collidables.get (j)));
                 }
             }
         }
@@ -110,6 +108,7 @@ public class Update {
     }
 
     private void updateView () {
+
         for (DrawAble d : DRAW_ABLES) {
             if (d instanceof enemyView) {
                 enemyView enemy = (enemyView) d;
@@ -133,6 +132,10 @@ public class Update {
                 p.fixDetail (whatPanelForDraw (prize.getCenter ()), prize.getColor (), fixThePoint (prize.getCenter (), whatPanelForDraw (prize.getCenter ())));
             } else if (d instanceof JPanel) {
                 d.fixDetail ((int) originalPanel.getPanel ().getX (), (int) originalPanel.getPanel ().getY (), originalPanel.getPanel ().getSize (), PANEL_BACK_GRAND, PANEL_BAR_GRAND);
+            } else if (d instanceof epsilonRas) {
+                epsilonRas p = (epsilonRas) d;
+                rasEpsilon.ras prize = (rasEpsilon.ras) findObjectModel (p.getId ());
+                p.fixDetail (whatPanelForDraw (prize.getCenter ()), prize.getColor (), fixThePoint (prize.getCenter (), whatPanelForDraw (prize.getCenter ())));
             }
         }
         frameInGame.getFrame ().repaint ();

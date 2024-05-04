@@ -1,9 +1,6 @@
 package Game.game.model.collision;
 
-import Game.game.model.characterModel.Epsilon;
-import Game.game.model.characterModel.ObjectInGame;
-import Game.game.model.characterModel.SquarantineModel;
-import Game.game.model.characterModel.TrigorathModel;
+import Game.game.model.characterModel.*;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -13,8 +10,21 @@ import static Game.helper.multiplyVector;
 
 public interface Collidable {
     ArrayList<Collidable> collidables = new ArrayList<> ();
+
     default boolean collision (Collidable col) {
         ObjectInGame s = (ObjectInGame) (col);
+        if (this instanceof rasEpsilon.ras || col instanceof rasEpsilon.ras) {
+            if (this instanceof Enemy || col instanceof Enemy) {
+                return s.getCenter ().distance (getCenter ()) < s.getRadius () - 5;
+            }
+        }
+        if (this instanceof Epsilon || col instanceof Epsilon) {
+            if (this instanceof SquarantineModel || col instanceof SquarantineModel) {
+                return s.getCenter ().distance (getCenter ()) < s.getRadius () - 5;
+            }
+            return s.getCenter ().distance (getCenter ()) < s.getRadius () - 2;
+
+        }
         return s.getCenter ().distance (getCenter ()) < s.getRadius () + 2;
     }
 

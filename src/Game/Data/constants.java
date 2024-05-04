@@ -31,7 +31,7 @@ public class constants {
     public static final double FRAME_UPDATE_TIME = (double) TimeUnit.SECONDS.toMillis (1) / FPS;
     public static final int UPS = 100;
     public static final double MODEL_UPDATE_TIME = (double) TimeUnit.SECONDS.toMillis (1) / UPS;
-    public static  double SPEED = 3 * 60D / UPS;
+    public static double SPEED = 3 * 60D / UPS;
     public static final Dimension GLASS_FRAME_DIMENSION = Toolkit.getDefaultToolkit ().getScreenSize ();
     public static final Dimension FIRST_PANEL_DIMENSION = new Dimension (780, 780);
     public static final Rectangle FIRST_PANEL_RECTANGLE = new Rectangle (new Point ((GLASS_FRAME_DIMENSION.width - FIRST_PANEL_DIMENSION.width) / 2, (GLASS_FRAME_DIMENSION.height - FIRST_PANEL_DIMENSION.height) / 2), FIRST_PANEL_DIMENSION);
@@ -50,10 +50,16 @@ public class constants {
     public static double RANGE_OF_INCREASE_PLACE = RANGE_OF_INCREASE_SIZE;
     public static double DECREASE_OF_PANEL = 2;
     public static final double IMPACT_POWER = 50;
-    public static double DELAY_OF_CLOSE_FRAME = 20;
+    public static double DELAY_OF_CLOSE_FRAME = 1;
     public static final int IMPACT_CYCLE = 15;
-    public static final String  FIRE_BOLT_PATH = "src\\sources\\song\\water drop.wav";
+    public static final String FIRE_BOLT_PATH = "src\\sources\\song\\water drop.wav";
     public static final String ENEMY_DESTROID_SOUND_PATH1 = "src\\sources\\song\\Big-Glass-Breaking-Combo-www.fesliyanstudios.com.wav";
     public static final String ENEMY_DESTROID_SOUND_PATH2 = "src\\sources\\song\\glass-breaking-93803.wav";
     public static int PRIZE_TIME = 8000;
+    public static int HeelTIME = 1000;
+    public static double HeelRange = 1;
+    public static boolean HeelSkill = false;
+    public static int ZaribOfEpsilonDamage = 1;
+    public static int NUMBER_OF_RAS = 1;
+    public static int TIME_OF_INCREASE_DAMAGE = 15000;
 }

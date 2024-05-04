@@ -7,6 +7,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 import static Game.Data.constants.*;
+import static Game.game.Contoroler.Controller.CreatOriginalPanelView;
 
 public class originalPanel extends ObjectInGame {
 
@@ -23,6 +24,9 @@ public class originalPanel extends ObjectInGame {
         y = FIRST_PANEL_RECTANGLE.y;
         size = new Dimension ((int) width, (int) height);
         Panel = this;
+        dothat = true;
+        RANGE_OF_INCREASE_CALL = 6;
+        CreatOriginalPanelView(getId ());
     }
 
     public double getX () {
@@ -122,6 +126,7 @@ public class originalPanel extends ObjectInGame {
 
     int upI = 0, downI = 0, rightI = 0, leftI = 0;
 
+    int o = 0;
     public boolean ReduceSizeOfFrame () {
         if (upI > 0 || downI > 0 || leftI > 0 || rightI > 0) {
             if (upI > 0) {
@@ -175,7 +180,7 @@ public class originalPanel extends ObjectInGame {
         } else {
             if (dothat) {
                 DECREASE_OF_PANEL = 0.8;
-                DELAY_OF_CLOSE_FRAME = 20;
+                DELAY_OF_CLOSE_FRAME = 30;
                 Update.CLOSE_FRAME.stop ();
                 Update.CLOSE_FRAME.start ();
                 dothat = false;
