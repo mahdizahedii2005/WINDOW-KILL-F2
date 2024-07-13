@@ -1,8 +1,7 @@
 package Game.login;
 
 import Game.Data.constants;
-import Game.game.Contoroler.SpecialSkill;
-import Game.login.loginFrame;
+import Game.game.Contoroler.thingInGame.SpecialSkill;
 
 import javax.swing.*;
 import java.awt.*;
@@ -149,7 +148,7 @@ public class SkillTree extends JFrame {
                     if (decreaseEXP (1000)) {
                         level3 = 1;
                         lock33 = true;
-                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill3 ());
+//                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill3 ());
                         peekNum = 3;
                         if (!lock33) {
                             lock3 = new JLabel (new ImageIcon ("src\\sources\\photo\\lock.png"));
@@ -170,7 +169,7 @@ public class SkillTree extends JFrame {
                     } else if (level3 == 3) {
                         NUMBER_OF_RAS = 4;
                     }
-                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill3 ());
+//                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill3 ());
                     peekNum = 3;
                 }
                 switch (peekNum) {
@@ -220,9 +219,9 @@ public class SkillTree extends JFrame {
                     if (level2 == 1) {
                         HeelRange = 1;
                     } else if (level2 == 2) {
-                        HeelRange = 1.5;
-                    } else if (level2 == 3) {
                         HeelRange = 2;
+                    } else if (level2 == 3) {
+                        HeelRange = 3;
                     }
                     peekNum = 2;
                     SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill2 ());

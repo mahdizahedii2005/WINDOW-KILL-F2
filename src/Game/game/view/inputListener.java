@@ -1,247 +1,246 @@
 package Game.game.view;
 
-import Game.game.Contoroler.Controller;
-import Game.game.Contoroler.SpecialSkill;
-import Game.game.Contoroler.Update;
-import Game.game.model.characterModel.Epsilon;
-import Game.login.SkillTree;
+import Game.game.Contoroler.thingInGame.SpecialSkill;
+import Game.game.Contoroler.control.Update;
+import Game.game.view.FrameOutOfTheGame.Shop;
+import Game.game.view.FrameOutOfTheGame.pusPanel;
+import Game.game.view.PanelInGame.frameInGame;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 
 import static Game.Data.constants.SPEED_OF_ADDING_BOLT;
-import static Game.game.Contoroler.Controller.fire;
-import static Game.game.Contoroler.Controller.moveEpsilon;
+import static Game.game.Contoroler.control.Controller.fire;
+import static Game.game.Contoroler.control.Controller.moveEpsilon;
 
 public class inputListener {
-    public static boolean aaa = true;
-    Timer up = new Timer (200, new AbstractAction () {
-        @Override
-        public void actionPerformed (ActionEvent e) {
-            moveEpsilon (0, -250);
-        }
-    });
     public static boolean stop = false;
 
-    boolean upp = false;
-    Timer down = new Timer (200, new AbstractAction () {
+    public static boolean aaa = true;
+    Timer up = new Timer(200, new AbstractAction() {
         @Override
-        public void actionPerformed (ActionEvent e) {
-            moveEpsilon (0, 250);
+        public void actionPerformed(ActionEvent e) {
+            moveEpsilon(0, -250);
+        }
+    });
+    boolean upp = false;
+    Timer down = new Timer(200, new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            moveEpsilon(0, 250);
         }
     });
     boolean downn = false;
-    Timer left = new Timer (200, new AbstractAction () {
+    Timer left = new Timer(200, new AbstractAction() {
         @Override
-        public void actionPerformed (ActionEvent e) {
-            moveEpsilon (-250, 0);
+        public void actionPerformed(ActionEvent e) {
+            moveEpsilon(-250, 0);
         }
     });
     boolean leftt = false;
-    Timer right = new Timer (200, new AbstractAction () {
+    Timer right = new Timer(200, new AbstractAction() {
         @Override
-        public void actionPerformed (ActionEvent e) {
-            moveEpsilon (250, 0);
+        public void actionPerformed(ActionEvent e) {
+            moveEpsilon(250, 0);
         }
     });
     boolean rightt = false;
     boolean start = false;
 
-    private void startBolting (double x, double y) {
+    private void startBolting(double x, double y) {
         this.x = x;
         this.y = y;
         if (!start) {
-            addbolt.start ();
+            addbolt.start();
             start = true;
         }
     }
 
     double x = 0d, y = 0d;
-    Timer addbolt = new Timer (SPEED_OF_ADDING_BOLT, new AbstractAction () {
+    Timer addbolt = new Timer(SPEED_OF_ADDING_BOLT, new AbstractAction() {
         @Override
-        public void actionPerformed (ActionEvent e) {
-            fire (new Point2D.Double (x, y));
+        public void actionPerformed(ActionEvent e) {
+            fire(new Point2D.Double(x, y));
         }
     });
 
     InputMap inputMap;
     ActionMap actionMap;
 
-    public inputListener () {
-        createKeyBindings ();
-        createKeyActions ();
+    public inputListener() {
+        createKeyBindings();
+        createKeyActions();
         stop = false;
         aaa = true;
     }
 
-    private void createKeyBindings () {
-        inputMap = frameInGame.getFrame ().getRootPane ().getInputMap (JComponent.WHEN_IN_FOCUSED_WINDOW);
-        actionMap = frameInGame.getFrame ().getRootPane ().getActionMap ();
+    private void createKeyBindings() {
+        inputMap = frameInGame.getFrame().getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        actionMap = frameInGame.getFrame().getRootPane().getActionMap();
         // Key Press:
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_W, 0), "moveUp");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_S, 0), "moveDown");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_A, 0), "moveLeft");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_D, 0), "moveRight");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_Q, 0), "shop");
-        inputMap.put (KeyStroke.getKeyStroke (MouseEvent.MOUSE_CLICKED, 0), "shoot");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_E, 0), "skill");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_ESCAPE, 0), "pus");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "moveUp");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "moveDown");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "moveLeft");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "moveRight");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "shop");
+        inputMap.put(KeyStroke.getKeyStroke(MouseEvent.MOUSE_CLICKED, 0), "shoot");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "skill");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "pus");
 
         // Key Release:
 
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_W, 0, true), "moveUpReleased");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_S, 0, true), "moveDownReleased");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_A, 0, true), "moveLeftReleased");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_D, 0, true), "moveRightReleased");
-        inputMap.put (KeyStroke.getKeyStroke (KeyEvent.VK_Q, 0, true), "shopReleased");
-        inputMap.put (KeyStroke.getKeyStroke (MouseEvent.MOUSE_CLICKED, 0, true), "shootReleased");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "moveUpReleased");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "moveDownReleased");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "moveLeftReleased");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "moveRightReleased");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0, true), "shopReleased");
+        inputMap.put(KeyStroke.getKeyStroke(MouseEvent.MOUSE_CLICKED, 0, true), "shootReleased");
     }
 
-    private void createKeyActions () {
-        frameInGame.getFrame ().addMouseMotionListener (new MouseMotionListener () {
+    private void createKeyActions() {
+        frameInGame.getFrame().addMouseMotionListener(new MouseMotionListener() {
             @Override
-            public void mouseDragged (MouseEvent e) {
-                startBolting (e.getX (), e.getY ());
+            public void mouseDragged(MouseEvent e) {
+                startBolting(e.getX(), e.getY());
             }
 
             @Override
-            public void mouseMoved (MouseEvent e) {
+            public void mouseMoved(MouseEvent e) {
             }
         });
-        frameInGame.getFrame ().addMouseListener (new MouseAdapter () {
+        frameInGame.getFrame().addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked (MouseEvent e) {
-                startBolting (e.getX (), e.getY ());
+            public void mouseClicked(MouseEvent e) {
+                startBolting(e.getX(), e.getY());
                 if (stop) {
-                    Update.MODEL_UPDATE.start ();
-                    Update.CLOSE_FRAME.start ();
-                    frameInGame.getFrame ().repaint ();
+                    Update.MODEL_UPDATE.start();
+                    Update.CLOSE_FRAME.start();
+                    frameInGame.getFrame().repaint();
                     stop = false;
                 }
             }
 
             @Override
-            public void mouseReleased (MouseEvent e) {
-                addbolt.stop ();
+            public void mouseReleased(MouseEvent e) {
+                addbolt.stop();
                 start = false;
             }
         });
         // Key Press Action:
-        actionMap.put ("moveUp", new AbstractAction () {
+        actionMap.put("moveUp", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (!upp) {
-                    up.start ();
+                    up.start();
                     upp = true;
                 }
             }
         });
 
-        actionMap.put ("moveDown", new AbstractAction () {
+        actionMap.put("moveDown", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (!downn) {
-                    down.start ();
+                    down.start();
                     downn = true;
                 }
             }
         });
-        actionMap.put ("moveLeft", new AbstractAction () {
+        actionMap.put("moveLeft", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (!leftt) {
-                    left.start ();
+                    left.start();
                     leftt = true;
                 }
             }
         });
-        actionMap.put ("moveRight", new AbstractAction () {
+        actionMap.put("moveRight", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (!rightt) {
-                    right.start ();
+                    right.start();
                     rightt = true;
                 }
             }
         });
-        actionMap.put ("shop", new AbstractAction () {
+        actionMap.put("shop", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (aaa) {
-                    new Shop ().run ();
+                    new Shop().run();
                 }
                 aaa = false;
-                Update.FRAME_UPDATE.stop ();
-                Update.MODEL_UPDATE.stop ();
+                Update.FRAME_UPDATE.stop();
+                Update.MODEL_UPDATE.stop();
             }
         });
-        actionMap.put ("skill", new AbstractAction () {
+        actionMap.put("skill", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
-                if (SpecialSkill.getCurrentSpecialSkill () != null) {
-                    SpecialSkill.getCurrentSpecialSkill ().run ();
+            public void actionPerformed(ActionEvent e) {
+                if (SpecialSkill.getCurrentSpecialSkill() != null) {
+                    SpecialSkill.getCurrentSpecialSkill().run();
                 }
             }
         });
-        actionMap.put ("pus", new AbstractAction () {
+        actionMap.put("pus", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 if (aaa) {
-                    new pusPanel ().run ();
+                    new pusPanel().run();
                 }
                 aaa = false;
-                Update.FRAME_UPDATE.stop ();
-                Update.MODEL_UPDATE.stop ();
+                Update.FRAME_UPDATE.stop();
+                Update.MODEL_UPDATE.stop();
 
             }
         });
         // Key Release Action:
-        actionMap.put ("moveUpReleased", new
+        actionMap.put("moveUpReleased", new
 
-                AbstractAction () {
+                AbstractAction() {
                     @Override
-                    public void actionPerformed (ActionEvent e) {
-                        moveEpsilon (false);
-                        up.stop ();
+                    public void actionPerformed(ActionEvent e) {
+                        moveEpsilon(false);
+                        up.stop();
                         upp = false;
                     }
                 });
 
-        actionMap.put ("moveDownReleased", new
+        actionMap.put("moveDownReleased", new
 
-                AbstractAction () {
+                AbstractAction() {
                     @Override
-                    public void actionPerformed (ActionEvent e) {
-                        moveEpsilon (false);
-                        down.stop ();
+                    public void actionPerformed(ActionEvent e) {
+                        moveEpsilon(false);
+                        down.stop();
                         downn = false;
                     }
                 });
 
-        actionMap.put ("moveLeftReleased", new
+        actionMap.put("moveLeftReleased", new
 
-                AbstractAction () {
+                AbstractAction() {
                     @Override
-                    public void actionPerformed (ActionEvent e) {
-                        moveEpsilon (true);
-                        left.stop ();
+                    public void actionPerformed(ActionEvent e) {
+                        moveEpsilon(true);
+                        left.stop();
                         leftt = false;
                     }
                 });
 
-        actionMap.put ("moveRightReleased", new AbstractAction () {
+        actionMap.put("moveRightReleased", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
-                moveEpsilon (true);
-                right.stop ();
+            public void actionPerformed(ActionEvent e) {
+                moveEpsilon(true);
+                right.stop();
                 rightt = false;
             }
         });
-        actionMap.put ("shopReleased", new AbstractAction () {
+        actionMap.put("shopReleased", new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
 
             }
         });

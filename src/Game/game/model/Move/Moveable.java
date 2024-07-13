@@ -11,5 +11,6 @@ public interface Moveable {
     void move();
 
     void setDirection(Direction direction);
+
     void setSpeed(double speed);
 }

@@ -1,11 +1,12 @@
 package Game.game;
 
-import Game.game.Contoroler.Spawn;
-import Game.game.Contoroler.Update;
-import Game.game.Contoroler.soundPlayer;
+import Game.game.Contoroler.building.Spawn;
+import Game.game.Contoroler.control.Update;
+import Game.game.Contoroler.player.soundPlayer;
 import Game.game.model.characterModel.*;
-import Game.game.model.collision.Collidable;
-import Game.game.view.frameInGame;
+import Game.game.model.characterModel.Panels.rigidPanel;
+import Game.game.model.characterModel.epsilonFriend.Epsilon;
+import Game.game.view.PanelInGame.frameInGame;
 import Game.game.view.inputListener;
 import Game.login.setting;
 
@@ -20,57 +21,36 @@ import static Game.Data.constants.*;
 import static Game.game.model.Move.Moveable.moveAble;
 import static Game.game.model.Move.impactAble.impactAblesList;
 import static Game.game.model.collision.Collidable.collidables;
-import static Game.game.view.DrawAble.DRAW_ABLES;
 
 public class gameApplication implements Runnable {
-    public gameApplication () {
+    public gameApplication() {
         gameApplication = this;
     }
 
     private static gameApplication gameApplication;
 
-    public static Game.game.gameApplication getGameApplication () {
+    public static Game.game.gameApplication getGameApplication() {
         return gameApplication;
     }
 
-    @Override
-    public void run () {
-        DELAY_OF_CLOSE_FRAME = 1;
-        ObjectInGame.objectInGames = new ArrayList<> ();
-        prize.prizeArrayList = new ArrayList<> ();
-        rasEpsilon.rasArrayList = new ArrayList<> ();
-        bolt.boltList = new ArrayList<> ();
-        for (int i = 0 ; i < collidables.size () ; ) {
-            collidables.remove (collidables.get (i));
+    public long timeOfStart;
+    private frameInGame frameOfGame;
+
+    private void CLoseAllProg() {
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
         }
-        for (int i = 0 ; i < impactAblesList.size () ; ) {
-            impactAblesList.remove (impactAblesList.get (i));
-        }
-        for (int i = 0 ; i < moveAble.size () ; ) {
-            moveAble.remove (moveAble.get (i));
-        }
-        for (int i = 0 ; i < DRAW_ABLES.size () ; ) {
-            DRAW_ABLES.remove (DRAW_ABLES.get (i));
-        }
-        {
-            Robot robot = null;
-            try {
-                robot = new Robot ();
-            } catch (AWTException e) {
-                throw new RuntimeException (e);
-            }
-            robot.keyPress (KeyEvent.VK_WINDOWS);
-            robot.keyPress (KeyEvent.VK_D);
-            robot.keyRelease (KeyEvent.VK_D);
-            robot.keyRelease (KeyEvent.VK_WINDOWS);
-        }
-        switch (setting.getGameSpeed ()) {
-            case verySlow -> SPEED = SPEED / 1.5;
-            case Slow -> SPEED = SPEED / 1.25;
-            case fast -> SPEED = SPEED * 1.25;
-            case veryFast -> SPEED = SPEED * 1.5;
-        }
-        switch (setting.getGameDifficulty ()) {
+        robot.keyPress(KeyEvent.VK_WINDOWS);
+        robot.keyPress(KeyEvent.VK_D);
+        robot.keyRelease(KeyEvent.VK_D);
+        robot.keyRelease(KeyEvent.VK_WINDOWS);
+    }
+
+    private void fixDifficallity() {
+        switch (setting.getGameDifficulty()) {
             case easy -> {
                 Spawn.zaribSpawn = 1;
                 Spawn.zarib = 8;
@@ -82,28 +62,47 @@ public class gameApplication implements Runnable {
                 PRIZE_TIME = 5000;
             }
         }
-        Frame f = new frameInGame ();
-        new originalPanel ();
-        new Timer (50000, new AbstractAction () {
+    }
+
+    private void fixSpeed() {
+        switch (setting.getGameSpeed()) {
+            case verySlow -> SPEED = SPEED / 1.5;
+            case Slow -> SPEED = SPEED / 1.25;
+            case fast -> SPEED = SPEED * 1.25;
+            case veryFast -> SPEED = SPEED * 1.5;
+        }
+
+    }
+
+    private void initGeraghic() {
+        frameOfGame = new frameInGame();
+    }
+
+    private void initGame() {
+        new rigidPanel(FIRST_PANEL_RECTANGLE.x, FIRST_PANEL_RECTANGLE.y, FIRST_PANEL_DIMENSION.height, FIRST_PANEL_DIMENSION.width);
+        new Epsilon(new Point2D.Double(frameOfGame.getWidth() / 2d, frameOfGame.getHeight() / 2d), (int) RADIUS_OF_EPSILON);
+        new Update();
+        new inputListener();
+        new Spawn();
+    }
+
+    @Override
+    public void run() {
+        CLoseAllProg();
+        timeOfStart = System.nanoTime();
+        ObjectInGame.objectInGames = new ArrayList<>();
+        collidables.clear();
+        impactAblesList.clear();
+        moveAble.clear();
+        fixDifficallity();
+        fixSpeed();
+        initGeraghic();
+        initGame();
+        new Timer(50000, new AbstractAction() {
             @Override
-            public void actionPerformed (ActionEvent e) {
-                soundPlayer.play ("src\\sources\\song\\download-white-voice_1_.wav", -62);
+            public void actionPerformed(ActionEvent e) {
+                soundPlayer.play("src\\sources\\song\\download-white-voice_1_.wav", -62);
             }
         });
-        new Epsilon (new Point2D.Double (f.getWidth () / 2d, f.getHeight () / 2d), (int) RADIUS_OF_EPSILON);
-        new Update ();
-
-//        Thread close = new Thread (new firstState (this));
-//        close.run ();
-//        try {
-//            synchronized (this) {
-//                close.wait ();
-//            }
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException (e);
-//        }
-        new inputListener ();
-        new Spawn ();
-        //  new rasEpsilon (4);
     }
 }

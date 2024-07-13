@@ -15,7 +15,7 @@ public interface impactAble extends Moveable {
 
     void setSpeed (double speed);
 
-    double getSpeed ();
+    float getSpeed ();
 
     void setMoveDirection (Direction direction);
 
