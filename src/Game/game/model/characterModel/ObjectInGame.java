@@ -36,12 +36,6 @@ public abstract class ObjectInGame extends ThingsInGame {
         this.HP = hp;
         this.radius = radius;
         objectInGames.add(this);
-        if (this instanceof impactAble) {
-            impactAble.impactAblesList.add((impactAble) this);
-        }
-        if (this instanceof Collidable) {
-            Collidable.collidables.add((Collidable) this);
-        }
     }
 
     public ObjectInGame(Point2D.Double center, Color color, String id, int hp, float maxRadius, int damageDaler) {
@@ -52,12 +46,6 @@ public abstract class ObjectInGame extends ThingsInGame {
         this.center = center;
         this.HP = hp;
         objectInGames.add(this);
-        if (this instanceof impactAble) {
-            impactAble.impactAblesList.add((impactAble) this);
-        }
-        if (this instanceof Collidable) {
-            Collidable.collidables.add((Collidable) this);
-        }
     }
 
     public abstract DrawAbleObject getDrawAbleObject(PanelInGame panel);
@@ -73,6 +61,9 @@ public abstract class ObjectInGame extends ThingsInGame {
 
     public void getHit(int damage) {
         setHP(Math.max(0, getHP() - damage));
+        if (HP == 0){
+            Die();
+        }
     }
 
     public Color getColor() {

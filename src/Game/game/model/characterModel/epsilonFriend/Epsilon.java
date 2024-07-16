@@ -9,6 +9,7 @@ import Game.game.model.characterModel.Panels.PanelInGame;
 import Game.game.model.characterModel.Panels.rigidPanel;
 import Game.game.model.collision.Collidable;
 import Game.game.model.collision.CollisionState;
+import Game.game.model.shooting.shootGiver;
 import Game.game.model.shooting.shooter;
 import Game.game.view.characterView.DrawAbleObject;
 import Game.game.view.characterView.shape.epsilonView;
@@ -19,28 +20,28 @@ import java.util.UUID;
 
 import static Game.Data.constants.SPEED;
 import static Game.game.Contoroler.control.Controller.fixThePoint;
+import static Game.game.Contoroler.control.Update.finish;
 import static Game.game.model.characterModel.Panels.PanelInGame.PANELS;
 import static Game.helper.addVectors;
 import static Game.helper.multiplyVector;
 
-public class Epsilon extends ObjectInGame implements Collidable, Moveable, shooter, impactAble {
+public class Epsilon extends ObjectInGame implements Collidable, Moveable, shooter, impactAble, shootGiver {
     private int impactNum = 0;
     private double exp = 0;
     private boolean sefrShode = false;
     private static Epsilon epsilon = null;
     private int MaxHp = 100;
-    private double speed = SPEED * 4;
+    private double speed = SPEED;
     private Direction MoveDirection = new Direction(new Point2D.Double(0, 0));
     private double totalExp = 0;
 
     public Epsilon(Point2D.Double center, double radius) {
         super(center, Color.WHITE, UUID.randomUUID().toString(), 100, radius, true, 5);
         epsilon = this;
-        Moveable.moveAble.add(this);
     }
 
     public void changDirection(double x, double y) {
-        if (Update.finish) {
+        if (finish) {
             if (impactNum > 0) {
                 setDirection(new Direction(addVectors(new Point2D.Double(x, y), getMoveDirection().getPoint())));
             } else {
@@ -69,7 +70,7 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
 
     @Override
     public void move(Direction direction, double speed) {
-        if (Update.finish) {
+        if (finish) {
             Point2D.Double movement = multiplyVector(direction.getDirectionVector(), speed);
             boolean L = dontGoOutOfPanel(movement);
             if (L) {
@@ -160,15 +161,15 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     }
 
     @Override
-    public void fire(Point2D.Double target, Point2D.Double realTarget) {
-        if (Update.finish) {
+    public void fire(Point2D.Double mabda, Point2D.Double target) {
+        if (finish) {
             if (AthenaPower) {
-                new bolt(target, realTarget);
-                new bolt(target, realTarget, SPEED * 7);
-                new bolt(target, realTarget, SPEED * 6);
+                new bolt(mabda, target, true, 5);
+                new bolt(mabda, target, SPEED * 7, true, 5);
+                new bolt(mabda, target, SPEED * 6, true, 5);
 
             } else {
-                new bolt(target, realTarget);
+                new bolt(mabda, target, true, 5);
             }
         }
     }
@@ -223,7 +224,7 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     }
 
     public void setImpactNum(int impactNum) {
-        if (Update.finish) {
+        if (finish) {
             this.impactNum = impactNum;
             if (impactNum > 0) {
                 sefrShode = true;
@@ -236,14 +237,14 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     }
 
     public void increaseExp(double exp) {
-        if (Update.finish) {
+        if (finish) {
             this.exp += exp;
             this.totalExp += exp;
         }
     }
 
     public void increaseHp(int a) {
-        if (Update.finish) {
+        if (finish) {
             setHP(Math.min(getMaxHp(), getHP() + a));
         }
     }
@@ -273,12 +274,23 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
     @Override
     public void setHP(double HP) {
         super.setHP(HP);
-        if (HP == 0 && Update.finish) {
+        if (HP == 0 && finish) {
 //            new lost();
         }
     }
 
     public double getTotalExp() {
         return totalExp;
+    }
+
+    @Override
+    public void takingShot(bolt bolt) {
+        getHit(bolt.getDamageDaler());
+    }
+
+    @Override
+    public void Die() {
+        super.Die();
+        finish = false;
     }
 }

@@ -3,14 +3,14 @@ package Game.game.model.Move;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+import static Game.game.Contoroler.control.Controller.azHamKamKardanDoBordar;
+
 public class Direction {
-    public Point2D.Double  getPoint() {
+    public Point2D.Double getPoint() {
         return point;
     }
 
-    Point2D.Double point;
-    Point2D.Double realPoint;
-
+    public Point2D.Double point;
     boolean isUpward = false;
     boolean isDownward = false;
     double slope;
@@ -20,10 +20,10 @@ public class Direction {
         this(direction.point);
     }
 
-    public Direction(Point2D.Double point, Point2D.Double realTarget) {
-        this(point);
-        realPoint = realTarget;
+    public Direction(Point2D.Double mabda, Point2D.Double target) {
+        this(azHamKamKardanDoBordar(mabda, target));
     }
+
     public Direction(Point2D.Double point) {
         if (point.getX() == 0 && point.getY() > 0) isUpward = true;
         else if (point.getX() == 0 && point.getY() < 0) isDownward = true;
@@ -71,9 +71,5 @@ public class Direction {
 
     public enum DirectionState {
         negative, positive, neutral
-    }
-
-    public Point2D getRealPoint() {
-        return realPoint;
     }
 }

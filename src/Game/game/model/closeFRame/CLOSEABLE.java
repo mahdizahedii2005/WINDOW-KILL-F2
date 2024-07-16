@@ -2,7 +2,6 @@ package Game.game.model.closeFRame;
 
 import java.util.ArrayList;
 
-import static Game.Data.constants.MOVE_RANGE;
 import static Game.Data.constants.RANGE_OF_DECREASE_PLACE;
 
 public interface CLOSEABLE {

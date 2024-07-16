@@ -14,18 +14,24 @@ public class ThingsInGame {
 
     public ThingsInGame(String id) {
         this.id = id;
+        if (this instanceof impactAble) impactAble.impactAblesList.add((impactAble) this);
+        if (this instanceof Collidable) Collidable.collidables.add((Collidable) this);
+        if (this instanceof Moveable) Moveable.moveAble.add((Moveable) this);
+        if (this instanceof CLOSEABLE) CLOSEABLE.CLOSEABLES.add((CLOSEABLE) this);
+        if (this instanceof impactAble)impactAble.impactAblesList.add((impactAble) this);
     }
+
 
     public String getId() {
         return id;
     }
 
     public void Die() {
-        if (this instanceof ObjectInGame) objectInGames.remove(this);
-        if (this instanceof impactAble) impactAble.impactAblesList.remove(this);
-        if (this instanceof Moveable) Moveable.moveAble.remove(this);
+        if (this instanceof ObjectInGame) objectInGames.remove((ObjectInGame) this);
+        if (this instanceof impactAble) impactAble.impactAblesList.remove((impactAble) this);
+        if (this instanceof Moveable) Moveable.moveAble.remove((Moveable) this);
         if (this instanceof Collidable) Collidable.collidables.remove((Collidable) this);
-        if (this instanceof PanelInGame) PANELS.remove(this);
-        if (this instanceof CLOSEABLE) CLOSEABLE.CLOSEABLES.remove(this);
+        if (this instanceof PanelInGame) PANELS.remove((PanelInGame) this);
+        if (this instanceof CLOSEABLE) CLOSEABLE.CLOSEABLES.remove((CLOSEABLE) this);
     }
 }

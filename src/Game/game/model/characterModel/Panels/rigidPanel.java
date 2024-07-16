@@ -1,6 +1,8 @@
 package Game.game.model.characterModel.Panels;
 
 import Game.game.Contoroler.control.Update;
+import Game.game.model.characterModel.Enemy.Omenoct;
+import Game.game.model.characterModel.ObjectInGame;
 import Game.game.model.characterModel.ThingsInGame;
 import Game.game.model.characterModel.epsilonFriend.bolt;
 import Game.game.model.closeFRame.CLOSEABLE;
@@ -14,13 +16,13 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import static Game.Data.constants.*;
+import static Game.game.Contoroler.control.Controller.isItInside;
 
 public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, shootGiver {
     public rigidPanel(double x, double y, double height, double width) {
         super(x, y, height, width);
-        CLOSEABLE.CLOSEABLES.add(this);
-        Collidable.collidables.add(this);
     }
+
     //    enum wallSide {
 //        RIGHT {
 //            @Override
@@ -79,10 +81,21 @@ public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, sh
 //    public void reduceLeft() {
 //        reduceLeft(RANGE_OF_DECREASE_PLACE, MOVE_RANGE);
 //    }
+    private Omenoct checkOmenoctDamage(side side) {
+        for (ObjectInGame o : ObjectInGame.objectInGames) {
+            if (o instanceof Omenoct) {
+                Omenoct omenoct = (Omenoct) o;
+                if (omenoct.isItFix && omenoct.side.equals(side) && isItInside(omenoct, this)) {
+                    return omenoct;
+                }
+            }
+        }
+        return null;
+    }
 
     public void IncreaseLeft(double RANGE_OF_INCREASE_PLACE) {
         setWidth(getWidth() + RANGE_OF_INCREASE_PLACE);
-        setX(getX() - RANGE_OF_INCREASE_PLACE );
+        setX(getX() - RANGE_OF_INCREASE_PLACE);
     }
 
 
@@ -92,7 +105,7 @@ public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, sh
 
     public void IncreaseUp(double RANGE_OF_INCREASE_PLACE) {
         setHeight(getHeight() + RANGE_OF_INCREASE_PLACE);
-        setY(getY() - RANGE_OF_INCREASE_PLACE );
+        setY(getY() - RANGE_OF_INCREASE_PLACE);
     }
 
     public void IncreaseDown(double RANGE_OF_INCREASE_PLACE) {
@@ -225,13 +238,25 @@ public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, sh
         prosec.add(bolt);
         switch (findCollision(bolt.getAnchor())) {
             case right -> {
-                for (int i = 0; i < 2; i++) {
-                    IncreaseRight();
-                }
+                IncreaseRight();
+                var o = checkOmenoctDamage(side.right);
+                if (o != null) o.getHit(5);
             }
-            case left -> IncreaseLeft();
-            case up -> IncreaseUp();
-            case down -> IncreaseDown();
+            case left -> {
+                IncreaseLeft();
+                var o = checkOmenoctDamage(side.left);
+                if (o != null) o.getHit(5);
+            }
+            case up -> {
+                IncreaseUp();
+                var o = checkOmenoctDamage(side.up);
+                if (o != null) o.getHit(5);
+            }
+            case down -> {
+                IncreaseDown();
+                var o = checkOmenoctDamage(side.down);
+                if (o != null) o.getHit(5);
+            }
             case null -> {
                 return;
             }

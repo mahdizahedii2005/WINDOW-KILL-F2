@@ -9,6 +9,7 @@ import Game.game.model.collision.Collidable;
 import Game.game.model.shooting.shootGiver;
 import Game.game.view.characterView.DrawAbleObject;
 import Game.game.view.characterView.shape.circleShape;
+import Game.helper;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -20,21 +21,33 @@ import static Game.helper.addVectors;
 import static Game.helper.multiplyVector;
 
 public class bolt extends ObjectInGame implements Moveable, Collidable {
-    private Point2D.Double mabda;
-    private double speed = SPEED * 4;
+    private double speed;
     private Direction moveDirection;
+    private boolean good;
 
-    public bolt(Point2D.Double target, Point2D.Double realTarget, double speed) {
-        this(target, realTarget);
-        this.speed = speed;
+    private final static double zaribOfSpeed = 4d;
+
+    public bolt(Point2D.Double mabda, Point2D.Double target, double speed, boolean good, int damage) {
+        this(mabda, target, Color.WHITE, damage, good, speed, BOLT_RADIUS);
     }
 
-    public bolt(Point2D.Double target, Point2D.Double realTarget) {
-        super(new Point2D.Double(Epsilon.getEpsilon().getCenter().getX() + 1, Epsilon.getEpsilon().getCenter().getY() + 1), Color.white, UUID.randomUUID().toString(), 1, BOLT_RADIUS, true, 5);
-        this.moveDirection = new Direction(target, realTarget);
-        Moveable.moveAble.add(this);
-        this.mabda = Epsilon.getEpsilon().getCenter();
-        soundPlayer.play(FIRE_BOLT_PATH);
+    public bolt(Point2D.Double mabda, Point2D.Double target, double speed, boolean good, int damage, Color color) {
+        this(mabda, target, color, damage, good, speed, BOLT_RADIUS);
+    }
+
+    public bolt(Point2D.Double mabda, Point2D.Double target, boolean good, int damage) {
+        this(mabda, target, Color.WHITE, damage, good, Epsilon.getEpsilon().getSpeed() * zaribOfSpeed, BOLT_RADIUS);
+    }
+
+    public bolt(Point2D.Double mabda, Point2D.Double Target, boolean good, int damage, Color color) {
+        this(mabda, Target, color, damage, good, Epsilon.getEpsilon().getSpeed() * zaribOfSpeed, BOLT_RADIUS);
+    }
+
+    public bolt(Point2D.Double mabda, Point2D.Double target, Color color, int damage, boolean isGood, double speed, double Radius) {
+        super(mabda, color, UUID.randomUUID().toString(), -1, Radius, true, damage);
+        this.speed = speed;
+        good = isGood;
+        moveDirection = new Direction(helper.relativeLocation(target, mabda));
     }
 
     public void move(Direction direction, double speed) {
@@ -60,7 +73,8 @@ public class bolt extends ObjectInGame implements Moveable, Collidable {
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
         return new circleShape(fixThePoint(center, panel), color, radius);
     }
-//    @Override
+
+    //    @Override
 //    public void wallCollision(originalPanel.panelWall a) {
 //        if (wallHit(a)) {
 //            originalPanel.getPanel().increase(a);
@@ -104,7 +118,6 @@ public class bolt extends ObjectInGame implements Moveable, Collidable {
 //        }
 //        return false;
 //    }
-
     @Override
     public void createGeometry() {
         super.CreateGeometry();
@@ -127,7 +140,8 @@ public class bolt extends ObjectInGame implements Moveable, Collidable {
 
     @Override
     public boolean collide(Collidable collidable) {
-        return collidable instanceof shootGiver;
+        if (!good) return collidable instanceof Epsilon;
+        return collidable instanceof shootGiver && !(collidable instanceof Epsilon);
     }
 
     @Override
@@ -137,5 +151,9 @@ public class bolt extends ObjectInGame implements Moveable, Collidable {
             enemy.takingShot(this);
             Die();
         }
+    }
+
+    public boolean isGood() {
+        return good;
     }
 }

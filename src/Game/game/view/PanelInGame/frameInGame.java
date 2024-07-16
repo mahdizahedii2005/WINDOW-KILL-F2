@@ -7,7 +7,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static Game.Data.constants.GLASS_FRAME_DIMENSION;
-import static java.awt.SystemColor.window;
 
 public final class frameInGame extends JFrame {
     private static frameInGame frame;

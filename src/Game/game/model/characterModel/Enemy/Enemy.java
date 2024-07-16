@@ -29,9 +29,9 @@ import static Game.helper.checkNan;
 public abstract class Enemy extends ObjectInGame implements Collidable, follower, shootGiver, impactAble {
 
     int impactNum = 0;
-    double speed = 0;
+    double speed = Epsilon.getEpsilon().getSpeed()/2;
 
-    Direction MoveDirection = new Direction(new Point2D.Double(0, 0));
+    protected Direction MoveDirection = new Direction(new Point2D.Double(0, 0));
 
     private static int numberofenemy = 0;
 
@@ -47,7 +47,6 @@ public abstract class Enemy extends ObjectInGame implements Collidable, follower
                 point2DS.add(new Point2D.Double(xPoint[i], yPoint[i]));
             }
             setVertices(point2DS);
-            Moveable.moveAble.add(this);
         } else {
             ObjectInGame.objectInGames.remove(this);
             if (this instanceof TrigorathModel) {
@@ -124,11 +123,6 @@ public abstract class Enemy extends ObjectInGame implements Collidable, follower
         if (collidable instanceof Epsilon){
             Epsilon.getEpsilon().getHit(getDamageDaler());
         }
-    }
-
-    @Override
-    public void follow() {
-
     }
 
     @Override

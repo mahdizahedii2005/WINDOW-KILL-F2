@@ -1,5 +1,6 @@
 package Game.game.Contoroler.control;
 
+import Game.game.Contoroler.player.soundPlayer;
 import Game.game.model.characterModel.Panels.PanelInGame;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
 import Game.game.model.characterModel.ObjectInGame;
@@ -15,6 +16,8 @@ import Game.helper;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import static Game.Data.constants.FIRE_BOLT_PATH;
 
 
 public abstract class Controller {
@@ -146,6 +149,10 @@ public abstract class Controller {
         }
     }
 
+    public static Point2D.Double azHamKamKardanDoBordar(Point2D p1, Point2D p2) {
+        return new Point2D.Double(p2.getX() - p1.getX(), p2.getY() - p1.getY());
+    }
+
     public static void moveEpsilon(boolean b) {
         if (b) {
             Epsilon.getEpsilon().changDirection(0, b);
@@ -155,10 +162,19 @@ public abstract class Controller {
     }
 
     public static void fire(Point2D.Double target) {
-        Epsilon.getEpsilon().fire(helper.addVectors(target, helper.multiplyVector(Epsilon.getEpsilon().getCenter(), -1)), target);
+        Epsilon.getEpsilon().fire(Epsilon.getEpsilon().getCenter(), target);
+        soundPlayer.play(FIRE_BOLT_PATH);
     }
 
     public static void CreatNewPanelView(String id) {
         new panelInGameView(id);
+    }
+
+    public static <T> ArrayList<T> swich(ArrayList<T> arrayList, int d1, int d2) {
+        T a1 = arrayList.get(d1);
+        T a2 = arrayList.get(d2);
+        arrayList.set(d1, a2);
+        arrayList.set(d2, a1);
+        return arrayList;
     }
 }

@@ -1,11 +1,13 @@
 package Game.game;
 
+import Game.game.Contoroler.building.BuilderHelper;
 import Game.game.Contoroler.building.Spawn;
 import Game.game.Contoroler.control.Update;
 import Game.game.Contoroler.player.soundPlayer;
 import Game.game.model.characterModel.*;
 import Game.game.model.characterModel.Panels.rigidPanel;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
+import Game.game.model.collision.Collidable;
 import Game.game.view.PanelInGame.frameInGame;
 import Game.game.view.inputListener;
 import Game.login.setting;
@@ -84,6 +86,7 @@ public class gameApplication implements Runnable {
         new Update();
         new inputListener();
         new Spawn();
+        BuilderHelper.NecropickBuilder(new Point2D.Double((double) (Epsilon.getEpsilon().getAnchor().getX() + 100), (double) Epsilon.getEpsilon().getCenter().getY()+20));
     }
 
     @Override
