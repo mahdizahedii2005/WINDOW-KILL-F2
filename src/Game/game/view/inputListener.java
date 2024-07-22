@@ -1,7 +1,7 @@
 package Game.game.view;
 
-import Game.game.Contoroler.thingInGame.SpecialSkill;
 import Game.game.Contoroler.control.Update;
+import Game.game.Contoroler.thingInGame.SpecialSkill;
 import Game.game.view.FrameOutOfTheGame.Shop;
 import Game.game.view.FrameOutOfTheGame.pusPanel;
 import Game.game.view.PanelInGame.frameInGame;
@@ -16,7 +16,7 @@ import static Game.game.Contoroler.control.Controller.moveEpsilon;
 
 public class inputListener {
     public static boolean stop = false;
-
+    public static boolean crazy = false;
     public static boolean aaa = true;
     Timer up = new Timer(200, new AbstractAction() {
         @Override
@@ -172,8 +172,9 @@ public class inputListener {
                     new Shop().run();
                 }
                 aaa = false;
-                Update.FRAME_UPDATE.stop();
-                Update.MODEL_UPDATE.stop();
+                Update.stopCLOSFRAME = false;
+                Update.stopFRAMEUPDATE = false;
+                Update.stpoUpdateModel =false;
             }
         });
         actionMap.put("skill", new AbstractAction() {
@@ -191,9 +192,9 @@ public class inputListener {
                     new pusPanel().run();
                 }
                 aaa = false;
-                Update.FRAME_UPDATE.stop();
-                Update.MODEL_UPDATE.stop();
-
+                Update.stopCLOSFRAME = false;
+                Update.stopFRAMEUPDATE = false;
+                Update.stpoUpdateModel =false;
             }
         });
         // Key Release Action:

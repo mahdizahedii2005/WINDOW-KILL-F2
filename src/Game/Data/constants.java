@@ -36,7 +36,7 @@ public class constants {
     public static final Dimension FIRST_PANEL_DIMENSION = new Dimension(780, 780);
     public static final Rectangle FIRST_PANEL_RECTANGLE = new Rectangle(new Point((GLASS_FRAME_DIMENSION.width - FIRST_PANEL_DIMENSION.width) / 2, (GLASS_FRAME_DIMENSION.height - FIRST_PANEL_DIMENSION.height) / 2), FIRST_PANEL_DIMENSION);
     public static final Dimension SMALLEST_SIZE_OF_ORIGINAL_PANEL = new Dimension(400, 400);
-    public static final double RADIUS_OF_EPSILON = 14;
+    public static final double RADIUS_OF_EPSILON = 10;
     public static final double HEIGHT_OF_TRIANGLE = 2.5 * RADIUS_OF_EPSILON;
     public static final double SIDE_OF_TRIANGLE = Math.sqrt((HEIGHT_OF_TRIANGLE * HEIGHT_OF_TRIANGLE * 4) / 3);
     public static final Color TRIANGLE_COLOR = Color.YELLOW;

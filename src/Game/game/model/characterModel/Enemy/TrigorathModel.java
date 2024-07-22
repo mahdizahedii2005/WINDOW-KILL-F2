@@ -10,12 +10,11 @@ import Game.game.view.characterView.DrawAbleObject;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-import static Game.Data.constants.SPEED;
 import static Game.Data.constants.TRIANGLE_SAFE_DISTANCE;
 import static Game.game.Contoroler.control.Controller.fixThePoint;
 import static Game.game.Contoroler.control.Controller.makeNonCircularView;
 
-public class TrigorathModel extends Enemy implements NormalFollower {
+public class TrigorathModel extends moveAbleEnemy implements NormalFollower {
     public TrigorathModel(Point2D.Double center, Color color, double[] xPoint, double[] yPoint) {
         super(center, color, 3, xPoint, yPoint, 15, 6, ((float) constants.HEIGHT_OF_TRIANGLE * 2) / 3);
     }

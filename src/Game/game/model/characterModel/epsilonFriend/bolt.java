@@ -1,8 +1,8 @@
 package Game.game.model.characterModel.epsilonFriend;
 
-import Game.game.Contoroler.player.soundPlayer;
 import Game.game.model.Move.Direction;
-import Game.game.model.Move.Moveable;
+import Game.game.model.Move.linearMotion;
+import Game.game.model.characterModel.Enemy.Barricados;
 import Game.game.model.characterModel.ObjectInGame;
 import Game.game.model.characterModel.Panels.PanelInGame;
 import Game.game.model.collision.Collidable;
@@ -20,12 +20,12 @@ import static Game.game.Contoroler.control.Controller.fixThePoint;
 import static Game.helper.addVectors;
 import static Game.helper.multiplyVector;
 
-public class bolt extends ObjectInGame implements Moveable, Collidable {
+public class bolt extends ObjectInGame implements linearMotion, Collidable {
     private double speed;
     private Direction moveDirection;
     private boolean good;
 
-    private final static double zaribOfSpeed = 4d;
+    private final static double zaribOfSpeed = 1.5;
 
     public bolt(Point2D.Double mabda, Point2D.Double target, double speed, boolean good, int damage) {
         this(mabda, target, Color.WHITE, damage, good, speed, BOLT_RADIUS);
@@ -71,6 +71,7 @@ public class bolt extends ObjectInGame implements Moveable, Collidable {
 
     @Override
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
+        if (center==null||radius ==null)return null;
         return new circleShape(fixThePoint(center, panel), color, radius);
     }
 
@@ -149,11 +150,18 @@ public class bolt extends ObjectInGame implements Moveable, Collidable {
         if (collidable instanceof shootGiver) {
             shootGiver enemy = (shootGiver) collidable;
             enemy.takingShot(this);
-            Die();
         }
+        Die();
+    }
+
+    @Override
+    public void getHit(int damage) {
+
     }
 
     public boolean isGood() {
         return good;
     }
+
+
 }

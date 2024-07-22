@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import static Game.helper.addVectors;
 
-public class Necropick extends Enemy implements shooter {
+public class Necropick extends moveAbleEnemy implements shooter {
     private BufferedImage readyImage;
     private final String readyImagePath = "src\\sources\\photo\\faceSkel.png";
     private Point2D.Double PhotoCenter;
@@ -35,7 +35,7 @@ public class Necropick extends Enemy implements shooter {
     private boolean readyToShow = false;
 
     public Necropick(Point2D.Double PhotoCenter, Point2D.Double center, int nPoint, double[] xPoint, double[] yPoint) {
-        super(center, Color.BLACK, nPoint, xPoint, yPoint, 2000, 0, 100);
+        super(center, Color.YELLOW, nPoint, xPoint, yPoint, 20, 0, 100);
         try {
             readyImage = ImageIO.read(new File(readyImagePath));
             image = ImageIO.read(new File(imagePath));
@@ -62,20 +62,21 @@ public class Necropick extends Enemy implements shooter {
                     try {
                         Thread.sleep(8000);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("omg");
                     }
                     isItHide = true;
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("omg");
                     }
                     readyToShow = true;
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        System.out.println("omg");
                     }
+
                     readyToShow = false;
                 }
             }
@@ -96,7 +97,9 @@ public class Necropick extends Enemy implements shooter {
             impactNum = Math.max(impactNum - 1, 0);
             return;
         }
-        speed = Epsilon.getEpsilon().getSpeed() / 10;
+        if (readyToShow) speed = 0;
+        else if (isItHide) speed = Epsilon.getEpsilon().getSpeed();
+        else speed = Epsilon.getEpsilon().getSpeed() / 10;
         if (getCenter().distance(Epsilon.getEpsilon().getCenter()) < 150) {
             setDirection(new Direction(new Point2D.Double(0, 0)));
         } else {
@@ -107,6 +110,7 @@ public class Necropick extends Enemy implements shooter {
     @Override
     public boolean collide(Collidable collidable) {
         if (isItHide) return false;
+        if (collidable instanceof Barricados)return true;
         if ((collidable instanceof bolt && ((bolt) collidable).isGood()) || collidable instanceof Epsilon) {
             return true;
         }
@@ -116,14 +120,21 @@ public class Necropick extends Enemy implements shooter {
     @Override
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
         if (readyToShow)
-            return new PhotoShape(readyImage, (int) (PhotoCenter.getX() - panel.getX()), (int) (PhotoCenter.getY() - panel.getY()));
+            return new PhotoShape(readyImage, (int) (PhotoCenter.getX() - panel.getX()), (int) (PhotoCenter.getY() - panel.getY()), color);
         if (!isItHide)
-            return new PhotoShape(image, (int) (PhotoCenter.getX() - panel.getX()), (int) (PhotoCenter.getY() - panel.getY()));
+            return new PhotoShape(image, (int) (PhotoCenter.getX() - panel.getX()), (int) (PhotoCenter.getY() - panel.getY()), color);
         return null;
     }
 
     @Override
+    public void Die() {
+        super.Die();
+        action.interrupt();
+        fire.stop();
+    }
+
+    @Override
     public void fire(Point2D.Double mabda, Point2D.Double realTarget) {
-        new bolt(mabda, realTarget, Epsilon.getEpsilon().getSpeed() / 3, false, 5, Color.PINK);
+        new bolt(mabda, realTarget, Epsilon.getEpsilon().getSpeed() / 2, false, 5, Color.PINK);
     }
 }

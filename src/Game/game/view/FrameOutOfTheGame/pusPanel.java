@@ -37,8 +37,11 @@ public class pusPanel extends JPanel implements Runnable {
             @Override
             public void actionPerformed (ActionEvent e) {
                 frameInGame.getFrame ().remove (me);
-                Update.FRAME_UPDATE.start ();
-                Update.MODEL_UPDATE.start ();
+                Update.stopCLOSFRAME = true;
+                Update.stopFRAMEUPDATE = true;
+                Update.makeModel();
+                Update.makeFRame();
+                Update.makeClose();
                 inputListener.aaa = true;
                 frameInGame.getFrame ().repaint ();
             }

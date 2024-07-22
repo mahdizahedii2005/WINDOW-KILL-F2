@@ -5,7 +5,6 @@ import Game.game.Contoroler.building.MokhtasatPoint;
 import Game.game.Contoroler.building.Spawn;
 import Game.game.Contoroler.player.soundPlayer;
 import Game.game.model.Move.Direction;
-import Game.game.model.Move.Moveable;
 import Game.game.model.Move.follower;
 import Game.game.model.Move.impactAble;
 import Game.game.model.characterModel.*;
@@ -26,7 +25,7 @@ import static Game.Data.constants.*;
 import static Game.helper.addVectors;
 import static Game.helper.checkNan;
 
-public abstract class Enemy extends ObjectInGame implements Collidable, follower, shootGiver, impactAble {
+public abstract class moveAbleEnemy extends enemy implements Collidable,follower, shootGiver, impactAble {
 
     int impactNum = 0;
     double speed = Epsilon.getEpsilon().getSpeed()/2;
@@ -35,7 +34,7 @@ public abstract class Enemy extends ObjectInGame implements Collidable, follower
 
     private static int numberofenemy = 0;
 
-    public Enemy(Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp, int damageDaler, float maxR ) {
+    public moveAbleEnemy(Point2D.Double center, Color color, int nPoint, double[] xPoint, double[] yPoint, int hp, int damageDaler, float maxR ) {
         super(center, color, UUID.randomUUID().toString(), hp,maxR,damageDaler);
         if (checkNan(xPoint, yPoint)) {
             numberofenemy++;
@@ -111,11 +110,6 @@ public abstract class Enemy extends ObjectInGame implements Collidable, follower
     public boolean collide(Collidable collidable) {
         if (collidable instanceof PanelInGame)return false;
         return true;
-    }
-
-    @Override
-    public CollisionState checkCollision(Collidable collidable) {
-        return Collidable.super.checkCollision(collidable);
     }
 
     @Override

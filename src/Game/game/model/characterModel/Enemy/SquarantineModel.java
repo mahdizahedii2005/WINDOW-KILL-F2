@@ -15,7 +15,7 @@ import static Game.Data.constants.SPEED;
 import static Game.Data.constants.SQUAER_COLOR;
 import static Game.game.Contoroler.control.Controller.fixThePoint;
 
-public class SquarantineModel extends Enemy implements NormalFollower {
+public class SquarantineModel extends moveAbleEnemy implements NormalFollower {
     private int cycle = 0;
     private boolean isPower = false;
 

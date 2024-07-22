@@ -4,6 +4,7 @@ public class DefaultMethods {
     //SIN,COS PRE-PROCESSING//
     public static double[] sinTable = new double[360];
     public static double[] cosTable = new double[360];
+    public static double[] tanTable = new double[360];
     public static double[] radianTable = new double[360];
 
     static {
@@ -12,6 +13,7 @@ public class DefaultMethods {
             DefaultMethods.sinTable[i] = Math.sin(radian);
             DefaultMethods.cosTable[i] = Math.cos(radian);
             DefaultMethods.radianTable[i] = radian;
+            DefaultMethods.tanTable[i] = Math.tan(radian);
         }
     }
 

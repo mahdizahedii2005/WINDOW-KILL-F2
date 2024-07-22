@@ -1,8 +1,6 @@
 package Game.game.model.characterModel;
 
-import Game.game.model.Move.impactAble;
 import Game.game.model.characterModel.Panels.PanelInGame;
-import Game.game.model.collision.Collidable;
 import Game.game.view.characterView.DrawAbleObject;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -35,7 +33,6 @@ public abstract class ObjectInGame extends ThingsInGame {
         this.center = center;
         this.HP = hp;
         this.radius = radius;
-        objectInGames.add(this);
     }
 
     public ObjectInGame(Point2D.Double center, Color color, String id, int hp, float maxRadius, int damageDaler) {
@@ -45,16 +42,27 @@ public abstract class ObjectInGame extends ThingsInGame {
         this.color = color;
         this.center = center;
         this.HP = hp;
-        objectInGames.add(this);
     }
 
     public abstract DrawAbleObject getDrawAbleObject(PanelInGame panel);
 
     public void CreateGeometry() {
-        if (vertices.size() != 0) {
+        if (isCirClr) {
+            vertices = new ArrayList<>();
+            double r = radius / Math.sqrt(2);
+            vertices.add(new Point2D.Double(center.getX(), center.getY() - radius));
+            vertices.add(new Point2D.Double(center.getX() + r, center.getY() - r));
+            vertices.add(new Point2D.Double(center.getX() + radius, center.getY()));
+            vertices.add(new Point2D.Double(center.getX() + r, center.getY() + r));
+            vertices.add(new Point2D.Double(center.getX(), center.getY() + radius));
+            vertices.add(new Point2D.Double(center.getX() - r, center.getY() + r));
+            vertices.add(new Point2D.Double(center.getX() - radius, center.getY()));
+            vertices.add(new Point2D.Double(center.getX() - r, center.getY() - r));
+        }
+        if (!vertices.isEmpty()) {
             Coordinate[] coordinates = new Coordinate[vertices.size() + 1];
             for (int i = 0; i < vertices.size(); i++) coordinates[i] = toCoordinate(vertices.get(i));
-            coordinates[vertices.size()] = toCoordinate(vertices.get(0));
+            coordinates[vertices.size()] = toCoordinate(vertices.getFirst());
             geometry = new GeometryFactory().createLineString(coordinates);
         } else geometry = new GeometryFactory().createLineString(new Coordinate[0]);
     }
@@ -64,6 +72,10 @@ public abstract class ObjectInGame extends ThingsInGame {
         if (HP == 0){
             Die();
         }
+    }
+
+    public boolean isAlive() {
+        return HP > 0;
     }
 
     public Color getColor() {

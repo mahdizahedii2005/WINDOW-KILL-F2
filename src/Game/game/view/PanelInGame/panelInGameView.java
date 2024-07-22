@@ -1,6 +1,5 @@
 package Game.game.view.PanelInGame;
 
-import Game.game.model.characterModel.epsilonFriend.Epsilon;
 import Game.game.view.characterView.DrawAble;
 import Game.game.view.characterView.DrawAbleObject;
 
@@ -8,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static Game.Data.constants.*;
+import static Game.Data.constants.PANEL_BACK_GRAND;
 
 public class panelInGameView extends JPanel implements fixAble {
     private ArrayList<DrawAbleObject> objectForDraw;
@@ -35,10 +34,13 @@ public class panelInGameView extends JPanel implements fixAble {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (DrawAble drawAbleObject : objectForDraw) {
+        super.paintComponent(g);//TODO
+        if (objectForDraw != null) {
+            for (int i = 0; i < objectForDraw.size(); i++) {
+                DrawAble drawAbleObject = objectForDraw.get(i);
             if (drawAbleObject==null)continue;
             drawAbleObject.Draw(g, this);
+            }
         }
     }
 

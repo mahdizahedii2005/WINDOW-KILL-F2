@@ -10,8 +10,8 @@ public class PhotoShape extends DrawAbleObject {
     private BufferedImage image;
     private int x, y;
 
-    public PhotoShape(BufferedImage image, int x, int y) {
-        super(Color.BLACK);
+    public PhotoShape(BufferedImage image, int x, int y,Color color) {
+        super(color);
         this.image = image;
         this.x = x;
         this.y = y;

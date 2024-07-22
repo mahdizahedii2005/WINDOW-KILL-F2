@@ -1,12 +1,11 @@
 package Game.game.model.characterModel.epsilonFriend;
 
-import Game.game.Contoroler.control.Update;
 import Game.game.model.Move.Direction;
-import Game.game.model.Move.Moveable;
 import Game.game.model.Move.impactAble;
+import Game.game.model.Move.linearMotion;
 import Game.game.model.characterModel.ObjectInGame;
+import Game.game.model.characterModel.Panels.NonIsometricPanel;
 import Game.game.model.characterModel.Panels.PanelInGame;
-import Game.game.model.characterModel.Panels.rigidPanel;
 import Game.game.model.collision.Collidable;
 import Game.game.model.collision.CollisionState;
 import Game.game.model.shooting.shootGiver;
@@ -25,19 +24,26 @@ import static Game.game.model.characterModel.Panels.PanelInGame.PANELS;
 import static Game.helper.addVectors;
 import static Game.helper.multiplyVector;
 
-public class Epsilon extends ObjectInGame implements Collidable, Moveable, shooter, impactAble, shootGiver {
+public class Epsilon extends ObjectInGame implements Collidable, linearMotion, shooter, impactAble, shootGiver {
     private int impactNum = 0;
     private double exp = 0;
     private boolean sefrShode = false;
     private static Epsilon epsilon = null;
     private int MaxHp = 100;
-    private double speed = SPEED;
+    private double speed = SPEED / 1.14;
     private Direction MoveDirection = new Direction(new Point2D.Double(0, 0));
     private double totalExp = 0;
+    public NonIsometricPanel mainPanel;
 
-    public Epsilon(Point2D.Double center, double radius) {
+    public Epsilon(Point2D.Double center, double radius, NonIsometricPanel nonIsometricPanel) {
         super(center, Color.WHITE, UUID.randomUUID().toString(), 100, radius, true, 5);
         epsilon = this;
+        this.mainPanel = nonIsometricPanel;
+    }
+
+    @Override
+    public void CreateGeometry() {
+        super.CreateGeometry();
     }
 
     public void changDirection(double x, double y) {
@@ -87,9 +93,10 @@ public class Epsilon extends ObjectInGame implements Collidable, Moveable, shoot
 
     public boolean dontGoOutOfPanel(Point2D.Double movement) {
         Point2D.Double centerr = addVectors(center, movement);
-        for (PanelInGame ri : PANELS) {
-            if (ri instanceof rigidPanel) {
-                Collidable rigid = (rigidPanel) ri;
+        for (int i = 0; i < PANELS.size(); i++) {
+            PanelInGame ri = PANELS.get(i);
+            if (ri instanceof NonIsometricPanel) {
+                Collidable rigid = (NonIsometricPanel) ri;
                 rigid.createGeometry();
                 CollisionState collisionState = this.checkCollision(rigid);
                 if (collisionState.isCollision()) {

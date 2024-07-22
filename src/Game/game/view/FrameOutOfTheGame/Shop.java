@@ -60,8 +60,11 @@ public class Shop extends JPanel implements Runnable {
             public void actionPerformed (ActionEvent e) {
                 frameInGame.getFrame ().remove (me);
                 inputListener.stop = true;
-                Update.FRAME_UPDATE.start ();
-                Update.MODEL_UPDATE.start ();
+                Update.stopCLOSFRAME = true;
+                Update.stopFRAMEUPDATE = true;
+                Update.makeClose();
+                Update.makeFRame();
+                Update.makeModel();
                 if (currentBuy) {
                     new Timer (5000, new AbstractAction () {
                         @Override

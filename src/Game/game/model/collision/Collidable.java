@@ -1,6 +1,6 @@
 package Game.game.model.collision;
 
-import Game.game.model.characterModel.Panels.rigidPanel;
+import Game.game.model.characterModel.ObjectInGame;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -19,7 +19,7 @@ public interface Collidable {
     //    default boolean collision(Collidable col) {
 //        ObjectInGame s = (ObjectInGame) (col);
 //        if (this instanceof rasEpsilon.ras || col instanceof rasEpsilon.ras) {
-//            if (this instanceof Enemy || col instanceof Enemy) {
+//            if (this instanceof moveAbleEnemy || col instanceof moveAbleEnemy) {
 //                return s.getCenter().distance(getCenter()) < s.getRadius() - 5;
 //            }
 //        }
@@ -57,7 +57,7 @@ public interface Collidable {
 //        return false;
 //    }
     static void CreateAllGeometries() {
-        for (Collidable collidable : new ArrayList<>(Collidable.collidables)) collidable.createGeometry();
+        for (ObjectInGame object : new ArrayList<>(ObjectInGame.objectInGames)) object.CreateGeometry();
     }
 
     static Coordinate getClosestCoordinate(Coordinate anchor, Geometry geometry) {
@@ -90,13 +90,22 @@ public interface Collidable {
                 collisionPoint = weightedAddPoints(getAnchor(), collidable.getAnchor(), collidable.getRadius(), getRadius());
             } else return new CollisionState();
         } else if (isCircular() && !collidable.isCircular()) {
+            try {
             Coordinate closest = getClosestCoordinate(toCoordinate(getAnchor()), collidable.getGeometry());
             if (closest.distance(toCoordinate(getAnchor())) <= getRadius() + COLLISION_SENSITIVITY) {
                 collisionPoint = toPoint(closest);
             } else return new CollisionState();
+            } catch (NullPointerException b) {
+                return new CollisionState();
+            }
         } else if (!isCircular() && collidable.isCircular()) return collidable.checkCollision(this);
         else {
-            Coordinate[] coordinates = DistanceOp.nearestPoints(getGeometry(), (collidable.getGeometry()));
+            Coordinate[] coordinates;
+            try {
+                coordinates = DistanceOp.nearestPoints(getGeometry(), (collidable.getGeometry()));
+            } catch (NullPointerException b) {
+                return new CollisionState();
+            }
             LineSegment segment = new LineSegment(coordinates[0], coordinates[1]);
             if (segment.getLength() <= COLLISION_SENSITIVITY) collisionPoint = toPoint(segment.midPoint());
             else return new CollisionState();

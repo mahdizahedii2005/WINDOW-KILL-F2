@@ -1,13 +1,11 @@
 package Game.game;
 
-import Game.game.Contoroler.building.BuilderHelper;
 import Game.game.Contoroler.building.Spawn;
 import Game.game.Contoroler.control.Update;
 import Game.game.Contoroler.player.soundPlayer;
-import Game.game.model.characterModel.*;
-import Game.game.model.characterModel.Panels.rigidPanel;
+import Game.game.model.characterModel.Enemy.boss.boss;
+import Game.game.model.characterModel.Panels.NonIsometricPanel;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
-import Game.game.model.collision.Collidable;
 import Game.game.view.PanelInGame.frameInGame;
 import Game.game.view.inputListener;
 import Game.login.setting;
@@ -17,11 +15,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 import static Game.Data.constants.*;
-import static Game.game.model.Move.Moveable.moveAble;
 import static Game.game.model.Move.impactAble.impactAblesList;
+import static Game.game.model.Move.linearMotion.MOVE_ABLE;
+import static Game.game.model.characterModel.ObjectInGame.objectInGames;
 import static Game.game.model.collision.Collidable.collidables;
 
 public class gameApplication implements Runnable {
@@ -81,22 +79,24 @@ public class gameApplication implements Runnable {
     }
 
     private void initGame() {
-        new rigidPanel(FIRST_PANEL_RECTANGLE.x, FIRST_PANEL_RECTANGLE.y, FIRST_PANEL_DIMENSION.height, FIRST_PANEL_DIMENSION.width);
-        new Epsilon(new Point2D.Double(frameOfGame.getWidth() / 2d, frameOfGame.getHeight() / 2d), (int) RADIUS_OF_EPSILON);
+        NonIsometricPanel a = new NonIsometricPanel(FIRST_PANEL_RECTANGLE.x, FIRST_PANEL_RECTANGLE.y, FIRST_PANEL_DIMENSION.height, FIRST_PANEL_DIMENSION.width, false, 0);
+        new Epsilon(new Point2D.Double(frameOfGame.getWidth() / 2d, frameOfGame.getHeight() / 2d), (int) RADIUS_OF_EPSILON, a);
         new Update();
         new inputListener();
-        new Spawn();
-        BuilderHelper.NecropickBuilder(new Point2D.Double((double) (Epsilon.getEpsilon().getAnchor().getX() + 100), (double) Epsilon.getEpsilon().getCenter().getY()+20));
+//        new Spawn();
+//        BuilderHelper.ArchmireBuilder(new Point2D.Double((Epsilon.getEpsilon().getAnchor().getX() + 500), (double) Epsilon.getEpsilon().getCenter().getY() + 70),false);
+//        BuilderHelper.startBlackOrb();
+        new boss();
     }
 
     @Override
     public void run() {
         CLoseAllProg();
         timeOfStart = System.nanoTime();
-        ObjectInGame.objectInGames = new ArrayList<>();
+        objectInGames.clear();
         collidables.clear();
         impactAblesList.clear();
-        moveAble.clear();
+        MOVE_ABLE.clear();
         fixDifficallity();
         fixSpeed();
         initGeraghic();

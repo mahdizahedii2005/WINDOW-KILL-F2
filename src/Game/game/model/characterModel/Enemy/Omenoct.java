@@ -1,8 +1,8 @@
 package Game.game.model.characterModel.Enemy;
 
 import Game.game.model.Move.Direction;
+import Game.game.model.characterModel.Panels.NonIsometricPanel;
 import Game.game.model.characterModel.Panels.PanelInGame;
-import Game.game.model.characterModel.Panels.rigidPanel;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
 import Game.game.model.characterModel.epsilonFriend.bolt;
 import Game.game.model.collision.Collidable;
@@ -27,7 +27,7 @@ import static Game.Data.constants.OMENOCT_RADIUS;
 import static Game.game.Contoroler.control.Controller.*;
 import static Game.game.model.characterModel.Panels.PanelInGame.PANELS;
 
-public class Omenoct extends Enemy implements shooter {
+public class Omenoct extends moveAbleEnemy implements shooter {
     public boolean isItFix = false;
     private BufferedImage image;
     private String imagePath = "src\\sources\\photo\\Omenoct .png";
@@ -69,7 +69,7 @@ public class Omenoct extends Enemy implements shooter {
     @Override
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
         Point2D fix = fixThePoint(new Point2D.Double((double) center.getX() - (image.getWidth() / 2), (double) center.getY() - (image.getHeight() / 2)), panel);
-        return new PhotoShape(image, (int) fix.getX(), (int) fix.getY());
+        return new PhotoShape(image, (int) fix.getX(), (int) fix.getY(),color);
     }
 
     public int getRangedDamage() {
@@ -91,7 +91,7 @@ public class Omenoct extends Enemy implements shooter {
         Epsilon epsilon = Epsilon.getEpsilon();
         Point2D.Double target = null;
         for (PanelInGame panel : PANELS) {
-            if (panel instanceof rigidPanel) {
+            if (panel instanceof NonIsometricPanel) {
                 if (isItInside(epsilon, panel)) {
                     Line2D line2D;
                     switch (side) {

@@ -2,7 +2,7 @@ package Game.game.Contoroler.thingInGame;
 
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.impactAble;
-import Game.game.model.characterModel.Enemy.Enemy;
+import Game.game.model.characterModel.Enemy.moveAbleEnemy;
 
 import java.awt.geom.Point2D;
 
@@ -45,7 +45,7 @@ public class impact {
 //            if (impactPower == IMPACT_POWER) {
                 able.setSpeed (Math.sqrt (power * power + able.getSpeed () * able.getSpeed () - (able.getSpeed () * power)));
 //            }
-            if (able instanceof Enemy) {
+            if (able instanceof moveAbleEnemy) {
                 able.setMoveDirection (new Direction (new Direction (relativeLocation (able.getCenter (), new Point2D.Double((double) mabda.getX(),(double) mabda.getY())))));
             } else {
                 able.setMoveDirection (new Direction (addVectors (new Direction (relativeLocation

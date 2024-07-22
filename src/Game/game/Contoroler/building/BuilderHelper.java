@@ -1,14 +1,16 @@
 package Game.game.Contoroler.building;
 
+import Game.game.Contoroler.control.Controller;
 import Game.game.Contoroler.control.DefaultMethods;
-import Game.game.model.characterModel.Enemy.Necropick;
-import Game.game.model.characterModel.Enemy.Omenoct;
-import Game.game.model.characterModel.Enemy.SquarantineModel;
-import Game.game.model.characterModel.Enemy.TrigorathModel;
+import Game.game.model.characterModel.Enemy.*;
 import Game.game.model.characterModel.Panels.PanelInGame;
+import Game.game.model.characterModel.Panels.isometricPanel;
+import Game.game.model.characterModel.epsilonFriend.Epsilon;
 import Game.game.model.collision.Collidable;
+import Game.helper;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 import static Game.Data.constants.*;
@@ -26,6 +28,15 @@ public class BuilderHelper {
 
     }
 
+    public static void ArchmireBuilder(Point2D.Double point, boolean isBaby) {
+        isBaby = !isBaby;
+        double[] x = new double[]{isBaby ? -51 : -51 / 2d, isBaby ? -39 : -39 / 2d, 0, isBaby ? 35 : 35 / 2d, isBaby ? 51 : 51 / 2d, isBaby ? 35 : 35 / 2d,
+                0, isBaby ? -41 : -41 / 2d};
+        double[] y = new double[]{0, isBaby ? -29 : -29 / 2d, isBaby ? -44 : -22, isBaby ? -33 : -33 / 2d, 0, isBaby ? 34 : 34 / 2d, isBaby ? 44 : 22,
+                isBaby ? 26 : 13};
+        new Archmire(point, helper.addVectors(point.x, x), helper.addVectors(point.y, y), !isBaby);
+
+    }
 
     public static void trigorathBuilder(Point2D.Double p1, Point2D.Double p2) {
         double shib = (p2.y - p1.y) / (p2.x - p1.x);
@@ -138,7 +149,30 @@ public class BuilderHelper {
         Point2D.Double p9 = new Point2D.Double(ceneterOfPhoto.getX() + 9, ceneterOfPhoto.getY() + 45);
         Point2D.Double p10 = new Point2D.Double(ceneterOfPhoto.getX(), ceneterOfPhoto.getY() + 35);
         Point2D.Double realCenter = new Point2D.Double(ceneterOfPhoto.getX() + 40, ceneterOfPhoto.getY() + 30);
-        new Necropick(ceneterOfPhoto,realCenter,10,new double[]{p10.getX(),p9.getX(),p8.getX(),p7.getX(),p6.getX(),p5.getX(),p4.getX(),p3.getX(),p2.getX(),p1.getX()},new double[]{p10.getY(),p9.getY(),p8.getY(),p7.getY(),p6.getY(),p5.getY(),p4.getY(),p3.getY(),p2.getY(),p1.getY()});
+        new Necropick(ceneterOfPhoto, realCenter, 10, new double[]{p10.getX(), p9.getX(), p8.getX(), p7.getX(), p6.getX(), p5.getX(), p4.getX(), p3.getX(), p2.getX(), p1.getX()}, new double[]{p10.getY(), p9.getY(), p8.getY(), p7.getY(), p6.getY(), p5.getY(), p4.getY(), p3.getY(), p2.getY(), p1.getY()});
+    }
+
+    public static void BarricadosBuilder(Point2D.Double center) {
+        ArrayList<Point2D> ver = new ArrayList<>();
+        ver.add(new Point2D.Double(center.getX() - 90, center.getY() - 90));
+        ver.add(new Point2D.Double(center.getX() + 90, center.getY() - 90));
+        ver.add(new Point2D.Double(center.getX() + 90, center.getY() + 90));
+        ver.add(new Point2D.Double(center.getX() - 90, center.getY() + 90));
+        new Barricados(center, ver);
+    }
+
+    public static void wyrmBuilder(Point2D.Double center) {
+        Point2D.Double photoCenter = new Point2D.Double(center.getX() - 40, center.getY() - 32);
+        ArrayList<Point2D> arrayList = new ArrayList<>();
+        arrayList.add(new Point2D.Double(photoCenter.getX(), photoCenter.getY() + 16));
+        arrayList.add(new Point2D.Double(photoCenter.getX() + 24, photoCenter.getY()));
+        arrayList.add(new Point2D.Double(photoCenter.getX() + 52, photoCenter.getY() + 1));
+        arrayList.add(new Point2D.Double(photoCenter.getX() + 68, photoCenter.getY() + 20));
+        arrayList.add(new Point2D.Double(photoCenter.getX() + 75, photoCenter.getY() + 44));
+        arrayList.add(new Point2D.Double(photoCenter.getX() + 59, photoCenter.getY() + 55));
+        arrayList.add(new Point2D.Double(photoCenter.getX() + 25, photoCenter.getY() + 61));
+        arrayList.add(new Point2D.Double(photoCenter.getX() + 7, photoCenter.getY() + 41));
+        new Wyrm(center, arrayList, Epsilon.getEpsilon());
     }
 
     private static Point2D.Double getCenter(double[] Xpoint, double[] Ypoint) {
@@ -162,4 +196,44 @@ public class BuilderHelper {
         return new Point2D.Double((Xpoint[0] + Xpoint[3]) / 2d, (Ypoint[0] + Ypoint[3]) / 2d);
     }
 
+    public static void startBlackOrb() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Point2D.Double epsilonCenter = Epsilon.getEpsilon().getCenter();
+                blackOrbs blackOrbs = new blackOrbs();
+                ArrayList<isometricPanel> panels = new ArrayList<>();
+                for (int i = 1; i < 6; i++) {
+                    isometricPanel isometricPanel = null;
+                    switch (i) {
+                        case 1 ->
+                                isometricPanel = new isometricPanel(epsilonCenter.getX() - 239 - 35, epsilonCenter.getY() - 111 - 35, 70, 70, false, 0);
+                        case 2 ->
+                                isometricPanel = new isometricPanel(epsilonCenter.getX() - 35, epsilonCenter.getY() - 251 - 35, 70, 70, false, 0);
+                        case 3 ->
+                                isometricPanel = new isometricPanel(epsilonCenter.getX() + 275 - 35, epsilonCenter.getY() - 126 - 35, 70, 70, false, 0);
+                        case 4 ->
+                                isometricPanel = new isometricPanel(epsilonCenter.getX() + 228 - 35, epsilonCenter.getY() + 208 - 35, 70, 70, false, 0);
+                        case 5 ->
+                                isometricPanel = new isometricPanel(epsilonCenter.getX() - 202 - 35, epsilonCenter.getY() + 226 - 35, 70, 70, false, 0);
+                    }
+                    panels.add(isometricPanel);
+                    try {
+                        Thread.sleep(1111);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                for (int i = 1; i < 6; i++) {
+                    blackOrbs.creatBlackOrb(new Point2D.Double(panels.get(i-1).getX() + 35, panels.get(i-1).getY() + 35), i, panels.get(i-1));
+                }
+                try {
+                    blackOrbs.start();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("finish");
+            }
+        }).start();
+    }
 }

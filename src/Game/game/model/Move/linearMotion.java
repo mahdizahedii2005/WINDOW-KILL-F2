@@ -1,10 +1,8 @@
 package Game.game.model.Move;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public interface Moveable {
-    ArrayList<Moveable> moveAble = new ArrayList<>();
+public interface linearMotion extends Movable{
 
     void move(Direction direction, double speed);
 

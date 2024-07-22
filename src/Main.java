@@ -7,7 +7,8 @@ import static Game.game.Contoroler.control.Controller.swich;
 public class Main {
     public static void main(String[] args) {
         new Thread(new application ()).start();
-//        ArrayList<String> a = new ArrayList<>();
+//        System.out.println(new String("U+1F97A"));
+////        ArrayList<String> a = new ArrayList<>();
 //        a.add("first");
 //        a.add("seccond");
 //        System.out.println(a);

@@ -3,7 +3,7 @@ package Game.game.model.Move;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public interface impactAble extends Moveable {
+public interface impactAble extends linearMotion {
     ArrayList<impactAble> impactAblesList = new ArrayList<> ();
 
     public int getImpactNum ();

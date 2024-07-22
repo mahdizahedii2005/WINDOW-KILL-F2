@@ -61,6 +61,10 @@ public class prize extends ObjectInGame implements Collidable {
     }
 
     @Override
+    public void getHit(int damage) {
+    }
+
+    @Override
     public void createGeometry() {
         super.CreateGeometry();
     }

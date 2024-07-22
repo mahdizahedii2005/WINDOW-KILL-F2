@@ -25,10 +25,18 @@ public abstract class helper {
         return new Point2D.Double(point1.getX() + point2.getX(), point1.getY() + point2.getY());
     }
 
+    public static double[] addVectors(double point, double[] arr) {
+        double[] result = new double[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            result[i] = point + arr[i];
+        }
+        return result;
+    }
+
     public static MokhtasatPoint addVectors(ArrayList<Point2D> ras, Point2D.Double center, Point2D.Double vector, double speed) {
         ArrayList<Point2D> newras = new ArrayList<>();
         for (int i = 0; i < ras.size(); i++) {
-            newras.add(i,new Point2D.Double(ras.get(i).getX() + (vector.x * speed), ras.get(i).getY() + (vector.y * speed)));
+            newras.add(i, new Point2D.Double(ras.get(i).getX() + (vector.x * speed), ras.get(i).getY() + (vector.y * speed)));
         }
         return new MokhtasatPoint(newras, addVectors(center, multiplyVector(vector, speed)));
     }

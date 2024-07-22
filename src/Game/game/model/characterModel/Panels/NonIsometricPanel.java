@@ -3,7 +3,6 @@ package Game.game.model.characterModel.Panels;
 import Game.game.Contoroler.control.Update;
 import Game.game.model.characterModel.Enemy.Omenoct;
 import Game.game.model.characterModel.ObjectInGame;
-import Game.game.model.characterModel.ThingsInGame;
 import Game.game.model.characterModel.epsilonFriend.bolt;
 import Game.game.model.closeFRame.CLOSEABLE;
 import Game.game.model.collision.Collidable;
@@ -12,15 +11,17 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import static Game.Data.constants.*;
 import static Game.game.Contoroler.control.Controller.isItInside;
+import static Game.game.model.Utils.toCoordinate;
 
-public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, shootGiver {
-    public rigidPanel(double x, double y, double height, double width) {
-        super(x, y, height, width);
+public class NonIsometricPanel extends PanelInGame implements CLOSEABLE, shootGiver {
+    public NonIsometricPanel(double x, double y, double height, double width, boolean isSolb, double speed) {
+        super(x, y, height, width, isSolb, speed);
     }
 
     //    enum wallSide {
@@ -41,7 +42,7 @@ public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, sh
 //
 //        abstract void increase(double RANGE_OF_INCREASE_PLACE, double moveRange);
 ////        }
-//    public rigidPanel(double x, double y, double height, double width) {
+//    public NonIsometricPanel(double x, double y, double height, double width) {
 //        super(x, y, height, width);
 //        collidables.add(this);
 //    }
@@ -93,23 +94,37 @@ public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, sh
         return null;
     }
 
+    public Line2D addLineX(Line2D line2D, double range) {
+        return new Line2D.Double(line2D.getX1() + range, line2D.getY1(), line2D.getX2() + range, line2D.getY2());
+    }
+
+    public Line2D addLineY(Line2D line2D, double range) {
+        return new Line2D.Double(line2D.getX1(), line2D.getY1() + range, line2D.getX2(), line2D.getY2() + range);
+    }
+
     public void IncreaseLeft(double RANGE_OF_INCREASE_PLACE) {
-        setWidth(getWidth() + RANGE_OF_INCREASE_PLACE);
-        setX(getX() - RANGE_OF_INCREASE_PLACE);
+        if (validLine(addLineX(getLeftPanel(), -1 * RANGE_OF_INCREASE_PLACE), this)) {
+            setWidth(getWidth() + RANGE_OF_INCREASE_PLACE);
+            setX(getX() - RANGE_OF_INCREASE_PLACE);
+        }
     }
 
 
     public void IncreaseRight(double RANGE_OF_INCREASE_PLACE) {
-        setWidth(getWidth() + RANGE_OF_INCREASE_PLACE);
+        if (validLine(addLineX(getRightPanel(), RANGE_OF_INCREASE_PLACE), this))
+            setWidth(getWidth() + RANGE_OF_INCREASE_PLACE);
     }
 
     public void IncreaseUp(double RANGE_OF_INCREASE_PLACE) {
-        setHeight(getHeight() + RANGE_OF_INCREASE_PLACE);
-        setY(getY() - RANGE_OF_INCREASE_PLACE);
+        if (validLine(addLineY(getUpPanel(), -1 * RANGE_OF_INCREASE_PLACE), this)) {
+            setHeight(getHeight() + RANGE_OF_INCREASE_PLACE);
+            setY(getY() - RANGE_OF_INCREASE_PLACE);
+        }
     }
 
     public void IncreaseDown(double RANGE_OF_INCREASE_PLACE) {
-        setHeight(getHeight() + RANGE_OF_INCREASE_PLACE);
+        if (validLine(addLineY(getDownPanel(), RANGE_OF_INCREASE_PLACE), this))
+            setHeight(getHeight() + RANGE_OF_INCREASE_PLACE);
     }
 
     public void IncreaseLeft() {
@@ -218,15 +233,86 @@ public class rigidPanel extends PanelInGame implements Collidable, CLOSEABLE, sh
         return null;
     }
 
+    public boolean validLine(Line2D line2D, PanelInGame notThisPanel) {
+        for (int i = 0; i < PANELS.size(); i++) {
+            PanelInGame panel = PANELS.get(i);
+
+            if (panel != notThisPanel) {
+                panel.createGeometry();
+                if (panel.isSolb) {
+                    if (panel.checkCollision(new Collidable() {
+                        private Geometry geometry;
+
+                        @Override
+                        public float getMaxR() {
+                            return 0;
+                        }
+
+                        @Override
+                        public void createGeometry() {
+                            ArrayList<Point2D.Double> vertices = new ArrayList<>();
+                            vertices.add(new Point2D.Double(line2D.getX1(), line2D.getY1()));
+                            vertices.add(new Point2D.Double(line2D.getX2(), line2D.getY2()));
+                            if (vertices.size() != 0) {
+                                Coordinate[] coordinates = new Coordinate[vertices.size() + 1];
+                                for (int i = 0; i < vertices.size(); i++)
+                                    coordinates[i] = toCoordinate(vertices.get(i));
+                                coordinates[vertices.size()] = toCoordinate(vertices.get(0));
+                                geometry = new GeometryFactory().createLineString(coordinates);
+                            }
+                        }
+
+                        @Override
+                        public Geometry getGeometry() {
+                            createGeometry();
+                            return geometry;
+                        }
+
+                        @Override
+                        public boolean isCircular() {
+                            return false;
+                        }
+
+                        @Override
+                        public float getRadius() {
+                            return 0;
+                        }
+
+                        @Override
+                        public Point2D getAnchor() {
+                            return null;
+                        }
+
+                        @Override
+                        public float getSpeed() {
+                            return 0;
+                        }
+
+                        @Override
+                        public boolean collide(Collidable collidable) {
+                            return true;
+                        }
+
+                        @Override
+                        public void play(Collidable collidable) {
+
+                        }
+                    }).isCollision()) return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public void reduceFrame() {
         if (validHeight()) {
-            reduceDown();
-            reduceUp();
+            if (validLine(getDownPanel(), this)) reduceDown();
+            if (validLine(getUpPanel(), this)) reduceUp();
         }
         if (validWidth()) {
-            reduceLeft();
-            reduceRight();
+            if (validLine(getLeftPanel(), this)) reduceLeft();
+            if (validLine(getRightPanel(), this)) reduceRight();
         }
     }
 

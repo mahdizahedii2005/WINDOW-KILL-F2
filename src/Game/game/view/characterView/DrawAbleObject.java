@@ -9,6 +9,10 @@ public abstract class DrawAbleObject implements DrawAble {
     protected Color color = Color.BLACK;
     protected ArrayList<whatPanelAndWhere> drawsPanel;
 
+    public Color getColor() {
+        return color;
+    }
+
     //    public String getId() {
 //        return id;
 //    }
