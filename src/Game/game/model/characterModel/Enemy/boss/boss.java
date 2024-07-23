@@ -16,6 +16,7 @@ import Game.game.model.shooting.shootGiver;
 import Game.game.model.shooting.shooter;
 import Game.game.view.characterView.DrawAbleObject;
 import Game.game.view.characterView.shape.PhotoShape;
+import Game.game.view.waveAnimation.win;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -450,7 +451,7 @@ public class boss {
                     throw new RuntimeException(e);
 
                 }
-                //todo win
+                new win();
             }
         }).start();
     }

@@ -35,12 +35,14 @@ public class panelInGameView extends JPanel implements fixAble {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);//TODO
+        try {
         if (objectForDraw != null) {
             for (int i = 0; i < objectForDraw.size(); i++) {
                 DrawAble drawAbleObject = objectForDraw.get(i);
             if (drawAbleObject==null)continue;
             drawAbleObject.Draw(g, this);
             }
+        }}catch (Exception e){
         }
     }
 

@@ -35,7 +35,7 @@ public class Spawn {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                feethWave.start ();
+                firstWave.start();
             }
         }).start();
     }
@@ -48,6 +48,8 @@ public class Spawn {
         getSpawn().firstWave.stop();
         getSpawn().secondWave.stop();
         getSpawn().thirdWave.stop();
+        getSpawn().feethWave.stop();
+        getSpawn().fourthWave.stop();
         Spawn.spawn = null;
     }
 
@@ -92,18 +94,24 @@ public class Spawn {
                     if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 5) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
                     }
                 }
                 case 1 -> {
                     if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 5) {
                         BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                     }
                 case 2 -> {
                     if (NUMBER_OF_NEPRO_ENEMY < 1) {
                         BuilderHelper.NecropickBuilder(findPlace.getP2());
                         totalEnemy--;
+                        state++;
+                    } else {
+                        state++;
                     }
                 }
             }
@@ -125,24 +133,34 @@ public class Spawn {
                     if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 7) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 1 -> {
                     if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 8) {
                         BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 2 -> {
                     if (NUMBER_OF_NEPRO_ENEMY < 2) {
                         BuilderHelper.NecropickBuilder(findPlace.getP2());
                         totalEnemy--;
+                        state++;
+                    } else {
+                        state++;
                     }
                 }
                 case 3 -> {
                     if (NUMBER_OF_OMENICT_ENEMY < 1) {
                         BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
                         totalEnemy--;
+                        state++;
+                    } else {
+                        state++;
                     }
                 }
             }
@@ -165,36 +183,53 @@ public class Spawn {
                     if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 10) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 1 -> {
                     if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 10) {
                         BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 2 -> {
                     if (NUMBER_OF_NEPRO_ENEMY < 2) {
                         BuilderHelper.NecropickBuilder(findPlace.getP2());
                         totalEnemy--;
+                        state++;
+                    } else {
+                        state++;
                     }
                 }
                 case 3 -> {
                     if (NUMBER_OF_OMENICT_ENEMY < 1) {
                         BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
                         totalEnemy--;
+                        state++;
+                    } else {
+                        state++;
                     }
                 }
                 case 4 -> {
                     if (NUMBER_OF_BARRICOD_ENEMY < 1) {
                         BuilderHelper.OmenoctBuilder(new Point2D.Double(findPlace.getP2().getX() + 100, findPlace.getP2().getY()), right);
                         totalEnemy--;
+                        state++;
+                    } else {
+                        state++;
                     }
                 }
                 case 5 -> {
                     if (NUMBER_OF_WYRM_ENEMY < 2) {
                         BuilderHelper.wyrmBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()));
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
             }
@@ -217,18 +252,24 @@ public class Spawn {
                     if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 12) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 1 -> {
                     if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 12) {
                         BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 2 -> {
                     if (NUMBER_OF_NEPRO_ENEMY < 2) {
                         BuilderHelper.NecropickBuilder(findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 3 -> {
@@ -236,24 +277,40 @@ public class Spawn {
                         if (NUMBER_OF_OMENICT_ENEMY == 1) BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
                         else BuilderHelper.OmenoctBuilder(findPlace.getP2(), left);
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 4 -> {
                     if (NUMBER_OF_BARRICOD_ENEMY < 1) {
                         BuilderHelper.OmenoctBuilder(new Point2D.Double(findPlace.getP2().getX() + 100, findPlace.getP2().getY()), right);
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 5 -> {
                     if (NUMBER_OF_WYRM_ENEMY < 2) {
                         BuilderHelper.wyrmBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()));
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 6 -> {
                     if (NUMBER_OF_ARCHMIRE_ENEMY < 1) {
                         BuilderHelper.ArchmireBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()), false);
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
             }
@@ -276,18 +333,26 @@ public class Spawn {
                     if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 15) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 1 -> {
                     if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 15) {
                         BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
                     }
                 }
                 case 2 -> {
                     if (NUMBER_OF_NEPRO_ENEMY < 2) {
                         BuilderHelper.NecropickBuilder(findPlace.getP2());
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 3 -> {
@@ -295,30 +360,50 @@ public class Spawn {
                         if (NUMBER_OF_OMENICT_ENEMY == 1) BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
                         else BuilderHelper.OmenoctBuilder(findPlace.getP2(), left);
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 4 -> {
                     if (NUMBER_OF_BARRICOD_ENEMY < 1) {
                         BuilderHelper.OmenoctBuilder(new Point2D.Double(findPlace.getP2().getX() + 100, findPlace.getP2().getY()), right);
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 5 -> {
                     if (NUMBER_OF_WYRM_ENEMY < 2) {
                         BuilderHelper.wyrmBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()));
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 6 -> {
                     if (NUMBER_OF_ARCHMIRE_ENEMY < 2) {
                         BuilderHelper.ArchmireBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()), false);
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
                 case 7 -> {
                     if (NUMBER_OF_BALCKORB_ENEMY < 1) {
                         BuilderHelper.startBlackOrb();
                         totalEnemy--;
+                        state++;
+
+                    } else {
+                        state++;
                     }
                 }
             }
@@ -332,12 +417,14 @@ public class Spawn {
     private void StopWave1() {
         System.out.println("stop wave 1");
         firstWave.stop();
+        JOptionPane.showMessageDialog(Game.game.view.PanelInGame.frameInGame.getFrame(), "wave 1 is finished", "finish wave", JOptionPane.WARNING_MESSAGE);
         secondWave.start();
     }
 
     private void StopWave2() {
         System.out.println("stop wave 2");
         secondWave.stop();
+        JOptionPane.showMessageDialog(Game.game.view.PanelInGame.frameInGame.getFrame(), "wave 2 is finished", "finish wave", JOptionPane.WARNING_MESSAGE);
         thirdWave.start();
 
     }
@@ -345,6 +432,7 @@ public class Spawn {
     private void StopWave3() {
         System.out.println("stop wave 2");
         thirdWave.stop();
+        JOptionPane.showMessageDialog(Game.game.view.PanelInGame.frameInGame.getFrame(), "wave 3 is finished", "finish wave", JOptionPane.WARNING_MESSAGE);
         fourthWave.start();
     }
 
@@ -352,12 +440,14 @@ public class Spawn {
     private void StopWave4() {
         System.out.println("stop wave 2");
         fourthWave.stop();
+        JOptionPane.showMessageDialog(Game.game.view.PanelInGame.frameInGame.getFrame(), "wave 4 is finished", "finish wave", JOptionPane.WARNING_MESSAGE);
         feethWave.start();
     }
 
     private void StopWave5() {
         System.out.println("stop wave 2");
         feethWave.stop();
+        JOptionPane.showMessageDialog(Game.game.view.PanelInGame.frameInGame.getFrame(), "wave 5 is finished", "finish wave", JOptionPane.WARNING_MESSAGE);
         new boss();
     }
 

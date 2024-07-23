@@ -2,7 +2,6 @@ package Game.game.model.characterModel.epsilonFriend;
 
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.linearMotion;
-import Game.game.model.characterModel.Enemy.Barricados;
 import Game.game.model.characterModel.ObjectInGame;
 import Game.game.model.characterModel.Panels.PanelInGame;
 import Game.game.model.collision.Collidable;
@@ -15,7 +14,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.UUID;
 
-import static Game.Data.constants.*;
+import static Game.Data.constants.BOLT_RADIUS;
 import static Game.game.Contoroler.control.Controller.fixThePoint;
 import static Game.helper.addVectors;
 import static Game.helper.multiplyVector;
@@ -142,6 +141,10 @@ public class bolt extends ObjectInGame implements linearMotion, Collidable {
 
     @Override
     public boolean collide(Collidable collidable) {
+        if (center.getX() < 0 && center.getY() < 0) {
+            Die();
+            return false;
+        }
         if (!good) return collidable instanceof Epsilon;
         return collidable instanceof shootGiver && !(collidable instanceof Epsilon);
     }

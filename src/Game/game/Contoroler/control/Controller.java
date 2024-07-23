@@ -163,7 +163,7 @@ public abstract class Controller {
 
     public static void fire(Point2D.Double target) {
         Epsilon.getEpsilon().fire(Epsilon.getEpsilon().getCenter(), target);
-        soundPlayer.play(FIRE_BOLT_PATH);
+        new soundPlayer(FIRE_BOLT_PATH).play();
     }
 
     public static void CreatNewPanelView(String id) {

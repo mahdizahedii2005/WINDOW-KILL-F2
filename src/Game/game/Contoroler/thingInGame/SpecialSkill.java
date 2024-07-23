@@ -13,199 +13,180 @@ import java.util.Random;
 import static Game.Data.constants.*;
 
 public abstract class SpecialSkill implements Runnable {
-    private static SpecialSkill currentSpecialSkill = new def1();
-    private static boolean coolDown = false;
-    static Timer coolDownTimer = new Timer (300000, new AbstractAction () {
-        private boolean first = true;
-
-        @Override
-        public void actionPerformed (ActionEvent e) {
-            if (first) {
-                first = false;
-                coolDown = true;
-            } else {
-                coolDown = false;
-                ((Timer) e.getSource ()).stop ();
-            }
-        }
-    });
+    private static SpecialSkill currentSpecialSkill = new atack1();
 
     public static class atack1 extends SpecialSkill {
-
-        Timer ActionTimer = new Timer (TIME_OF_INCREASE_DAMAGE, new AbstractAction () {
-            private boolean first = true;
-
-            @Override
-            public void actionPerformed (ActionEvent e) {
-                if (!coolDown) {
-                    if (first) {
-                        constants.ZaribOfEpsilonDamage = 2;
-                        first = false;
-                    } else {
-                        constants.ZaribOfEpsilonDamage = 1;
-                        coolDown = true;
-                        coolDownTimer.start ();
-                        ((Timer) e.getSource ()).stop ();
-                    }
-                } else {
-                    System.out.println ("coolDown");
-                    ((Timer) e.getSource ()).stop ();
-                }
-            }
-        });
-
+        Thread ActionThered;
         @Override
         public void run () {
-            ActionTimer.start ();
+            ActionThered = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ZaribOfEpsilonDamage = 2;
+                    inputListener.coolDown = true;
+                    try {
+                        Thread.sleep(20000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    ZaribOfEpsilonDamage = 1;
+                    try {
+                        Thread.sleep(120000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    inputListener.coolDown = false;
+                }
+            });
+            ActionThered.start();
         }
     }
 
     public static class def1 extends SpecialSkill {
         Timer heel;
-        private boolean first = true;
-
+        Thread ActionTimer;
         public def1() {
             heel = new Timer (HeelTIME, new AbstractAction () {
                 @Override
                 public void actionPerformed (ActionEvent e) {
                     Epsilon.getEpsilon ().increaseHp (HeelRange);
-                    System.out.println ("hi");
                 }
             });
         }
-
-
-        Timer ActionTimer = new Timer (60000, new AbstractAction () {
-            @Override
-            public void actionPerformed (ActionEvent e) {
-                if (!coolDown) {
-                    if (first) {
-                        heel.start ();
-                        first = false;
-                    } else {
-                        heel.stop ();
-                        coolDown = true;
-                        coolDownTimer.start ();
-                        ((Timer) e.getSource ()).stop ();
-                    }
-                } else {
-                    System.out.println ("coolDown");
-                    ((Timer) e.getSource ()).stop ();
-                }
-            }
-        });
-
         @Override
         public void run () {
+            ActionTimer = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    inputListener.coolDown = true;
+                    heel.start();
+                    try {
+                        Thread.sleep(20000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    heel.stop();
+                    try {
+                        Thread.sleep(80000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    inputListener.coolDown = true;
+                }
+            });
             ActionTimer.start ();
         }
     }
 
     public static class atack2 extends SpecialSkill {
-        Thread ActionTimer = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Update.enemyTakeDamage = true;
-                inputListener.coolDownn = true;
-                try {
-                    Thread.sleep(15000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                Update.enemyTakeDamage = false;
-                try {
-                    Thread.sleep(75000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                coolDown = false;
-            }
-        });
+        Thread ActionTimer;
 
         @Override
         public void run() {
+            ActionTimer = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Update.enemyTakeDamage = true;
+                    inputListener.coolDown = true;
+                    try {
+                        Thread.sleep(15000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    Update.enemyTakeDamage = false;
+                    try {
+                        Thread.sleep(75000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    inputListener.coolDown = false;
+                }
+            });
             ActionTimer.start();
         }
     }
 
     public static class def2 extends SpecialSkill {
-        Thread ActionEvent = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Epsilon.getEpsilon().probeblbyDontTakeDamage = true;
-                inputListener.coolDownn = true;
-                try {
-                    Thread.sleep(15000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                Epsilon.getEpsilon().probeblbyDontTakeDamage = false;
-                try {
-                    Thread.sleep(75000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                coolDown = false;
-            }
-        });
+        Thread ActionEvent;
 
         @Override
         public void run() {
+            ActionEvent = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Epsilon.getEpsilon().probeblbyDontTakeDamage = true;
+                    inputListener.coolDown = true;
+                    try {
+                        Thread.sleep(15000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    Epsilon.getEpsilon().probeblbyDontTakeDamage = false;
+                    try {
+                        Thread.sleep(75000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    inputListener.coolDown = false;
+                }
+            });
             ActionEvent.start();
         }
     }
 
     public static class def3 extends SpecialSkill {
-        Thread ActionEvent = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                enemy.HEEL_THE_EPSILON = true;
-                inputListener.coolDownn = true;
-                try {
-                    Thread.sleep(15000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                enemy.HEEL_THE_EPSILON = false;
-                try {
-                    Thread.sleep(75000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                coolDown = false;
-            }
-        });
+        Thread ActionEvent;
 
         @Override
         public void run() {
+            ActionEvent = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    enemy.HEEL_THE_EPSILON = true;
+                    inputListener.coolDown = true;
+                    try {
+                        Thread.sleep(15000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    enemy.HEEL_THE_EPSILON = false;
+                    try {
+                        Thread.sleep(75000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    inputListener.coolDown = false;
+                }
+            });
             ActionEvent.start();
         }
     }
 
     public static class tagir2 extends SpecialSkill {
-        Thread ActionEvent = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                var saveR = Epsilon.getEpsilon().getRadius();
-                Epsilon.getEpsilon().setRadius(saveR * (9d / 10));
-                inputListener.coolDownn = true;
-                try {
-                    Thread.sleep(15000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                Epsilon.getEpsilon().setRadius((double) saveR);
-                try {
-                    Thread.sleep(75000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                coolDown = false;
-            }
-        });
+        Thread ActionEvent;
 
         @Override
         public void run() {
+            ActionEvent = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    var saveR = Epsilon.getEpsilon().getRadius();
+                    Epsilon.getEpsilon().setRadius(saveR * (9d / 10));
+                    inputListener.coolDown = true;
+                    try {
+                        Thread.sleep(15000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    Epsilon.getEpsilon().setRadius((double) saveR);
+                    try {
+                        Thread.sleep(75000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    inputListener.coolDown = false;
+                }
+            });
             ActionEvent.start();
         }
     }

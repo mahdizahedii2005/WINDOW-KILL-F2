@@ -12,6 +12,8 @@ import Game.game.model.shooting.shootGiver;
 import Game.game.model.shooting.shooter;
 import Game.game.view.characterView.DrawAbleObject;
 import Game.game.view.characterView.shape.epsilonView;
+import Game.game.view.inputListener;
+import Game.game.view.waveAnimation.lost;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -275,12 +277,12 @@ public class Epsilon extends ObjectInGame implements Collidable, linearMotion, s
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
         Color colorr = color;
 
-//        if (skillReady) {
-//            switch (new Random().nextInt(3)) {
-//                case 1 -> colorr = Color.RED;
-//                case 2 -> colorr = Color.GREEN;
-//            }
-//        }
+        if (!inputListener.coolDown) {
+            switch (new Random().nextInt(3)) {
+                case 1 -> colorr = Color.RED;
+                case 2 -> colorr = Color.GREEN;
+            }
+        }
         return new epsilonView(fixThePoint(center, panel), colorr, radius);
 
     }
@@ -311,7 +313,9 @@ public class Epsilon extends ObjectInGame implements Collidable, linearMotion, s
     @Override
     public void Die() {
         super.Die();
+        setHP(0);
         finish = false;
+        new lost();
     }
 
     public void setExp(double exp) {

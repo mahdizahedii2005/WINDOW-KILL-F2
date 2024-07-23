@@ -3,16 +3,13 @@ package Game.game;
 import Game.game.Contoroler.building.Spawn;
 import Game.game.Contoroler.control.Update;
 import Game.game.Contoroler.player.soundPlayer;
-import Game.game.model.characterModel.Enemy.boss.boss;
 import Game.game.model.characterModel.Panels.NonIsometricPanel;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
 import Game.game.view.PanelInGame.frameInGame;
 import Game.game.view.inputListener;
 import Game.login.setting;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 
@@ -87,8 +84,30 @@ public class gameApplication implements Runnable {
 
     }
 
+    public static soundPlayer first = new soundPlayer("src\\sources\\song\\start1.wav");
+    public static soundPlayer second = new soundPlayer("src\\sources\\song\\start2.wav");
+
     @Override
     public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    first.play();
+                    try {
+                        Thread.sleep(160000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    second.play();
+                    try {
+                        Thread.sleep(180000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }).start();
         CLoseAllProg();
         timeOfStart = System.nanoTime();
         objectInGames.clear();
@@ -99,11 +118,5 @@ public class gameApplication implements Runnable {
         fixSpeed();
         initGeraghic();
         initGame();
-        new Timer(50000, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                soundPlayer.play("src\\sources\\song\\download-white-voice_1_.wav", -62);
-            }
-        });
     }
 }

@@ -11,6 +11,7 @@ import Game.game.model.characterModel.Panels.PanelInGame;
 import Game.game.model.characterModel.Panels.isometricPanel;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
 import Game.game.model.characterModel.epsilonFriend.bolt;
+import Game.game.model.characterModel.epsilonFriend.prize;
 import Game.game.model.collision.Collidable;
 import Game.game.model.shooting.shootGiver;
 import Game.game.view.characterView.DrawAbleObject;
@@ -63,6 +64,7 @@ public class Wyrm extends enemy implements circluarMove, follower, shootGiver {
     @Override
     public void Die() {
         super.Die();
+        new prize(new Point2D.Double(center.getX(), center.getY()), color, 20);
         Spawn.NUMBER_OF_WYRM_ENEMY--;
         panel.clear();
         fire.stop();

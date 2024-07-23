@@ -39,7 +39,7 @@ public abstract class moveAbleEnemy extends enemy implements Collidable,follower
         if (checkNan(xPoint, yPoint)) {
             numberofenemy++;
             if (numberofenemy % 4 == 0) {
-                soundPlayer.play("src\\sources\\song\\boom-1 (1).wav");
+              new  soundPlayer("src\\sources\\song\\boom-1 (1).wav").play();
             }
             ArrayList<Point2D> point2DS = new ArrayList<>();
             for (int i = 0; i < nPoint; i++) {
@@ -130,7 +130,7 @@ public abstract class moveAbleEnemy extends enemy implements Collidable,follower
     public void Die() {
         new prize(new Point2D.Double(center.getX(), center.getY()), color, this instanceof TrigorathModel ? 5 : 10);
         super.Die();
-        soundPlayer.play(i % 2 == 0 ? ENEMY_DESTROID_SOUND_PATH1 : ENEMY_DESTROID_SOUND_PATH2);
+        new soundPlayer(i % 2 == 0 ? ENEMY_DESTROID_SOUND_PATH1 : ENEMY_DESTROID_SOUND_PATH2).play();
         i++;
         // TODO: ۱۴/۰۴/۲۰۲۴ play music
     }

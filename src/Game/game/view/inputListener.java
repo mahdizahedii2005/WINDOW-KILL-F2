@@ -16,7 +16,7 @@ import static Game.game.Contoroler.control.Controller.moveEpsilon;
 
 public class inputListener {
     public static boolean stop = false;
-    public static boolean coolDownn = false;
+    public static boolean coolDown = false;
     public static boolean aaa = true;
     Timer up = new Timer(200, new AbstractAction() {
         @Override
@@ -182,7 +182,7 @@ public class inputListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (SpecialSkill.getCurrentSpecialSkill() != null) {
-                    if (!coolDownn) {
+                    if (!coolDown) {
                         SpecialSkill.getCurrentSpecialSkill().run();
                     }
                 }
