@@ -1,6 +1,7 @@
 package Game.game.model.characterModel.Enemy;
 
 import Game.game.Contoroler.building.BuilderHelper;
+import Game.game.Contoroler.building.Spawn;
 import Game.game.model.Move.Direction;
 import Game.game.model.characterModel.ObjectInGame;
 import Game.game.model.characterModel.Panels.PanelInGame;
@@ -137,6 +138,7 @@ public class Archmire extends moveAbleEnemy implements Aoe {
             }
         });
         doAction.start();
+        Spawn.NUMBER_OF_ARCHMIRE_ENEMY++;
     }
 
     @Override
@@ -147,6 +149,7 @@ public class Archmire extends moveAbleEnemy implements Aoe {
             BuilderHelper.ArchmireBuilder(new Point2D.Double(center.getX() + 80, center.getY() + 80), true);
             BuilderHelper.ArchmireBuilder(new Point2D.Double(center.getX() - 80, center.getY() - 80), true);
         }
+        Spawn.NUMBER_OF_ARCHMIRE_ENEMY--;
     }
 
     @Override
@@ -240,5 +243,44 @@ public class Archmire extends moveAbleEnemy implements Aoe {
         return new ovalShape(new Point2D.Double(center.getX() - panel.getX(), center.getY() - panel.getY()), color, radiusx, radiusy);
     }
 
+    public ArrayList<String> getCoolDown() {
+        return coolDown;
+    }
+
+    public void setCoolDown(ArrayList<String> coolDown) {
+        this.coolDown = coolDown;
+    }
+
+    public double getRadiusx() {
+        return radiusx;
+    }
+
+    public void setRadiusx(double radiusx) {
+        this.radiusx = radiusx;
+    }
+
+    public double getRadiusy() {
+        return radiusy;
+    }
+
+    public void setRadiusy(double radiusy) {
+        this.radiusy = radiusy;
+    }
+
+    public Timer getDoAction() {
+        return doAction;
+    }
+
+    public void setDoAction(Timer doAction) {
+        this.doAction = doAction;
+    }
+
+    public boolean isBaby() {
+        return isBaby;
+    }
+
+    public void setBaby(boolean baby) {
+        isBaby = baby;
+    }
 }
 

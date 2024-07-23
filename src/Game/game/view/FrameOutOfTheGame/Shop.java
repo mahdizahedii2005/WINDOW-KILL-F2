@@ -3,6 +3,7 @@ package Game.game.view.FrameOutOfTheGame;
 import Game.Data.constants;
 import Game.game.Contoroler.control.Update;
 import Game.game.Contoroler.thingInGame.impact;
+import Game.game.model.Move.Movable;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
 import Game.game.view.PanelInGame.frameInGame;
 import Game.game.view.inputListener;
@@ -25,7 +26,9 @@ public class Shop extends JPanel implements Runnable {
     private JLabel flag1;
     private JLabel flag2;
     private JLabel flag3;
-
+    private JButton dontcome;
+    private JButton dontMove;
+    private JButton StrongShoot;
     private boolean buy1 = true;
     private boolean buy2 = true;
     private boolean currentBuy = false;
@@ -173,12 +176,91 @@ public class Shop extends JPanel implements Runnable {
         Exp.setOpaque (false);
         Exp.setBackground (Color.black);
         this.add (Exp);
+        dontcome = new JButton();
+        dontcome.setBounds(100, 20, 20, 35);
+        dontcome.setVisible(true);
+        dontcome.setOpaque(true);
+        dontcome.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (Epsilon.getEpsilon().decreaseEXP(120)) {
+                    Movable.fillses.dontComeNewrMe = true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(13000);
+                            } catch (InterruptedException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            Movable.fillses.dontComeNewrMe = false;
+                        }
+                    }).start();
+                }
+            }
+        });
+        this.add(dontcome);
+        dontMove = new JButton();
+        dontMove.setBounds(150, 20, 20, 35);
+        dontMove.setVisible(true);
+        dontMove.setOpaque(true);
+        dontMove.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (Epsilon.getEpsilon().decreaseEXP(150)) {
+
+                    Movable.fillses.stopEveryThing = true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(13000);
+                            } catch (InterruptedException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            Movable.fillses.stopEveryThing = false;
+                        }
+                    }).start();
+                }
+            }
+        });
+        this.add(dontMove);
+        StrongShoot = new JButton();
+        StrongShoot.setBounds(200, 20, 20, 35);
+        StrongShoot.setVisible(true);
+        StrongShoot.setOpaque(true);
+        StrongShoot.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!coolDown) {
+                    if (Epsilon.getEpsilon().decreaseEXP(200)) {
+
+                        Epsilon.getEpsilon().strongShoot = true;
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(120000);
+                                } catch (InterruptedException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                coolDown = false;
+                            }
+                        }).start();
+                    }
+                }
+            }
+        });
+        this.add(StrongShoot);
+
     }
 
+    private static boolean coolDown = false;
     @Override
     public void paint (Graphics g) {
         EpsilonHp.setText ("HP: " + Epsilon.getEpsilon ().getHP ());
         Exp.setText ("exp :" + Epsilon.getEpsilon ().getExp ());
         super.paint (g);
     }
+
 }

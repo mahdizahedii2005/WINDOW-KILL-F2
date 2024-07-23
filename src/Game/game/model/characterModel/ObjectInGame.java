@@ -47,6 +47,7 @@ public abstract class ObjectInGame extends ThingsInGame {
     public abstract DrawAbleObject getDrawAbleObject(PanelInGame panel);
 
     public void CreateGeometry() {
+        try {
         if (isCirClr) {
             vertices = new ArrayList<>();
             double r = radius / Math.sqrt(2);
@@ -60,11 +61,16 @@ public abstract class ObjectInGame extends ThingsInGame {
             vertices.add(new Point2D.Double(center.getX() - r, center.getY() - r));
         }
         if (!vertices.isEmpty()) {
+            try {
             Coordinate[] coordinates = new Coordinate[vertices.size() + 1];
             for (int i = 0; i < vertices.size(); i++) coordinates[i] = toCoordinate(vertices.get(i));
             coordinates[vertices.size()] = toCoordinate(vertices.getFirst());
-            geometry = new GeometryFactory().createLineString(coordinates);
+                geometry = new GeometryFactory().createLineString(coordinates);
+            } catch (ArrayIndexOutOfBoundsException r) {
+            }
         } else geometry = new GeometryFactory().createLineString(new Coordinate[0]);
+        } catch (Exception e) {
+        }
     }
 
     public void getHit(int damage) {
@@ -140,6 +146,26 @@ public abstract class ObjectInGame extends ThingsInGame {
 
     public int getDamageDaler() {
         return damageDaler;
+    }
+
+    public static ArrayList<ObjectInGame> getObjectInGames() {
+        return objectInGames;
+    }
+
+    public static void setObjectInGames(ArrayList<ObjectInGame> objectInGames) {
+        ObjectInGame.objectInGames = objectInGames;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
+
+    public void setMaxRadius(float maxRadius) {
+        this.maxRadius = maxRadius;
+    }
+
+    public void setDamageDaler(int damageDaler) {
+        this.damageDaler = damageDaler;
     }
 
 }

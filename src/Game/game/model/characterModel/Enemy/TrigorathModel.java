@@ -1,6 +1,7 @@
 package Game.game.model.characterModel.Enemy;
 
 import Game.Data.constants;
+import Game.game.Contoroler.building.Spawn;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.NormalFollower;
 import Game.game.model.characterModel.Panels.PanelInGame;
@@ -17,6 +18,13 @@ import static Game.game.Contoroler.control.Controller.makeNonCircularView;
 public class TrigorathModel extends moveAbleEnemy implements NormalFollower {
     public TrigorathModel(Point2D.Double center, Color color, double[] xPoint, double[] yPoint) {
         super(center, color, 3, xPoint, yPoint, 15, 6, ((float) constants.HEIGHT_OF_TRIANGLE * 2) / 3);
+        Spawn.NUMBER_OF_TRIG_ENEMY++;
+    }
+
+    @Override
+    public void Die() {
+        super.Die();
+        Spawn.NUMBER_OF_TRIG_ENEMY--;
     }
 
     @Override
@@ -43,4 +51,5 @@ public class TrigorathModel extends moveAbleEnemy implements NormalFollower {
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
         return makeNonCircularView(fixThePoint(vertices, panel), color);
     }
+
 }

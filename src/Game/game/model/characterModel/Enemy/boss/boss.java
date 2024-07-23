@@ -16,7 +16,6 @@ import Game.game.model.shooting.shootGiver;
 import Game.game.model.shooting.shooter;
 import Game.game.view.characterView.DrawAbleObject;
 import Game.game.view.characterView.shape.PhotoShape;
-import Game.game.view.inputListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -123,11 +122,6 @@ public class boss {
     }
 
     public boss() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         head = new head(new Point2D.Double(Epsilon.getEpsilon().getCenter().getX(), -100));
         handR = new hand(new Point2D.Double(Toolkit.getDefaultToolkit().getScreenSize().getWidth() + 100, Epsilon.getEpsilon().getCenter().getY()), direction.right);
         handL = new hand(new Point2D.Double(-100, Epsilon.getEpsilon().getCenter().getY()), direction.left);
@@ -260,47 +254,45 @@ public class boss {
         }
     }
 
-    public void pokondanClid() {
-        head.setHeadForm(headForm.shy);
-        System.out.println("pokondanStart");
-        hand up = new hand(new Point2D.Double(Epsilon.getEpsilon().getCenter().getX(), Toolkit.getDefaultToolkit().getScreenSize().getHeight() + 400), null);
-        up.isometricPanel.setSolb(true);
-        up.setSpeed(handR.getSpeed() * 4);
-        try {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        if (up.hit) break;
-                        System.out.println("napokid");
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    synchronized (handR) {
-                        handR.notify();
-                    }
-                }
-            }).start();
-            synchronized (handR) {
-                handR.wait();
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        up.Die();
-        inputListener.crazy = true;
-        try {
-            Thread.sleep(8000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        head.setHeadForm(headForm.smile);
-        inputListener.crazy = false;
-        up.Die();
-    }
+//    public void pokondanClid() {
+//        head.setHeadForm(headForm.shy);
+//        System.out.println("pokondanStart");
+//        hand up = new hand(new Point2D.Double(Epsilon.getEpsilon().getCenter().getX(), Toolkit.getDefaultToolkit().getScreenSize().getHeight() + 400), null);
+//        up.isometricPanel.setSolb(true);
+//        up.setSpeed(handR.getSpeed() * 4);
+//        try {
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    while (!up.hit) {
+//                        try {
+//                            Thread.sleep(50);
+//                        } catch (InterruptedException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//                    System.out.println("im out");
+//                    synchronized (handR) {
+//                        handR.notify();
+//                    }
+//                }
+//            }).start();
+//            synchronized (handR) {
+//                handR.wait();
+//            }
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        up.Die();
+//        inputListener.crazy = true;
+//        try {
+//            Thread.sleep(8000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        head.setHeadForm(headForm.smile);
+//        inputListener.crazy = false;
+//    }
 
     public void rapidShooting() {
         head.setHeadForm(headForm.angry);
@@ -377,12 +369,13 @@ public class boss {
                 handL.setHandForm(handForm.gun);
                 head.setHitAble(true);
                 var headSpeed = head.speed;
-                head.setSpeed(0);
                 Timer shooting = new Timer(500, new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        new bolt(handR.getCenter(), Epsilon.getEpsilon().getCenter(), Epsilon.getEpsilon().getSpeed() * 2, false, handR.boltDamage, Color.RED);
-                        new bolt(handL.getCenter(), Epsilon.getEpsilon().getCenter(), Epsilon.getEpsilon().getSpeed() * 2, false, handL.boltDamage, Color.RED);
+                        if (handR.isAlive())
+                            new bolt(new Point2D.Double((double) (handR.isometricPanel.getAnchor().getX() + (handR.isometricPanel.getWidth() / 2)), (double) (handR.isometricPanel.getAnchor().getY() + (handR.isometricPanel.getHeight() / 2))), Epsilon.getEpsilon().getCenter(), Epsilon.getEpsilon().getSpeed() * 2, false, handR.boltDamage, Color.RED);
+                        if (handL.isAlive())
+                            new bolt(new Point2D.Double((double) (handL.isometricPanel.getAnchor().getX() + (handR.isometricPanel.getWidth() / 2)), (double) (handL.isometricPanel.getAnchor().getY() + (handR.isometricPanel.getHeight() / 2))), Epsilon.getEpsilon().getCenter(), Epsilon.getEpsilon().getSpeed() * 2, false, handL.boltDamage, Color.RED);
                     }
                 });
                 shooting.start();
@@ -394,7 +387,7 @@ public class boss {
                 shooting.stop();
                 head.setSpeed(headSpeed);
                 PanelInGame p = Epsilon.getEpsilon().mainPanel;
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 1; i++) {
                     BuilderHelper.ArchmireBuilder(new Point2D.Double(new Random().nextInt((int) p.getX(), (int) (p.getX() + p.getWidth())), new Random().nextInt((int) p.getY(), (int) (p.getY() + p.getHeight()))), false);
                 }
                 head.headForm = headForm.smile;
@@ -439,7 +432,6 @@ public class boss {
                             case 0 -> sadOfOpeningPanel();
                             case 1 -> shooting();
                             case 2 -> aoeAtack();
-                            case 3 -> pokondanClid();
                             case 4 -> rapidShooting();
                             case 5 -> compilerRapidAndsad();
                             case 6 -> compileaoeAndshoot();
@@ -502,7 +494,10 @@ public class boss {
             super(center, Color.RED, UUID.randomUUID().toString(), 100, 100F, 0);
             this.direction = direction;
             isometricPanel = new isometricPanel(center.getX() - normalR.getWidth() - 50, center.getY() - normalL.getHeight() - 50, 250, 250, false, 0);
-
+            if (direction == null) {
+                isometricPanel.setSolb(true);
+                justFollow = true;
+            }
         }
 
 
@@ -510,13 +505,20 @@ public class boss {
         public void move(Direction direction, double speed) {
             MokhtasatPoint movement = addVectors(vertices, center, direction.getDirectionVector(), speed);
             this.center = movement.getCenter();
+
         }
 
         @Override
         public void move() {
             try {
+//                if (this.direction == null) {
+//                    System.out.print("");
+//                }
                 if (isometricPanel.movee(moveDirection, speed)) move(moveDirection, speed);
-                else hit = true;
+                else if (this.direction == null) {
+                    hit = true;
+                    System.out.println("hit detective");
+                }
             } catch (NullPointerException d) {
             }
         }
@@ -558,7 +560,7 @@ public class boss {
         @Override
         public void Die() {
             super.Die();
-            isometricPanel.Die();
+            isometricPanel.clear();
         }
 
         @Override
@@ -701,9 +703,12 @@ public class boss {
 
         @Override
         public void move(Direction direction, double speed) {
+            try {
             MokhtasatPoint movement = addVectors(vertices, center, direction.getDirectionVector(), speed);
             this.vertices = movement.getArrayList();
             this.center = movement.getCenter();
+            } catch (Exception e) {
+            }
         }
 
         @Override

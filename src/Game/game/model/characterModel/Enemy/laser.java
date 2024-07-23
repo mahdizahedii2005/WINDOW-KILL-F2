@@ -99,4 +99,12 @@ public class laser extends ObjectInGame implements Aoe {
     public void getHit(int damage) {
         return;
     }
+
+    public ArrayList<String> getCoolDown() {
+        return coolDown;
+    }
+
+    public void setCoolDown(ArrayList<String> coolDown) {
+        this.coolDown = coolDown;
+    }
 }

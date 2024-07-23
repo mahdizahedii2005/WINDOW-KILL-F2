@@ -15,6 +15,7 @@ import Game.game.view.characterView.shape.epsilonView;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Random;
 import java.util.UUID;
 
 import static Game.Data.constants.SPEED;
@@ -27,6 +28,7 @@ import static Game.helper.multiplyVector;
 public class Epsilon extends ObjectInGame implements Collidable, linearMotion, shooter, impactAble, shootGiver {
     private int impactNum = 0;
     private double exp = 0;
+    public boolean probeblbyDontTakeDamage = false;
     private boolean sefrShode = false;
     private static Epsilon epsilon = null;
     private int MaxHp = 100;
@@ -34,7 +36,7 @@ public class Epsilon extends ObjectInGame implements Collidable, linearMotion, s
     private Direction MoveDirection = new Direction(new Point2D.Double(0, 0));
     private double totalExp = 0;
     public NonIsometricPanel mainPanel;
-
+    public boolean strongShoot = false;
     public Epsilon(Point2D.Double center, double radius, NonIsometricPanel nonIsometricPanel) {
         super(center, Color.WHITE, UUID.randomUUID().toString(), 100, radius, true, 5);
         epsilon = this;
@@ -170,6 +172,11 @@ public class Epsilon extends ObjectInGame implements Collidable, linearMotion, s
     @Override
     public void fire(Point2D.Double mabda, Point2D.Double target) {
         if (finish) {
+            if (strongShoot) {
+                new bolt(mabda, target, true, 50);
+                strongShoot = false;
+                return;
+            }
             if (AthenaPower) {
                 new bolt(mabda, target, true, 5);
                 new bolt(mabda, target, SPEED * 7, true, 5);
@@ -296,8 +303,54 @@ public class Epsilon extends ObjectInGame implements Collidable, linearMotion, s
     }
 
     @Override
+    public void getHit(int damage) {
+        if (probeblbyDontTakeDamage && new Random().nextInt(20) == 0) return;
+        super.getHit(damage);
+    }
+
+    @Override
     public void Die() {
         super.Die();
         finish = false;
+    }
+
+    public void setExp(double exp) {
+        this.exp = exp;
+    }
+
+    public boolean isSefrShode() {
+        return sefrShode;
+    }
+
+    public void setSefrShode(boolean sefrShode) {
+        this.sefrShode = sefrShode;
+    }
+
+    public static void setEpsilon(Epsilon epsilon) {
+        Epsilon.epsilon = epsilon;
+    }
+
+    public void setMaxHp(int maxHp) {
+        MaxHp = maxHp;
+    }
+
+    public void setTotalExp(double totalExp) {
+        this.totalExp = totalExp;
+    }
+
+    public NonIsometricPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    public void setMainPanel(NonIsometricPanel mainPanel) {
+        this.mainPanel = mainPanel;
+    }
+
+    public static boolean isAthenaPower() {
+        return AthenaPower;
+    }
+
+    public static void setAthenaPower(boolean athenaPower) {
+        AthenaPower = athenaPower;
     }
 }

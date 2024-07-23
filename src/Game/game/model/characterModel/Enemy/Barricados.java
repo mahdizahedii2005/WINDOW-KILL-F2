@@ -1,5 +1,6 @@
 package Game.game.model.characterModel.Enemy;
 
+import Game.game.Contoroler.building.Spawn;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.linearMotion;
 import Game.game.model.characterModel.Panels.PanelInGame;
@@ -37,13 +38,24 @@ public class Barricados extends enemy implements shootGiver {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(60*2*1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                Die();
+            }
+        }).start();
+        Spawn.NUMBER_OF_BARRICOD_ENEMY++;
     }
 
     @Override
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
         return new PhotoShape(image, (int) (center.getX() - (image.getWidth() / 2d) - panel.getX()), (int) (center.getY() - (image.getHeight() / 2d) - panel.getY()), Color.ORANGE);
     }
-
     @Override
     public void createGeometry() {
         super.CreateGeometry();
@@ -57,6 +69,12 @@ public class Barricados extends enemy implements shootGiver {
     @Override
     public Point2D getAnchor() {
         return center;
+    }
+
+    @Override
+    public void Die() {
+        super.Die();
+        Spawn.NUMBER_OF_BARRICOD_ENEMY--;
     }
 
     @Override
@@ -82,5 +100,29 @@ public class Barricados extends enemy implements shootGiver {
     @Override
     public void getHit(int damage) {
         return;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public PanelInGame getPanel() {
+        return panel;
+    }
+
+    public void setPanel(PanelInGame panel) {
+        this.panel = panel;
+    }
+
+    public double getSideSize() {
+        return sideSize;
     }
 }

@@ -1,6 +1,7 @@
 package Game.game.model.characterModel.Enemy;
 
 import Game.game.Contoroler.building.MokhtasatPoint;
+import Game.game.Contoroler.building.Spawn;
 import Game.game.Contoroler.control.DefaultMethods;
 import Game.game.model.Move.Direction;
 import Game.game.model.characterModel.Panels.PanelInGame;
@@ -82,6 +83,7 @@ public class Necropick extends moveAbleEnemy implements shooter {
             }
         });
         action.start();
+        Spawn.NUMBER_OF_NEPRO_ENEMY++;
     }
 
     @Override
@@ -129,6 +131,7 @@ public class Necropick extends moveAbleEnemy implements shooter {
     @Override
     public void Die() {
         super.Die();
+        Spawn.NUMBER_OF_NEPRO_ENEMY--;
         action.interrupt();
         fire.stop();
     }
@@ -136,5 +139,77 @@ public class Necropick extends moveAbleEnemy implements shooter {
     @Override
     public void fire(Point2D.Double mabda, Point2D.Double realTarget) {
         new bolt(mabda, realTarget, Epsilon.getEpsilon().getSpeed() / 2, false, 5, Color.PINK);
+    }
+
+    public BufferedImage getReadyImage() {
+        return readyImage;
+    }
+
+    public void setReadyImage(BufferedImage readyImage) {
+        this.readyImage = readyImage;
+    }
+
+    public String getReadyImagePath() {
+        return readyImagePath;
+    }
+
+    public Point2D.Double getPhotoCenter() {
+        return PhotoCenter;
+    }
+
+    public void setPhotoCenter(Point2D.Double photoCenter) {
+        PhotoCenter = photoCenter;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public Thread getAction() {
+        return action;
+    }
+
+    public void setAction(Thread action) {
+        this.action = action;
+    }
+
+    public boolean isItHide() {
+        return isItHide;
+    }
+
+    public void setItHide(boolean itHide) {
+        isItHide = itHide;
+    }
+
+    public Timer getFire() {
+        return fire;
+    }
+
+    public void setFire(Timer fire) {
+        this.fire = fire;
+    }
+
+    public int getFireDeley() {
+        return fireDeley;
+    }
+
+    public void setFireDeley(int fireDeley) {
+        this.fireDeley = fireDeley;
+    }
+
+    public boolean isReadyToShow() {
+        return readyToShow;
+    }
+
+    public void setReadyToShow(boolean readyToShow) {
+        this.readyToShow = readyToShow;
     }
 }

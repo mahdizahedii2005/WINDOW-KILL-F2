@@ -56,6 +56,7 @@ public class bolt extends ObjectInGame implements linearMotion, Collidable {
     }
 
     public void move() {
+        if (moveDirection ==null)return;
         move(moveDirection, speed);
     }
 
@@ -163,5 +164,15 @@ public class bolt extends ObjectInGame implements linearMotion, Collidable {
         return good;
     }
 
+    public Direction getMoveDirection() {
+        return moveDirection;
+    }
 
+    public void setMoveDirection(Direction moveDirection) {
+        this.moveDirection = moveDirection;
+    }
+
+    public void setGood(boolean good) {
+        this.good = good;
+    }
 }

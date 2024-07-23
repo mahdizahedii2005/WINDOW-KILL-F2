@@ -107,4 +107,5 @@ public class prize extends ObjectInGame implements Collidable {
     public float getRadius() {
         return super.getRadius();
     }
+
 }

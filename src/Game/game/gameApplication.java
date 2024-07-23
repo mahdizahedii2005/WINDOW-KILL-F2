@@ -83,10 +83,8 @@ public class gameApplication implements Runnable {
         new Epsilon(new Point2D.Double(frameOfGame.getWidth() / 2d, frameOfGame.getHeight() / 2d), (int) RADIUS_OF_EPSILON, a);
         new Update();
         new inputListener();
-//        new Spawn();
-//        BuilderHelper.ArchmireBuilder(new Point2D.Double((Epsilon.getEpsilon().getAnchor().getX() + 500), (double) Epsilon.getEpsilon().getCenter().getY() + 70),false);
-//        BuilderHelper.startBlackOrb();
-        new boss();
+        new Spawn();
+
     }
 
     @Override

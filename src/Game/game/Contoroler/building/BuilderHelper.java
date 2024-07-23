@@ -1,6 +1,5 @@
 package Game.game.Contoroler.building;
 
-import Game.game.Contoroler.control.Controller;
 import Game.game.Contoroler.control.DefaultMethods;
 import Game.game.model.characterModel.Enemy.*;
 import Game.game.model.characterModel.Panels.PanelInGame;
@@ -11,7 +10,6 @@ import Game.helper;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static Game.Data.constants.*;
 import static Game.game.model.characterModel.Panels.PanelInGame.PANELS;
@@ -126,7 +124,8 @@ public class BuilderHelper {
         new SquarantineModel(getCenter(XPoint, YPoint), XPoint, YPoint);
     }
 
-    public static void OmenoctBuilder(Point2D.Double center, double radius, Collidable.side side) {
+    public static void OmenoctBuilder(Point2D.Double center,  Collidable.side side) {
+        var radius = 40d;
         double[] xPoint = new double[8];
         double[] yPoint = new double[8];
         for (int i = 0; i < 8; i++) {

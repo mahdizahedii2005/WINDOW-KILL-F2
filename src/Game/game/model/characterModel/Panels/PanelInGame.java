@@ -147,10 +147,11 @@ public abstract class PanelInGame extends ThingsInGame implements BeingSolb {
             Coordinate[] coordinates = new Coordinate[size + 1];
             try {
                 for (int i = 0; i < size; i++) coordinates[i] = toCoordinate(vertices.get(i));
-            } catch (IndexOutOfBoundsException e) {
-            }
+
             coordinates[size] = toCoordinate(vertices.get(0));
             geometry = new GeometryFactory().createLineString(coordinates);
+            } catch (IndexOutOfBoundsException e) {
+            }
         } else geometry = new GeometryFactory().createLineString(new Coordinate[0]);
     }
 
@@ -177,6 +178,7 @@ public abstract class PanelInGame extends ThingsInGame implements BeingSolb {
         setY(getY() + direction.getDirectionVector().getY() * speed);
         if (!validPanel(Epsilon.getEpsilon().mainPanel)) {
             setX(saveX);
+            setY(saveY);
             setY(saveY);
             return false;
         }
@@ -207,5 +209,47 @@ public abstract class PanelInGame extends ThingsInGame implements BeingSolb {
     public void clear() {
         super.Die();
         if (findPanelView(id) != null) findPanelView(id).clear();
+    }
+
+    public static ArrayList<PanelInGame> getPANELS() {
+        return PANELS;
+    }
+
+    public static void setPANELS(ArrayList<PanelInGame> PANELS) {
+        PanelInGame.PANELS = PANELS;
+    }
+
+    public void setSize(Dimension size) {
+        this.size = size;
+    }
+
+    @Override
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
+
+    public boolean isSolb() {
+        return isSolb;
+    }
+
+    public void setSolb(boolean solb) {
+        isSolb = solb;
+    }
+
+    @Override
+    public float getSpeed() {
+        return (float) speed;
+    }
+
+    public Direction getMoveDirection() {
+        return moveDirection;
+    }
+
+    public void setMoveDirection(Direction moveDirection) {
+        this.moveDirection = moveDirection;
     }
 }

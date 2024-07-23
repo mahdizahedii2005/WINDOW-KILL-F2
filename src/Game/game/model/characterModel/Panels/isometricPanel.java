@@ -65,4 +65,5 @@ public class isometricPanel extends PanelInGame {
             ((PanelInGame) collidable).setSpeed(0);
         }
     }
+
 }

@@ -89,7 +89,7 @@ public class SkillTree extends JFrame {
                     if (decreaseEXP (750)) {
                         level1 = 1;
                         lock11 = true;
-                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill1 ());
+                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.atack1());
                         peekNum = 1;
                         if (!lock11) {
                             lock1 = new JLabel (new ImageIcon ("src\\sources\\photo\\lock.png"));
@@ -112,7 +112,7 @@ public class SkillTree extends JFrame {
                     } else if (level1 == 3) {
                         TIME_OF_INCREASE_DAMAGE = 45000;
                     }
-                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill1 ());
+                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.atack1());
                     peekNum = 1;
                     switch (peekNum) {
                         case 1 -> {
@@ -206,7 +206,7 @@ public class SkillTree extends JFrame {
                     if (decreaseEXP (750)) {
                         lock22 = true;
                         level2 = 1;
-                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill2 ());
+                        SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.def1());
                         peekNum = 2;
                         if (!lock22) {
                             lock2 = new JLabel (new ImageIcon ("src\\sources\\photo\\lock.png"));
@@ -224,7 +224,7 @@ public class SkillTree extends JFrame {
                         HeelRange = 3;
                     }
                     peekNum = 2;
-                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.skill2 ());
+                    SpecialSkill.setCurrentSpecialSkill (new SpecialSkill.def1());
                     switch (peekNum) {
                         case 1 -> {
                             flag1.setIcon (new ImageIcon ("src\\sources\\photo\\buyGREEN.png"));

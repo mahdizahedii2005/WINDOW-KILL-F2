@@ -30,6 +30,10 @@ public class ThingsInGame {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void Die() {
         if (this instanceof ObjectInGame) objectInGames.remove((ObjectInGame) this);
         if (this instanceof impactAble) impactAble.impactAblesList.remove((impactAble) this);

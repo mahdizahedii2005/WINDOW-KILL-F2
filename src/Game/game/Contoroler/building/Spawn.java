@@ -1,12 +1,26 @@
 package Game.game.Contoroler.building;
 
 
+import Game.game.model.characterModel.Enemy.boss.boss;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
+
+import static Game.game.model.collision.Collidable.side.left;
+import static Game.game.model.collision.Collidable.side.right;
 
 
 public class Spawn {
     public static boolean Start = false;
+    public static int NUMBER_OF_ARCHMIRE_ENEMY = 0;
+    public static int NUMBER_OF_BARRICOD_ENEMY = 0;
+    public static int NUMBER_OF_BALCKORB_ENEMY = 0;
+    public static int NUMBER_OF_NEPRO_ENEMY = 0;
+    public static int NUMBER_OF_OMENICT_ENEMY = 0;
+    public static int NUMBER_OF_SQUR_ENEMY = 0;
+    public static int NUMBER_OF_TRIG_ENEMY = 0;
+    public static int NUMBER_OF_WYRM_ENEMY = 0;
 
     public Spawn() {
         spawn = this;
@@ -21,7 +35,7 @@ public class Spawn {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                firstWave.start ();
+                feethWave.start ();
             }
         }).start();
     }
@@ -54,72 +68,263 @@ public class Spawn {
     private final double sqPercent = 0.6;
     private final double trPercent = 0.4;
 
+    private boolean finish(int total) {
+        return total == 0 &&
+                NUMBER_OF_ARCHMIRE_ENEMY == 0 &&
+                NUMBER_OF_BALCKORB_ENEMY == 0 &&
+                NUMBER_OF_BARRICOD_ENEMY == 0 &&
+                NUMBER_OF_OMENICT_ENEMY == 0 &&
+                NUMBER_OF_SQUR_ENEMY == 0 &&
+                NUMBER_OF_TRIG_ENEMY == 0 &&
+                NUMBER_OF_NEPRO_ENEMY == 0 &&
+                NUMBER_OF_WYRM_ENEMY == 0;
+    }
 
-    private javax.swing.Timer firstWave = new javax.swing.Timer(1000, new AbstractAction() {
+    private javax.swing.Timer firstWave = new javax.swing.Timer(900, new AbstractAction() {
+        int totalEnemy = 20;
+        final int getTotalEnemy = totalEnemy;
+        int state = 0;
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (TOTAL_NUMBER_OF_ENEMY_1 > 0) {
-                if (CurrentEnemy < NUMBER_OF_ENEMY_1) {
-                    if (SQNumEnemy < NUMBER_OF_ENEMY_1 * sqPercent) {
-                        findPlace findPlace = new findPlace();
-                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
-                        IncreaseSQNumEnemy();
-                        return;
-                    }
-                    if (TRNumEnemy < TOTAL_NUMBER_OF_ENEMY_1 * trPercent) {
-                        findPlace findPlace = new findPlace();
+            findPlace findPlace = new findPlace();
+            switch (state % 3) {
+                case 0 -> {
+                    if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 5) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
-                        IncreaseTRNumEnemy();
+                        totalEnemy--;
                     }
                 }
-            } else {
-                if (CurrentEnemy == 0) {
-                    StopWave1();
+                case 1 -> {
+                    if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 5) {
+                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
+                        totalEnemy--;
+                    }
+                    }
+                case 2 -> {
+                    if (NUMBER_OF_NEPRO_ENEMY < 1) {
+                        BuilderHelper.NecropickBuilder(findPlace.getP2());
+                        totalEnemy--;
+                    }
                 }
+            }
+            state++;
+            if (finish(totalEnemy)) {
+                    StopWave1();
             }
         }
     });
-    private javax.swing.Timer secondWave = new javax.swing.Timer(800, new AbstractAction() {
+    private javax.swing.Timer secondWave = new javax.swing.Timer(650, new AbstractAction() {
+        int totalEnemy = 30;
+        final int getTotalEnemy = totalEnemy;
+        int state = 0;
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (TOTAL_NUMBER_OF_ENEMY_2 > 0) {
-                if (CurrentEnemy < NUMBER_OF_ENEMY_2) {
-                    if (SQNumEnemy < NUMBER_OF_ENEMY_2 * sqPercent) {
-                        findPlace findPlace = new findPlace();
-                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
-                        IncreaseSQNumEnemy();
-                        return;
-                    }
-                    if (TRNumEnemy < TOTAL_NUMBER_OF_ENEMY_2 * trPercent) {
-                        findPlace findPlace = new findPlace();
+            findPlace findPlace = new findPlace();
+            switch (state % 4) {
+                case 0 -> {
+                    if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 7) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
-                        IncreaseTRNumEnemy();
+                        totalEnemy--;
                     }
                 }
-            } else if (CurrentEnemy == 0) {
+                case 1 -> {
+                    if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 8) {
+                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 2 -> {
+                    if (NUMBER_OF_NEPRO_ENEMY < 2) {
+                        BuilderHelper.NecropickBuilder(findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 3 -> {
+                    if (NUMBER_OF_OMENICT_ENEMY < 1) {
+                        BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
+                        totalEnemy--;
+                    }
+                }
+            }
+            state++;
+            if (finish(totalEnemy)) {
                 StopWave2();
             }
         }
     });
     private javax.swing.Timer thirdWave = new javax.swing.Timer(600, new AbstractAction() {
+        int totalEnemy = 35;
+        final int getTotalEnemy = totalEnemy;
+        int state = 0;
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (TOTAL_NUMBER_OF_ENEMY_3 > 0) {
-                if (CurrentEnemy < NUMBER_OF_ENEMY_3) {
-                    if (SQNumEnemy < NUMBER_OF_ENEMY_3 * sqPercent) {
-                        findPlace findPlace = new findPlace();
-                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
-                        IncreaseSQNumEnemy();
-                        return;
-                    }
-                    if (TRNumEnemy < TOTAL_NUMBER_OF_ENEMY_3 * trPercent) {
-                        findPlace findPlace = new findPlace();
+            findPlace findPlace = new findPlace();
+            switch (state % 6) {
+                case 0 -> {
+                    if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 10) {
                         BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
-                        IncreaseTRNumEnemy();
+                        totalEnemy--;
                     }
                 }
-            } else if (CurrentEnemy == 0) {
+                case 1 -> {
+                    if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 10) {
+                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 2 -> {
+                    if (NUMBER_OF_NEPRO_ENEMY < 2) {
+                        BuilderHelper.NecropickBuilder(findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 3 -> {
+                    if (NUMBER_OF_OMENICT_ENEMY < 1) {
+                        BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
+                        totalEnemy--;
+                    }
+                }
+                case 4 -> {
+                    if (NUMBER_OF_BARRICOD_ENEMY < 1) {
+                        BuilderHelper.OmenoctBuilder(new Point2D.Double(findPlace.getP2().getX() + 100, findPlace.getP2().getY()), right);
+                        totalEnemy--;
+                    }
+                }
+                case 5 -> {
+                    if (NUMBER_OF_WYRM_ENEMY < 2) {
+                        BuilderHelper.wyrmBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()));
+                        totalEnemy--;
+                    }
+                }
+            }
+            state++;
+            if (finish(totalEnemy)) {
                 StopWave3();
+            }
+        }
+    });
+    private javax.swing.Timer fourthWave = new javax.swing.Timer(500, new AbstractAction() {
+        int totalEnemy = 30;
+        final int getTotalEnemy = totalEnemy;
+        int state = 0;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            findPlace findPlace = new findPlace();
+            switch (state % 4) {
+                case 0 -> {
+                    if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 12) {
+                        BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 1 -> {
+                    if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 12) {
+                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 2 -> {
+                    if (NUMBER_OF_NEPRO_ENEMY < 2) {
+                        BuilderHelper.NecropickBuilder(findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 3 -> {
+                    if (NUMBER_OF_OMENICT_ENEMY < 2) {
+                        if (NUMBER_OF_OMENICT_ENEMY == 1) BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
+                        else BuilderHelper.OmenoctBuilder(findPlace.getP2(), left);
+                        totalEnemy--;
+                    }
+                }
+                case 4 -> {
+                    if (NUMBER_OF_BARRICOD_ENEMY < 1) {
+                        BuilderHelper.OmenoctBuilder(new Point2D.Double(findPlace.getP2().getX() + 100, findPlace.getP2().getY()), right);
+                        totalEnemy--;
+                    }
+                }
+                case 5 -> {
+                    if (NUMBER_OF_WYRM_ENEMY < 2) {
+                        BuilderHelper.wyrmBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()));
+                        totalEnemy--;
+                    }
+                }
+                case 6 -> {
+                    if (NUMBER_OF_ARCHMIRE_ENEMY < 1) {
+                        BuilderHelper.ArchmireBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()), false);
+                        totalEnemy--;
+                    }
+                }
+            }
+            state++;
+            if (finish(totalEnemy)) {
+                StopWave4();
+            }
+        }
+    });
+    private javax.swing.Timer feethWave = new javax.swing.Timer(400, new AbstractAction() {
+        int totalEnemy = 40;
+        final int getTotalEnemy = totalEnemy;
+        int state = 0;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            findPlace findPlace = new findPlace();
+            switch (state % 4) {
+                case 0 -> {
+                    if (NUMBER_OF_TRIG_ENEMY < getTotalEnemy / 15) {
+                        BuilderHelper.trigorathBuilder(findPlace.getP1(), findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 1 -> {
+                    if (NUMBER_OF_SQUR_ENEMY < getTotalEnemy / 15) {
+                        BuilderHelper.squarantineBuilder(findPlace.getP1(), findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 2 -> {
+                    if (NUMBER_OF_NEPRO_ENEMY < 2) {
+                        BuilderHelper.NecropickBuilder(findPlace.getP2());
+                        totalEnemy--;
+                    }
+                }
+                case 3 -> {
+                    if (NUMBER_OF_OMENICT_ENEMY < 2) {
+                        if (NUMBER_OF_OMENICT_ENEMY == 1) BuilderHelper.OmenoctBuilder(findPlace.getP2(), right);
+                        else BuilderHelper.OmenoctBuilder(findPlace.getP2(), left);
+                        totalEnemy--;
+                    }
+                }
+                case 4 -> {
+                    if (NUMBER_OF_BARRICOD_ENEMY < 1) {
+                        BuilderHelper.OmenoctBuilder(new Point2D.Double(findPlace.getP2().getX() + 100, findPlace.getP2().getY()), right);
+                        totalEnemy--;
+                    }
+                }
+                case 5 -> {
+                    if (NUMBER_OF_WYRM_ENEMY < 2) {
+                        BuilderHelper.wyrmBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()));
+                        totalEnemy--;
+                    }
+                }
+                case 6 -> {
+                    if (NUMBER_OF_ARCHMIRE_ENEMY < 2) {
+                        BuilderHelper.ArchmireBuilder(new Point2D.Double(findPlace.getP2().getX(), findPlace.getP2().getY()), false);
+                        totalEnemy--;
+                    }
+                }
+                case 7 -> {
+                    if (NUMBER_OF_BALCKORB_ENEMY < 1) {
+                        BuilderHelper.startBlackOrb();
+                        totalEnemy--;
+                    }
+                }
+            }
+            state++;
+            if (finish(totalEnemy)) {
+                StopWave5();
             }
         }
     });
@@ -127,38 +332,33 @@ public class Spawn {
     private void StopWave1() {
         System.out.println("stop wave 1");
         firstWave.stop();
-//        new StartWave2();
-        while (true) {
-            if (Start) {
-                spawnstate = spawnState.second;
-                secondWave.start();
-                Start = false;
-                break;
-            }
-        }
+        secondWave.start();
     }
 
     private void StopWave2() {
         System.out.println("stop wave 2");
         secondWave.stop();
-//        new startWave3();
-        while (true) {
-            if (Start) {
-                spawnstate = spawnState.third;
-                thirdWave.start();
-                Start = false;
-                break;
-            }
-        }
+        thirdWave.start();
+
     }
 
     private void StopWave3() {
-//        new win();
+        System.out.println("stop wave 2");
         thirdWave.stop();
-        spawnstate = spawnState.finish;
+        fourthWave.start();
+    }
 
-        // TODO: ۱۴/۰۴/۲۰۲۴ efect of end wave and start the another wave
-        // TODO: ۱۴/۰۴/۲۰۲۴ end game
+
+    private void StopWave4() {
+        System.out.println("stop wave 2");
+        fourthWave.stop();
+        feethWave.start();
+    }
+
+    private void StopWave5() {
+        System.out.println("stop wave 2");
+        feethWave.stop();
+        new boss();
     }
 
     public static Spawn getSpawn() {
@@ -166,37 +366,5 @@ public class Spawn {
             spawn = new Spawn();
         }
         return spawn;
-    }
-
-    public void DecreaseSQNumEnemy() {
-        this.SQNumEnemy--;
-        CurrentEnemy--;
-        switch (spawnstate) {
-            case first -> TOTAL_NUMBER_OF_ENEMY_1--;
-            case second -> TOTAL_NUMBER_OF_ENEMY_2--;
-            case third -> TOTAL_NUMBER_OF_ENEMY_3--;
-        }
-    }
-
-    public void IncreaseSQNumEnemy() {
-        this.SQNumEnemy++;
-        CurrentEnemy++;
-    }
-
-    public void DecreaseTRNumEnemy() {
-        this.TRNumEnemy--;
-        CurrentEnemy--;
-        switch (spawnstate) {
-            case first -> TOTAL_NUMBER_OF_ENEMY_1--;
-            case second -> TOTAL_NUMBER_OF_ENEMY_2--;
-            case third -> TOTAL_NUMBER_OF_ENEMY_3--;
-        }
-
-    }
-
-    public void IncreaseTRNumEnemy() {
-        this.TRNumEnemy++;
-        CurrentEnemy++;
-
     }
 }

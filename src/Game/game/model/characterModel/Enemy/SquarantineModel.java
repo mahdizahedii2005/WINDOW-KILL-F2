@@ -1,6 +1,7 @@
 package Game.game.model.characterModel.Enemy;
 
 import Game.Data.constants;
+import Game.game.Contoroler.building.Spawn;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.NormalFollower;
 import Game.game.model.characterModel.Panels.PanelInGame;
@@ -21,6 +22,13 @@ public class SquarantineModel extends moveAbleEnemy implements NormalFollower {
 
     public SquarantineModel(Point2D.Double center, double[] xPoint, double[] yPoint) {
         super(center, SQUAER_COLOR, 4, xPoint, yPoint, 10, 10, (float) (constants.SIDE_OF_SQUARE) / (float) Math.sqrt(2));
+        Spawn.NUMBER_OF_SQUR_ENEMY++;
+    }
+
+    @Override
+    public void Die() {
+        super.Die();
+        Spawn.NUMBER_OF_SQUR_ENEMY--;
     }
 
     @Override
@@ -48,5 +56,21 @@ public class SquarantineModel extends moveAbleEnemy implements NormalFollower {
     @Override
     public DrawAbleObject getDrawAbleObject(PanelInGame panel) {
         return new nonCircular(fixThePoint(vertices, panel), color);
+    }
+
+    public int getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(int cycle) {
+        this.cycle = cycle;
+    }
+
+    public boolean isPower() {
+        return isPower;
+    }
+
+    public void setPower(boolean power) {
+        isPower = power;
     }
 }

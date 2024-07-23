@@ -16,7 +16,7 @@ import static Game.game.Contoroler.control.Controller.moveEpsilon;
 
 public class inputListener {
     public static boolean stop = false;
-    public static boolean crazy = false;
+    public static boolean coolDownn = false;
     public static boolean aaa = true;
     Timer up = new Timer(200, new AbstractAction() {
         @Override
@@ -114,8 +114,9 @@ public class inputListener {
             public void mouseClicked(MouseEvent e) {
                 startBolting(e.getX(), e.getY());
                 if (stop) {
-                    Update.MODEL_UPDATE.start();
-                    Update.CLOSE_FRAME.start();
+                    Update.makeModel();
+                    Update.makeClose();
+                    Update.makeFRame();
                     frameInGame.getFrame().repaint();
                     stop = false;
                 }
@@ -181,7 +182,9 @@ public class inputListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (SpecialSkill.getCurrentSpecialSkill() != null) {
-                    SpecialSkill.getCurrentSpecialSkill().run();
+                    if (!coolDownn) {
+                        SpecialSkill.getCurrentSpecialSkill().run();
+                    }
                 }
             }
         });

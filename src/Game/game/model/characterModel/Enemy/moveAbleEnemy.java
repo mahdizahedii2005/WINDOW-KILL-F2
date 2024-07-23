@@ -130,11 +130,6 @@ public abstract class moveAbleEnemy extends enemy implements Collidable,follower
     public void Die() {
         new prize(new Point2D.Double(center.getX(), center.getY()), color, this instanceof TrigorathModel ? 5 : 10);
         super.Die();
-        if (this instanceof SquarantineModel) {
-            Spawn.getSpawn().DecreaseSQNumEnemy();
-        } else {
-            Spawn.getSpawn().DecreaseTRNumEnemy();
-        }
         soundPlayer.play(i % 2 == 0 ? ENEMY_DESTROID_SOUND_PATH1 : ENEMY_DESTROID_SOUND_PATH2);
         i++;
         // TODO: ۱۴/۰۴/۲۰۲۴ play music
@@ -156,5 +151,21 @@ public abstract class moveAbleEnemy extends enemy implements Collidable,follower
     @Override
     public void setMoveDirection(Direction moveDirection) {
         MoveDirection = moveDirection;
+    }
+
+    public static int getNumberofenemy() {
+        return numberofenemy;
+    }
+
+    public static void setNumberofenemy(int numberofenemy) {
+        moveAbleEnemy.numberofenemy = numberofenemy;
+    }
+
+    public static int getI() {
+        return i;
+    }
+
+    public static void setI(int i) {
+        moveAbleEnemy.i = i;
     }
 }

@@ -1,6 +1,7 @@
 package Game.game.model.characterModel.Enemy;
 
 import Game.game.Contoroler.building.MokhtasatPoint;
+import Game.game.Contoroler.building.Spawn;
 import Game.game.Contoroler.control.DefaultMethods;
 import Game.game.model.Move.Direction;
 import Game.game.model.Move.circluarMove;
@@ -18,15 +19,12 @@ import Game.helper;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.ViewFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.FileNameMap;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -44,6 +42,7 @@ public class Wyrm extends enemy implements circluarMove, follower, shootGiver {
 
     public Wyrm(Point2D.Double center, ArrayList<Point2D> vec, ObjectInGame objectMabda) {
         super(center, Color.YELLOW, UUID.randomUUID().toString(), 12, 40f, 8);
+        Spawn.NUMBER_OF_WYRM_ENEMY++;
         setVertices(vec);
         this.objectMabda = objectMabda;
         try {
@@ -64,6 +63,7 @@ public class Wyrm extends enemy implements circluarMove, follower, shootGiver {
     @Override
     public void Die() {
         super.Die();
+        Spawn.NUMBER_OF_WYRM_ENEMY--;
         panel.clear();
         fire.stop();
     }
@@ -153,4 +153,63 @@ public class Wyrm extends enemy implements circluarMove, follower, shootGiver {
         getHit(bolt.getDamageDaler());
     }
 
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
+    public int getValidRaduice() {
+        return ValidRaduice;
+    }
+
+    public void setValidRaduice(int validRaduice) {
+        ValidRaduice = validRaduice;
+    }
+
+    public ObjectInGame getObjectMabda() {
+        return objectMabda;
+    }
+
+    public void setObjectMabda(ObjectInGame objectMabda) {
+        this.objectMabda = objectMabda;
+    }
+
+    public boolean isRoundClock() {
+        return roundClock;
+    }
+
+    public void setRoundClock(boolean roundClock) {
+        this.roundClock = roundClock;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public String getImagPath() {
+        return imagPath;
+    }
+
+    public isometricPanel getPanel() {
+        return panel;
+    }
+
+    public Direction getMoveDirection() {
+        return moveDirection;
+    }
+
+    public void setMoveDirection(Direction moveDirection) {
+        this.moveDirection = moveDirection;
+    }
+
+    public Timer getFire() {
+        return fire;
+    }
+
+    public void setFire(Timer fire) {
+        this.fire = fire;
+    }
 }

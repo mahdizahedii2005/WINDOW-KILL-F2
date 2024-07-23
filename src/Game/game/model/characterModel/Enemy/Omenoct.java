@@ -1,5 +1,6 @@
 package Game.game.model.characterModel.Enemy;
 
+import Game.game.Contoroler.building.Spawn;
 import Game.game.model.Move.Direction;
 import Game.game.model.characterModel.Panels.NonIsometricPanel;
 import Game.game.model.characterModel.Panels.PanelInGame;
@@ -9,7 +10,6 @@ import Game.game.model.collision.Collidable;
 import Game.game.model.shooting.shooter;
 import Game.game.view.characterView.DrawAbleObject;
 import Game.game.view.characterView.shape.PhotoShape;
-
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,9 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-
 import static Game.Data.constants.OMENOCT_RADIUS;
-import static Game.game.Contoroler.control.Controller.*;
+import static Game.game.Contoroler.control.Controller.fixThePoint;
+import static Game.game.Contoroler.control.Controller.isItInside;
 import static Game.game.model.characterModel.Panels.PanelInGame.PANELS;
 
 public class Omenoct extends moveAbleEnemy implements shooter {
@@ -53,6 +53,7 @@ public class Omenoct extends moveAbleEnemy implements shooter {
             }
         });
         actionAble.start();
+        Spawn.NUMBER_OF_OMENICT_ENEMY++;
     }
 
     @Override
@@ -129,6 +130,63 @@ public class Omenoct extends moveAbleEnemy implements shooter {
     @Override
     public void Die() {
         actionAble.stop();
+        Spawn.NUMBER_OF_OMENICT_ENEMY--;
         super.Die();
+    }
+
+    public boolean isItFix() {
+        return isItFix;
+    }
+
+    public void setItFix(boolean itFix) {
+        isItFix = itFix;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public void setRangedDamage(int rangedDamage) {
+        this.rangedDamage = rangedDamage;
+    }
+
+    public Collidable.side getSide() {
+        return side;
+    }
+
+    public void setSide(Collidable.side side) {
+        this.side = side;
+    }
+
+    public int getActionDelay() {
+        return actionDelay;
+    }
+
+    public Timer getActionAble() {
+        return actionAble;
+    }
+
+    public void setActionAble(Timer actionAble) {
+        this.actionAble = actionAble;
+    }
+
+    public Random getRandom() {
+        return random;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
     }
 }

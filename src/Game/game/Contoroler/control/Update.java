@@ -6,6 +6,7 @@ import Game.game.model.Move.follower;
 import Game.game.model.characterModel.ObjectInGame;
 import Game.game.model.characterModel.Panels.PanelInGame;
 import Game.game.model.characterModel.epsilonFriend.Epsilon;
+import Game.game.model.characterModel.epsilonFriend.bolt;
 import Game.game.model.closeFRame.CLOSEABLE;
 import Game.game.model.collision.Collidable;
 import Game.game.model.collision.CollisionState;
@@ -32,14 +33,18 @@ public class Update {
     public static boolean stopCLOSFRAME = true;
     public static boolean stopFRAMEUPDATE = true;
     public static boolean stpoUpdateModel = true;
-
+    public static boolean enemyTakeDamage = false;
     public static void makeModel() {
         stpoUpdateModel = true;
         MODEL_UPDATE = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    updateModel();
+                    try {
+                        updateModel();
+                    } catch (Exception e) {
+                    }
+
                     try {
                         Thread.sleep((long) MODEL_UPDATE_TIME);
                     } catch (InterruptedException e) {
@@ -58,7 +63,10 @@ public class Update {
             @Override
             public void run() {
                 while (stopFRAMEUPDATE) {
-                    updateView();
+                    try {
+                        updateView();
+                    } catch (Exception r) {
+                    }
                     try {
                         Thread.sleep((long) FRAME_UPDATE_TIME);
                     } catch (InterruptedException e) {
@@ -128,9 +136,13 @@ public class Update {
             if (a instanceof follower) {
                 ((follower) a).follow();
             }
+            if (a instanceof PanelInGame) continue;
             if (a instanceof Epsilon && finish) {
                 a.move();
             } else if (!(a instanceof Epsilon)) {
+                if (Movable.fillses.dontComeNewrMe && a.getAnchor().distance(Epsilon.getEpsilon().getCenter()) < 50)
+                    continue;
+                if (Movable.fillses.stopEveryThing && (!(a instanceof bolt && ((bolt) a).isGood()))) continue;
                 a.move();
             }
         }
@@ -149,6 +161,8 @@ public class Update {
                         if (collision.isCollision()) {
                             if (!(c1 instanceof PanelInGame && c2 instanceof Epsilon) && !(c2 instanceof PanelInGame && c1 instanceof Epsilon)) {
                                 if (!(c1 instanceof PanelInGame) || !(c2 instanceof PanelInGame))
+                                    if (c1 instanceof Epsilon && enemyTakeDamage) ((ObjectInGame) c2).getHit(2);
+                                    else if (c2 instanceof Epsilon && enemyTakeDamage) ((ObjectInGame) c1).getHit(2);
                                 new impact(PointFloutToDouble(collision.getCollisionPoint()));
                             }
                             collision.PlayCollisionAction();

@@ -1,5 +1,6 @@
 package Game.game.model.characterModel.Enemy;
 
+import Game.game.Contoroler.building.Spawn;
 import Game.game.model.characterModel.Panels.PanelInGame;
 import Game.game.model.characterModel.Panels.isometricPanel;
 import Game.game.model.characterModel.epsilonFriend.bolt;
@@ -26,6 +27,8 @@ public class blackOrbs {
     public blackOrbs() {
         instans = this;
         blackOrbActive = true;
+        Spawn.NUMBER_OF_BALCKORB_ENEMY++;
+
     }
 
     public static Game.game.model.characterModel.Enemy.blackOrbs getInstans() {
@@ -34,6 +37,7 @@ public class blackOrbs {
 
     public void checkFinish() {
         if (blackOrbs.isEmpty()) {
+            Spawn.NUMBER_OF_BALCKORB_ENEMY--;
             instans = null;
             blackOrbActive = false;
         }
@@ -170,5 +174,29 @@ public class blackOrbs {
         public void takingShot(bolt bolt) {
             if (blackOrbActive) getHit(bolt.getDamageDaler());
         }
+    }
+
+    public static boolean isBlackOrbActive() {
+        return blackOrbActive;
+    }
+
+    public static void setInstans(Game.game.model.characterModel.Enemy.blackOrbs instanss) {
+        instans = instans;
+    }
+
+    public static void setBlackOrbActive(boolean blackOrbActivee) {
+        blackOrbActive = blackOrbActive;
+    }
+
+    public ArrayList<blackOrb> getBlackOrbs() {
+        return blackOrbs;
+    }
+
+    public void setBlackOrbs(ArrayList<blackOrb> blackOrbs) {
+        this.blackOrbs = blackOrbs;
+    }
+
+    public ArrayList<laser> getLaserArrayList() {
+        return laserArrayList;
     }
 }
